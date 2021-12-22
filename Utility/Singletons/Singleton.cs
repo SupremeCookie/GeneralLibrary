@@ -12,5 +12,11 @@
 
 			return _instance;
 		}
+		set
+		{
+			_instance = value;
+		}
 	}
+
+	public static bool HasInstance { get { return _instance != null; } }
 }

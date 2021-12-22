@@ -2,9 +2,9 @@
 
 public static class ListExtensions
 {
-	public static void Shuffle<T>(this List<T> list)
+	public static void Shuffle<T>(this IList<T> list)
 	{
-		System.Random rng = new System.Random();
+		var rng = CustomRandomContainer.GetRandom("ListShuffle");
 		int n = list.Count;
 		while (n > 0)
 		{
@@ -16,7 +16,7 @@ public static class ListExtensions
 		}
 	}
 
-	public static bool IsNullOrEmpty<T>(this List<T> list)
+	public static bool IsNullOrEmpty<T>(this IList<T> list)
 	{
 		return list == null || list.Count == 0;
 	}

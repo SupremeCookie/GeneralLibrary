@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class VectorExtensions
 {
@@ -75,6 +76,15 @@ public static class VectorExtensions
 
 		return vec;
 	}
+
+	public static bool IsValid(this Vector3 vec)
+	{
+		bool isPositiveInfi = vec.x == float.PositiveInfinity || vec.y == float.PositiveInfinity || vec.z == float.PositiveInfinity;
+		bool isNegativeInfi = vec.x == float.NegativeInfinity || vec.y == float.NegativeInfinity || vec.z == float.NegativeInfinity;
+		bool isNan = vec.x == float.NaN || vec.y == float.NaN || vec.z == float.NaN;
+
+		return !isPositiveInfi && !isNegativeInfi && !isNan;
+	}
 	#endregion
 
 	#region CONVERTERS
@@ -97,10 +107,29 @@ public static class VectorExtensions
 			&& (first.z.IsCloseTo(second.z));
 	}
 
+	public static bool IsCloseTo(this Vector3 first, Vector3 second)
+	{
+		return (first.x.IsCloseTo(second.x))
+			&& (first.y.IsCloseTo(second.y))
+			&& (first.z.IsCloseTo(second.z));
+	}
+
 	public static bool EqualTo(this Vector2 first, Vector2 second)
 	{
 		return (first.x.IsCloseTo(second.x))
 			&& (first.y.IsCloseTo(second.y));
+	}
+
+	public static bool IsCloseTo(this Vector2 first, Vector2 second)
+	{
+		return (first.x.IsCloseTo(second.x))
+			&& (first.y.IsCloseTo(second.y));
+	}
+
+	public static bool IsCloseTo(this Vector2 first, Vector2 second, float maxDistance)
+	{
+		return (first.x.IsCloseTo(second.x, maxDistance))
+			&& (first.y.IsCloseTo(second.y, maxDistance));
 	}
 	#endregion
 
@@ -223,6 +252,27 @@ public static class VectorExtensions
 		bool yAlligns = first.y.IsCloseTo(second.y);
 
 		return xAlligns ^ yAlligns;
+	}
+
+	public static bool IsValid(this Vector2 vec)
+	{
+		bool isPositiveInfi = vec.x == float.PositiveInfinity || vec.y == float.PositiveInfinity;
+		bool isNegativeInfi = vec.x == float.NegativeInfinity || vec.y == float.NegativeInfinity;
+		bool isNan = vec.x == float.NaN || vec.y == float.NaN;
+
+		return !isPositiveInfi && !isNegativeInfi && !isNan;
+	}
+
+	public static List<Vector2> Copy(this List<Vector2> input)
+	{
+		var result = new List<Vector2>(input.Count);
+
+		for (int i = 0; i < input.Count; ++i)
+		{
+			result.Add(input[i]);
+		}
+
+		return result;
 	}
 	#endregion
 }
