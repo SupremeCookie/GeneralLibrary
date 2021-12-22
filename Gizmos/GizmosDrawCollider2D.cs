@@ -20,11 +20,9 @@ public class GizmosDrawCollider2D : MonoBehaviour
 			return;
 		}
 
-		Vector2 position = transform.position;
-
 		if (_collider == null)
 		{
-			_collider = GetComponent<Collider2D>();
+			_collider = GetComponentInChildren<Collider2D>();
 			return;
 		}
 
@@ -44,7 +42,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 					new Color(102f/255f, 163f/255f, 255f/255f, 0.4f),
 				};
 
-				Vector2 pos = transform.position;
+				Vector2 pos = _collider.transform.position;
 				var size = _boxCollider.size;
 				var offset = _boxCollider.offset;
 				float halfWidth = size.x * 0.5f;
@@ -80,6 +78,8 @@ public class GizmosDrawCollider2D : MonoBehaviour
 			}
 			else
 			{
+				Vector2 pos = _collider.transform.position;
+
 				var pathCounts = _polyGonCollider.pathCount;
 				for (int i = 0; i < pathCounts; ++i)
 				{
@@ -94,12 +94,12 @@ public class GizmosDrawCollider2D : MonoBehaviour
 
 					for (int k = 0; k < path.Length; ++k)
 					{
-						Gizmos.DrawLine(path[k] + position, path[(k + 1) % path.Length] + position);
+						Gizmos.DrawLine(path[k] + pos, path[(k + 1) % path.Length] + pos);
 					}
 
 					for (int k = 0; k < path.Length; ++k)
 					{
-						Gizmos.DrawSphere(path[k] + position, GizmosSize);
+						Gizmos.DrawSphere(path[k] + pos, GizmosSize);
 					}
 				}
 			}
@@ -113,6 +113,8 @@ public class GizmosDrawCollider2D : MonoBehaviour
 			}
 			else
 			{
+				Vector2 pos = _collider.transform.position;
+
 				var pathCounts = _compositeCollider.pathCount;
 				for (int i = 0; i < pathCounts; ++i)
 				{
@@ -129,18 +131,19 @@ public class GizmosDrawCollider2D : MonoBehaviour
 
 					for (int k = 0; k < path.Length; ++k)
 					{
-						Gizmos.DrawLine(path[k], path[(k + 1) % path.Length]);
+						Gizmos.DrawLine(path[k] + pos, path[(k + 1) % path.Length] + pos);
 					}
 
 					for (int k = 0; k < path.Length; ++k)
 					{
-						Gizmos.DrawSphere(path[k], GizmosSize);
+						Gizmos.DrawSphere(path[k] + pos, GizmosSize);
 					}
 				}
 			}
 		}
 	}
 
+	// TODO: Use HLSL colouring here, it makes for nicer gradients. Then convert it back to RGB
 	private void MakeRandomColor(int seed)
 	{
 		Random.InitState(seed);

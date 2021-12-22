@@ -20,6 +20,11 @@ public static class FloatExtensions
 		return (Mathf.Abs(val - closeTo) < FLOATS_CLOSE_TOGETHER);
 	}
 
+	public static bool IsCloseTo(this float val, float closeTo, float maxDistance)
+	{
+		return (Mathf.Abs(val - closeTo) < maxDistance);
+	}
+
 	public static float Squared(this float first)
 	{
 		return Mathf.Pow(first, 2);
@@ -34,5 +39,10 @@ public static class FloatExtensions
 
 		float copy = input;
 		return copy / Mathf.Abs(copy);
+	}
+
+	public static int ToMilliSeconds(this float input)
+	{
+		return (int)input * 1000;
 	}
 }

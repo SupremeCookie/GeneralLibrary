@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-public partial class Utility
+﻿public partial class Utility
 {
+	static protected CustomRandom _rand = new CustomRandom(SeedGenerator.MathSeed);
 }

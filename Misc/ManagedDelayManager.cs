@@ -77,5 +77,12 @@ namespace RogueLike
 				return _managedDelays[delayName].Delay;
 			}
 		}
+
+		public bool DoesDelayExist(string delayName)
+		{
+			bool hasKey = _managedDelays.ContainsKey(delayName);
+
+			return hasKey;
+		}
 	}
 }

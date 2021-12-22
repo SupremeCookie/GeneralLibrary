@@ -50,4 +50,9 @@ public static class OctaDirectionExtensions
 
 		return _octagonalDirectionArray[index].Direction;
 	}
+
+	public static bool IsLeft(this OCTA_DIRECTION dir)
+	{
+		return dir == OCTA_DIRECTION.DownLeft || dir == OCTA_DIRECTION.Left || dir == OCTA_DIRECTION.UpLeft;
+	}
 }

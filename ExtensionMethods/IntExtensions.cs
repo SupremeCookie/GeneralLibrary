@@ -17,4 +17,9 @@ public static class IntExtensions
 	{
 		return val % max;
 	}
+
+	public static int ToMilliSeconds(this int input)
+	{
+		return input * 1000;
+	}
 }
