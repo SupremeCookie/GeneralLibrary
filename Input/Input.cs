@@ -13,6 +13,9 @@ namespace CustomInput
 		private static List<bool> _prevFrameValues;
 		private static List<bool> _currFrameValues;
 
+		private static Vector2 _prevMousePos;
+		private static Vector2 _currMousePos;
+
 
 		public static DateTime LastActiveTime { get; private set; }
 
@@ -34,6 +37,8 @@ namespace CustomInput
 				_prevFrameValues[i] = _currFrameValues[i];
 			}
 
+			_prevMousePos = _currMousePos;
+
 
 			_currFrameValues[(int)GeneralActions.Up] = UnityEngine.Input.GetKey(KeyCode.W) || UnityEngine.Input.GetKey(KeyCode.UpArrow);
 			_currFrameValues[(int)GeneralActions.Down] = UnityEngine.Input.GetKey(KeyCode.S) || UnityEngine.Input.GetKey(KeyCode.DownArrow);
@@ -47,6 +52,9 @@ namespace CustomInput
 			_currFrameValues[generalActionsOffset + (int)MouseActions.Click_Left] = UnityEngine.Input.GetMouseButton(0);
 			_currFrameValues[generalActionsOffset + (int)MouseActions.Click_Right] = UnityEngine.Input.GetMouseButton(1);
 			_currFrameValues[generalActionsOffset + (int)MouseActions.Click_Middle] = UnityEngine.Input.GetMouseButton(2);
+
+
+			_currMousePos = UnityEngine.Input.mousePosition;
 		}
 
 
@@ -115,6 +123,11 @@ namespace CustomInput
 		public static Vector2 GetMousePos()
 		{
 			return UnityEngine.Input.mousePosition;
+		}
+
+		public static Vector2 GetMousePosDelta()
+		{
+			return _currMousePos - _prevMousePos;
 		}
 
 		public static float GetMouseScrollDelta()
