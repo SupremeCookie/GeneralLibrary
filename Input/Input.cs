@@ -19,15 +19,34 @@ namespace CustomInput
 
 		static Input()
 		{
-			_prevFrameValues = new List<bool>((int)GeneralActions.Count + (int)MouseActions.Count);
-			_currFrameValues = new List<bool>((int)GeneralActions.Count + (int)MouseActions.Count);
+			_prevFrameValues = new List<bool>((int)GeneralActions.Count + (int)MouseActions.Count).Populate();
+			_currFrameValues = new List<bool>((int)GeneralActions.Count + (int)MouseActions.Count).Populate();
 		}
 
 
 		public static void Update(float deltaSeconds)
 		{
 			LastActiveTime = DateTime.UtcNow;
-			// PollInput
+
+
+			for (int i = 0; i < _currFrameValues.Count; ++i)
+			{
+				_prevFrameValues[i] = _currFrameValues[i];
+			}
+
+
+			_currFrameValues[(int)GeneralActions.Up] = UnityEngine.Input.GetKey(KeyCode.W) || UnityEngine.Input.GetKey(KeyCode.UpArrow);
+			_currFrameValues[(int)GeneralActions.Down] = UnityEngine.Input.GetKey(KeyCode.S) || UnityEngine.Input.GetKey(KeyCode.DownArrow);
+			_currFrameValues[(int)GeneralActions.Left] = UnityEngine.Input.GetKey(KeyCode.A) || UnityEngine.Input.GetKey(KeyCode.LeftArrow);
+			_currFrameValues[(int)GeneralActions.Right] = UnityEngine.Input.GetKey(KeyCode.D) || UnityEngine.Input.GetKey(KeyCode.RightArrow);
+			_currFrameValues[(int)GeneralActions.RotateLeft] = UnityEngine.Input.GetKey(KeyCode.Q);
+			_currFrameValues[(int)GeneralActions.RotateRight] = UnityEngine.Input.GetKey(KeyCode.E);
+
+
+			int generalActionsOffset = (int)GeneralActions.Count;
+			_currFrameValues[generalActionsOffset + (int)MouseActions.Click_Left] = UnityEngine.Input.GetMouseButton(0);
+			_currFrameValues[generalActionsOffset + (int)MouseActions.Click_Right] = UnityEngine.Input.GetMouseButton(1);
+			_currFrameValues[generalActionsOffset + (int)MouseActions.Click_Middle] = UnityEngine.Input.GetMouseButton(2);
 		}
 
 
