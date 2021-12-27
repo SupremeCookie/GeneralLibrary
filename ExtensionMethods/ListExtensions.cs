@@ -20,4 +20,14 @@ public static class ListExtensions
 	{
 		return list == null || list.Count == 0;
 	}
+
+	public static List<T> Populate<T>(this List<T> list) where T : new()
+	{
+		for (int i = 0; i < list.Capacity; i++)
+		{
+			list.Add(new T());
+		}
+
+		return list;
+	}
 }
