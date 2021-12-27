@@ -13,6 +13,17 @@ public enum OffsetType
 //Note: If needed, make GUISkin to change style of assets.
 public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 {
+#if !GLOBALDATASCRIPTABLE_AVAILABLE
+	private class DrawGUIDataClass
+	{
+		public int DebugWindow_XPos = 50;
+		public int DebugWindow_YPos = 50;
+		public int DebugWindow_Width = 500;
+		public int DebugWindow_Height = 700;
+	}
+#endif
+
+
 	public event System.Action OnDrawGUI;
 
 #if UNITY_EDITOR && false
@@ -99,6 +110,9 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 
 #if GLOBALDATASCRIPTABLE_AVAILABLE
 		var data = IniControl.GlobalData;
+#else
+		var data = new DrawGUIDataClass();
+#endif
 
 		// MainWindow
 		var xPos = data.DebugWindow_XPos;
@@ -147,7 +161,6 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 
 		// Separator
 		GUI.Box(new Rect(xPos, Mathf.Max(contentYPos - indent, 0), width, indent * 0.5f), "");
-#endif
 	}
 
 	private void OnDrawGroups()
@@ -178,11 +191,13 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 		scrollViewRect.height = elementHeight;
 		scrollViewRect.width = totalWidhtOfGroups;
 
-#if GLOBALDATASCRIPTABLE_AVAILABLE
 		float xOffset = 0;
 
+#if GLOBALDATASCRIPTABLE_AVAILABLE
 		// Place group buttons, inside a scrollview
 		IniControl.GlobalData.DebugWindow_ScrollPos = GUI.BeginScrollView(_groupSection, IniControl.GlobalData.DebugWindow_ScrollPos, scrollViewRect, alwaysShowHorizontal: true, alwaysShowVertical: false);
+#endif
+
 		foreach (var group in groups)
 		{
 			var style = IsGroupActive(group.Key) ? activeStyle : normalStyle;
@@ -200,7 +215,6 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 
 			xOffset += size.x;
 		}
-#endif
 		GUI.EndScrollView();
 	}
 
