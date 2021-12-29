@@ -46,6 +46,8 @@ namespace CustomInput
 			_currFrameValues[(int)GeneralActions.Right] = UnityEngine.Input.GetKey(KeyCode.D) || UnityEngine.Input.GetKey(KeyCode.RightArrow);
 			_currFrameValues[(int)GeneralActions.RotateLeft] = UnityEngine.Input.GetKey(KeyCode.Q);
 			_currFrameValues[(int)GeneralActions.RotateRight] = UnityEngine.Input.GetKey(KeyCode.E);
+			_currFrameValues[(int)GeneralActions.Rotate] = UnityEngine.Input.GetKey(KeyCode.R);
+			_currFrameValues[(int)GeneralActions.Alternative] = UnityEngine.Input.GetKey(KeyCode.LeftShift);
 
 
 			int generalActionsOffset = (int)GeneralActions.Count;

@@ -9,6 +9,8 @@
 
 		RotateLeft,
 		RotateRight,
+		Rotate,
+		Alternative,
 
 
 		Count,  // Note DK: Always keep last
