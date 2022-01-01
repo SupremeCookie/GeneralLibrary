@@ -17,9 +17,9 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 	private class DrawGUIDataClass
 	{
 		public int DebugWindow_XPos = 50;
-		public int DebugWindow_YPos = 50;
+		public int DebugWindow_YPos = 100;
 		public int DebugWindow_Width = 500;
-		public int DebugWindow_Height = 700;
+		public int DebugWindow_Height = 600;
 	}
 #endif
 
