@@ -12,6 +12,7 @@
 		Rotate,
 		Alternative,
 
+		Cancel,
 
 		Count,  // Note DK: Always keep last
 	}
