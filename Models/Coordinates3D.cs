@@ -38,6 +38,11 @@ public class Coordinates3D
 	{
 		return new Coordinates3D(first.x - second.x, first.y - second.y, first.z - second.z);
 	}
+
+	public static Coordinates3D operator *(Coordinates3D first, int scalar)
+	{
+		return new Coordinates3D(first.x * scalar, first.y * scalar, first.z * scalar);
+	}
 }
 
 public static class Coordinates3DExtensions
@@ -84,6 +89,23 @@ public static class Coordinates3DExtensions
 		input.y = Utility.RoundToNearestIntOrCeil(value.y);
 		input.z = Utility.RoundToNearestIntOrCeil(value.z);
 	}
+
+
+	public static void AddOffset(this Coordinates3D input, Coordinates3D offset)
+	{
+		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
+		input.x += offset.x;
+		input.y += offset.y;
+		input.z += offset.z;
+	}
+
+
+	public static bool IsNotZero(this Coordinates3D input)
+	{
+		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
+		return input.x != 0 || input.y != 0 || input.z != 0;
+	}
+
 
 	public static int GetCoordinateHash(int x, int y, int z)
 	{
