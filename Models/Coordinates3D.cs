@@ -12,8 +12,14 @@ public class Coordinates3D
 	public Coordinates3D(float x, float y, float z) { this.x = Utility.RoundToNearestIntOrCeil(x); this.y = Utility.RoundToNearestIntOrCeil(y); this.z = Utility.RoundToNearestIntOrCeil(z); }
 	public Coordinates3D(Vector3 xyz)
 	{
+#if MM
+		float cubeHeight = DebugData.Instance.cubeHeight;
+#else
+		float cubeHeight = 1.0f;
+#endif
+
 		this.x = Utility.RoundToNearestIntOrCeil(xyz.x);
-		this.y = Utility.RoundToNearestIntOrCeil(xyz.y / DebugData.Instance.cubeHeight);
+		this.y = Utility.RoundToNearestIntOrCeil(xyz.y / cubeHeight);
 		this.z = Utility.RoundToNearestIntOrCeil(xyz.z);
 	}
 
@@ -102,28 +108,52 @@ public static class Coordinates3DExtensions
 
 	public static Vector2 ToVector2(this Coordinates3D input)
 	{
+#if MM
+		float cubeHeight = DebugData.Instance.cubeHeight;
+#else
+		float cubeHeight = 1.0f;
+#endif
+
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
-		return new Vector2(input.x, input.y * DebugData.Instance.cubeHeight);
+		return new Vector2(input.x, input.y * cubeHeight);
 	}
 
 	public static Vector3 ToVector3(this Coordinates3D input)
 	{
+#if MM
+		float cubeHeight = DebugData.Instance.cubeHeight;
+#else
+		float cubeHeight = 1.0f;
+#endif
+
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
-		return new Vector3(input.x, input.y * DebugData.Instance.cubeHeight, input.z);
+		return new Vector3(input.x, input.y * cubeHeight, input.z);
 	}
 
 	public static void SetValueTo(this Coordinates3D input, Vector2 value)
 	{
+#if MM
+		float cubeHeight = DebugData.Instance.cubeHeight;
+#else
+		float cubeHeight = 1.0f;
+#endif
+
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
 		input.x = Utility.RoundToNearestIntOrCeil(value.x);
-		input.y = Utility.RoundToNearestIntOrCeil(value.y / DebugData.Instance.cubeHeight);
+		input.y = Utility.RoundToNearestIntOrCeil(value.y / cubeHeight);
 	}
 
 	public static void SetValueTo(this Coordinates3D input, Vector3 value)
 	{
+#if MM
+		float cubeHeight = DebugData.Instance.cubeHeight;
+#else
+		float cubeHeight = 1.0f;
+#endif
+
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
 		input.x = Utility.RoundToNearestIntOrCeil(value.x);
-		input.y = Utility.RoundToNearestIntOrCeil(value.y / DebugData.Instance.cubeHeight);
+		input.y = Utility.RoundToNearestIntOrCeil(value.y / cubeHeight);
 		input.z = Utility.RoundToNearestIntOrCeil(value.z);
 	}
 
