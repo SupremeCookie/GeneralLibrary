@@ -10,7 +10,12 @@ public class Coordinates3D
 	public Coordinates3D() { }
 	public Coordinates3D(int x, int y, int z) { this.x = x; this.y = y; this.z = z; }
 	public Coordinates3D(float x, float y, float z) { this.x = Utility.RoundToNearestIntOrCeil(x); this.y = Utility.RoundToNearestIntOrCeil(y); this.z = Utility.RoundToNearestIntOrCeil(z); }
-	public Coordinates3D(Vector3 xyz) { this.x = Utility.RoundToNearestIntOrCeil(xyz.x); this.y = Utility.RoundToNearestIntOrCeil(xyz.y); this.z = Utility.RoundToNearestIntOrCeil(xyz.z); }
+	public Coordinates3D(Vector3 xyz)
+	{
+		this.x = Utility.RoundToNearestIntOrCeil(xyz.x);
+		this.y = Utility.RoundToNearestIntOrCeil(xyz.y / DebugData.Instance.cubeHeight);
+		this.z = Utility.RoundToNearestIntOrCeil(xyz.z);
+	}
 
 	public override int GetHashCode()
 	{
@@ -19,6 +24,11 @@ public class Coordinates3D
 
 	public override bool Equals(object obj)
 	{
+		if (object.ReferenceEquals(null, this) || object.ReferenceEquals(null, obj))
+		{
+			return false;
+		}
+
 		return GetHashCode().Equals(obj.GetHashCode());
 	}
 
@@ -28,6 +38,33 @@ public class Coordinates3D
 	}
 
 
+
+	public static bool operator ==(Coordinates3D first, Coordinates3D second)
+	{
+		if (object.ReferenceEquals(null, first) || object.ReferenceEquals(null, second))
+		{
+			return false;
+		}
+
+		return first.GetHashCode().Equals(second.GetHashCode());
+	}
+
+	public static bool operator !=(Coordinates3D first, Coordinates3D second)
+	{
+		bool firstObjectIsNull = object.ReferenceEquals(null, first);
+		bool secondObjectIsNull = object.ReferenceEquals(null, second);
+		if (firstObjectIsNull && secondObjectIsNull)
+		{
+			return false;
+		}
+
+		if ((firstObjectIsNull && !secondObjectIsNull) || (!firstObjectIsNull && secondObjectIsNull))
+		{
+			return true;
+		}
+
+		return first.GetHashCode().Equals(second.GetHashCode());
+	}
 
 	public static Coordinates3D operator +(Coordinates3D first, Coordinates3D second)
 	{
@@ -66,27 +103,27 @@ public static class Coordinates3DExtensions
 	public static Vector2 ToVector2(this Coordinates3D input)
 	{
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
-		return new Vector2(input.x, input.y);
+		return new Vector2(input.x, input.y * DebugData.Instance.cubeHeight);
 	}
 
 	public static Vector3 ToVector3(this Coordinates3D input)
 	{
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
-		return new Vector3(input.x, input.y, input.z);
+		return new Vector3(input.x, input.y * DebugData.Instance.cubeHeight, input.z);
 	}
 
 	public static void SetValueTo(this Coordinates3D input, Vector2 value)
 	{
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
 		input.x = Utility.RoundToNearestIntOrCeil(value.x);
-		input.y = Utility.RoundToNearestIntOrCeil(value.y);
+		input.y = Utility.RoundToNearestIntOrCeil(value.y / DebugData.Instance.cubeHeight);
 	}
 
 	public static void SetValueTo(this Coordinates3D input, Vector3 value)
 	{
 		Debug.Assert(input != null, $"{typeof(Coordinates3D).ToString()} input value is null, can't execute the extension method");
 		input.x = Utility.RoundToNearestIntOrCeil(value.x);
-		input.y = Utility.RoundToNearestIntOrCeil(value.y);
+		input.y = Utility.RoundToNearestIntOrCeil(value.y / DebugData.Instance.cubeHeight);
 		input.z = Utility.RoundToNearestIntOrCeil(value.z);
 	}
 
