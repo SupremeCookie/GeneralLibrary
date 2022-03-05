@@ -15,7 +15,7 @@ public class GizmosDrawPoint : MonoBehaviour
 	public Color GizmosColor;
 	public GizmoType GizmoType;
 
-	private void OnDrawGizmos()
+	protected virtual void OnDrawGizmos()
 	{
 		Gizmos.color = GizmosColor;
 

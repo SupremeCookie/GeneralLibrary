@@ -6,6 +6,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 	private void Start() { }
 
 	public float GizmosSize;
+	public bool DrawCross;
 
 	private Collider2D _collider;
 
@@ -48,23 +49,36 @@ public class GizmosDrawCollider2D : MonoBehaviour
 				float halfWidth = size.x * 0.5f;
 				float halfHeight = size.y * 0.5f;
 
+				int maxIndex = 4;
+
 				Vector2[] positions = new Vector2[]
 				{
 					pos + new Vector2(-halfWidth, -halfHeight) + offset,
 					pos + new Vector2(-halfWidth, halfHeight)+ offset,
 					pos + new Vector2(halfWidth, halfHeight)+ offset,
 					pos + new Vector2(halfWidth, -halfHeight)+ offset,
+					new Vector2(),
+					new Vector2(),
+					new Vector2(),
 				};
 
-				for (int i = 0; i < positions.Length; ++i)
+				if (DrawCross)
 				{
-					Gizmos.color = colors[i];
-					Gizmos.DrawLine(positions[i], positions[(i + 1) % positions.Length]);
+					maxIndex = 7;
+					positions[4] = positions[1];
+					positions[5] = positions[2];
+					positions[6] = positions[0];
 				}
 
-				for (int i = 0; i < positions.Length; ++i)
+				for (int i = 0; i < maxIndex; ++i)
 				{
-					Gizmos.color = colors[i];
+					Gizmos.color = colors[i % colors.Length];
+					Gizmos.DrawLine(positions[i], positions[(i + 1) % maxIndex]);
+				}
+
+				for (int i = 0; i < maxIndex; ++i)
+				{
+					Gizmos.color = colors[i % colors.Length];
 					Gizmos.DrawSphere(positions[i], GizmosSize);
 				}
 			}
