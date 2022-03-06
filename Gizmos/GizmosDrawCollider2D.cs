@@ -11,6 +11,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 	private Collider2D _collider;
 
 	private BoxCollider2D _boxCollider;
+	private CircleCollider2D _circleCollider;
 	private PolygonCollider2D _polyGonCollider;
 	private CompositeCollider2D _compositeCollider;
 
@@ -153,6 +154,20 @@ public class GizmosDrawCollider2D : MonoBehaviour
 						Gizmos.DrawSphere(path[k] + pos, GizmosSize);
 					}
 				}
+			}
+		}
+
+		if (_collider is CircleCollider2D)
+		{
+			if (_circleCollider == null)
+			{
+				_circleCollider = _collider as CircleCollider2D;
+			}
+			else
+			{
+				MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
+
+				Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
 			}
 		}
 	}
