@@ -12,8 +12,12 @@ public class GizmosDrawCollider2D : MonoBehaviour
 
 	private BoxCollider2D _boxCollider;
 	private CircleCollider2D _circleCollider;
+	private CapsuleCollider2D _capsuleCollider;
 	private PolygonCollider2D _polyGonCollider;
 	private CompositeCollider2D _compositeCollider;
+
+	private Color _circleColor;
+	private Color _capsuleColor;
 
 	private void OnDrawGizmos()
 	{
@@ -162,17 +166,35 @@ public class GizmosDrawCollider2D : MonoBehaviour
 			if (_circleCollider == null)
 			{
 				_circleCollider = _collider as CircleCollider2D;
+				MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
+				_capsuleColor = Gizmos.color;
 			}
 			else
 			{
-				MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
+				Gizmos.color = _capsuleColor;
 
 				Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
 			}
 		}
+
+		//if (_collider is CapsuleCollider2D)
+		//{
+		//	if (_capsuleCollider == null)
+		//	{
+		//		_capsuleCollider = _collider as CapsuleCollider2D;
+		//		MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
+		//		_circleColor = Gizmos.color;
+		//	}
+		//	else
+		//	{
+		//		Gizmos.color = _circleColor;
+
+		//		Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
+		//	}
+		//}
 	}
 
-	// TODO: Use HLSL colouring here, it makes for nicer gradients. Then convert it back to RGB
+	// TODO DK: Use HLSL colouring here, it makes for nicer gradients. Then convert it back to RGB
 	private void MakeRandomColor(int seed)
 	{
 		Random.InitState(seed);
