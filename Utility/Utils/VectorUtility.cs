@@ -119,9 +119,10 @@ public partial class Utility
 	{
 		Clockwise,
 		Counter_Clockwise,
+		Both,
 	};
 
-	public static Vector2 GetVector2ForDotProcut(Vector2 input, float dotProduct, DotProductDirection dir)
+	public static Vector2 GetVector2ForDotProduct(Vector2 input, float dotProduct, DotProductDirection dir)
 	{
 		Debug.Assert(input != default, $"Given Input is default Vector2, can't use this: {input}");
 
@@ -141,7 +142,7 @@ public partial class Utility
 		return rotatedVec;
 	}
 
-	public static Vector2 GetRandomVectorInDotProductRange(Vector2 input, float minDot, float maxDot)
+	public static Vector2 GetRandomVectorInDotProductRange(Vector2 input, float minDot, float maxDot, out float chosenDot, DotProductDirection dir = DotProductDirection.Both)
 	{
 		#region Explanation
 		// so full rotation is 2 pi rad.
@@ -173,7 +174,18 @@ public partial class Utility
 		Debug.Assert(input != default, $"Given Input is default Vector2, can't use this: {input}");
 
 		float randomDot = _rand.Range(minDot, maxDot);
+		chosenDot = randomDot;
+
 		bool takePositiveDegrees = _rand.RandBool();
+		if (dir == DotProductDirection.Clockwise)
+		{
+			takePositiveDegrees = false;
+		}
+		else if (dir == DotProductDirection.Counter_Clockwise)
+		{
+			takePositiveDegrees = true;
+		}
+
 		//Debug.Log($"RandomDot ({randomDot})   take counter-clock turn ({takePositiveDegrees})");
 
 
@@ -184,11 +196,16 @@ public partial class Utility
 		}
 
 		float radTheta = Mathf.Acos(randomDot);         //from 0 to pi.		So 0-180 degrees.	or 0 to 1 pi-rad
-		float degrees = RadianToAngle(radTheta);        //this turns the 0-3.14 space into 0-180 degrees
+		float degrees = RadianToAngle(radTheta);        //this turns the 0-3.14 rad space into 0-180 degrees
 
 		var rotatedVec = Matrices.ApplyRotationMatrix(input, takePositiveDegrees ? degrees : -degrees);
 
 		return rotatedVec;
+	}
+
+	public static Vector2 GetRandomVector()
+	{
+		return _rand.NextVector();
 	}
 
 

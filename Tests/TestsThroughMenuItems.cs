@@ -88,19 +88,19 @@ public class TestsThroughMenuItems
 			 new Vector2(0.4f, 0.6f),
 		};
 
-		var newRand = Utility.GetRandomVectorInDotProductRange(input, ranges[0].x, ranges[0].y);
+		var newRand = Utility.GetRandomVectorInDotProductRange(input, ranges[0].x, ranges[0].y, out float _);
 		Debug.Log($"Input ({input})  using dot-ranges  ({ranges[0]})  created random ({newRand})");
 		Debug.Log($"Dot product of ({input}) and ({newRand})   is ({DotProduct.CalculateDotProduct(input, newRand)})");
 
-		var newRand2 = Utility.GetRandomVectorInDotProductRange(input2, ranges[1].x, ranges[1].y);
+		var newRand2 = Utility.GetRandomVectorInDotProductRange(input2, ranges[1].x, ranges[1].y, out float _);
 		Debug.Log($"Input ({input2})  using dot-ranges ({ranges[1]})  created random ({newRand2})");
 		Debug.Log($"Dot product of ({input2}) and ({newRand2})   is ({DotProduct.CalculateDotProduct(input2, newRand2)})");
 
-		var newRand3 = Utility.GetRandomVectorInDotProductRange(input3, ranges[2].x, ranges[2].y);
+		var newRand3 = Utility.GetRandomVectorInDotProductRange(input3, ranges[2].x, ranges[2].y, out float _);
 		Debug.Log($"Input ({input3})  using dot-ranges ({ranges[2]})  created random ({newRand3})");
 		Debug.Log($"Dot product of ({input3}) and ({newRand3})   is ({DotProduct.CalculateDotProduct(input3, newRand3)})");
 
-		var newRand4 = Utility.GetRandomVectorInDotProductRange(input4, ranges[3].x, ranges[3].y);
+		var newRand4 = Utility.GetRandomVectorInDotProductRange(input4, ranges[3].x, ranges[3].y, out float _);
 		Debug.Log($"Input ({input4})  using dot-ranges ({ranges[3]})  created random ({newRand4})");
 		Debug.Log($"Dot product of ({input4}) and ({newRand4})   is ({DotProduct.CalculateDotProduct(input4, newRand4)})");
 	}

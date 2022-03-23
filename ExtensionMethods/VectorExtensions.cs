@@ -226,11 +226,7 @@ public static class VectorExtensions
 
 	public static Vector2 Random(this Vector2 vec)
 	{
-		vec.x = _random.Range(0f, 1f);
-		vec.y = _random.Range(0f, 1f);
-
-		vec.Normalize();
-
+		vec = _random.NextVector();
 		return vec;
 	}
 
