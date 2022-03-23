@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+#if DEBUG
 public enum OffsetType
 {
 	Left,
@@ -9,7 +10,18 @@ public enum OffsetType
 };
 
 
-#if DEBUG
+public class ButtonGroup
+{
+	public ButtonModel[] models;
+}
+
+public class ButtonModel
+{
+	public string label;
+	public System.Action callback;
+}
+
+
 //Note: If needed, make GUISkin to change style of assets.
 public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 {
@@ -676,6 +688,28 @@ public class DrawGUIGroup
 		if (GUI.Button(rect, label))
 		{
 			callback?.Invoke();
+		}
+	}
+
+	public void DrawButtonGroup(ButtonGroup group)
+	{
+		Debug.Assert(group != null, $"ButtonGroup is null, please fix");
+		Debug.Assert(!group.models.IsNullOrEmpty(), $"ButtonGroup's models collection is null, please fix");
+
+		var models = group.models;
+
+		var rect = GetNewRect();
+
+		float widthPerElement = rect.width / models.Length;
+
+		for (int i = 0; i < models.Length; ++i)
+		{
+			var currentModel = models[i];
+			var buttonRect = new Rect(rect.x + widthPerElement * i, rect.y, widthPerElement, rect.height);
+			if (GUI.Button(buttonRect, currentModel.label))
+			{
+				currentModel.callback?.Invoke();
+			}
 		}
 	}
 
