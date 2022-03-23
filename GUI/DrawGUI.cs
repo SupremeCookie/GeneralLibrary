@@ -599,14 +599,24 @@ public class DrawGUIGroup
 			GUI.Label(labelRect, label);
 		}
 
-		var textFieldValue = GUI.TextField(textFieldRect, result.ToString(), maxLength: 15);
-		var canConvert = float.TryParse(textFieldValue, out result);
+		var textFieldValue = GUI.TextField(textFieldRect, result.ToString("0.00"), maxLength: 15);
+		if (textFieldValue.Length == 0)
+		{
+			return 0;
+		}
 
+		if (textFieldValue.EndsWith(".") || textFieldValue.EndsWith(","))
+		{
+			textFieldValue += "0";
+		}
+
+		var canConvert = float.TryParse(textFieldValue, out result);
 		if (canConvert)
 		{
 			return result;
 		}
 
+		Debug.Log($"Return default value,  txt:{textFieldValue}, def:{defaultValue}");
 		return defaultValue;
 	}
 
