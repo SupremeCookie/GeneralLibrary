@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-#if DEBUG
+#if DEBUG_MENU
 public enum OffsetType
 {
 	Left,
@@ -99,6 +99,11 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 		{
 			_drawGui = !_drawGui;
 		}
+	}
+
+	public void Close()
+	{
+		_drawGui = false;
 	}
 
 	//TODO: store the size of the window in some file somewhere, similar to the Tweakables system in monopoly.
@@ -485,7 +490,6 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 	}
 	#endregion
 }
-#endif
 
 public class DrawGUIGroup
 {
@@ -756,3 +760,4 @@ public class DrawGUIGroup
 		return rect;
 	}
 }
+#endif

@@ -134,12 +134,12 @@ public class TestsThroughMenuItems
 		var vec4 = new Vector2(0, -1);
 		var vec5 = new Vector2(0.9f, -0.1f).normalized;
 
-		var res1 = Utility.AngleBetweenVectors(vec1, vec2);
-		var res2 = Utility.AngleBetweenVectors(vec1, vec2);
-		var res3 = Utility.AngleBetweenVectors(vec1, vec3);
-		var res4 = Utility.AngleBetweenVectors(vec2, vec4);
-		var res5 = Utility.AngleBetweenVectors(vec1, vec1);
-		var res6 = Utility.AngleBetweenVectors(vec3, vec3);
+		var res1 = Utility.RadianBetweenVectors(vec1, vec2);
+		var res2 = Utility.RadianBetweenVectors(vec1, vec2);
+		var res3 = Utility.RadianBetweenVectors(vec1, vec3);
+		var res4 = Utility.RadianBetweenVectors(vec2, vec4);
+		var res5 = Utility.RadianBetweenVectors(vec1, vec1);
+		var res6 = Utility.RadianBetweenVectors(vec3, vec3);
 		var res7 = Vector2.SignedAngle(vec1, vec5);
 		var res8 = Vector2.SignedAngle(vec5, vec1);
 
@@ -251,6 +251,29 @@ public class TestsThroughMenuItems
 
 
 		Debug.Log("=========== Test Done ===========");
+	}
+
+
+	[MenuItem(TestDirName + ExtensionsDirName + "Test Octa Dir Flip")]
+	private static void TestOctaDirFlip()
+	{
+		var first = OCTA_DIRECTION.Left;
+		var second = OCTA_DIRECTION.Right;
+		var third = OCTA_DIRECTION.Up;
+		var fourth = OCTA_DIRECTION.Down;
+		var fifth = OCTA_DIRECTION.UpLeft;
+		var sixth = OCTA_DIRECTION.UpRight;
+		var seventh = OCTA_DIRECTION.DownLeft;
+		var eighth = OCTA_DIRECTION.DownRight;
+
+		Debug.Log($"From ({first}) to ({first.Flip()})");
+		Debug.Log($"From ({second}) to ({second.Flip()})");
+		Debug.Log($"From ({third}) to ({third.Flip()})");
+		Debug.Log($"From ({fourth}) to ({fourth.Flip()})");
+		Debug.Log($"From ({fifth}) to ({fifth.Flip()})");
+		Debug.Log($"From ({sixth}) to ({sixth.Flip()})");
+		Debug.Log($"From ({seventh}) to ({seventh.Flip()})");
+		Debug.Log($"From ({eighth}) to ({eighth.Flip()})");
 	}
 }
 #endif

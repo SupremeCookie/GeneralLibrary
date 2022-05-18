@@ -1,8 +1,11 @@
-﻿﻿namespace RogueLike
+﻿using UnityEngine;
+
+namespace RogueLike
 {
+	[System.Serializable]
 	public class ManagedDelay
 	{
-		private float _delay;
+		[SerializeField] [Readonly] private float _delay;
 
 		public bool IsActive { get; private set; }
 		public float Delay { get { return _delay; } set { _delay = value; ActivateDelay(); } }

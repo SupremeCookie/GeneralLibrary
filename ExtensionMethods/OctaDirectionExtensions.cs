@@ -55,4 +55,13 @@ public static class OctaDirectionExtensions
 	{
 		return dir == OCTA_DIRECTION.DownLeft || dir == OCTA_DIRECTION.Left || dir == OCTA_DIRECTION.UpLeft;
 	}
+
+	public static OCTA_DIRECTION Flip(this OCTA_DIRECTION dir)
+	{
+		var vector = dir.ToVector2();
+		vector *= -1f;
+		var newDir = vector.ToOctaDirection();
+
+		return newDir;
+	}
 }

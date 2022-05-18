@@ -212,7 +212,7 @@ public partial class Utility
 
 	// Angle in Radians
 	// Unfortunately this takes the shortest angle, always.
-	public static float AngleBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
+	public static float RadianBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
 	{
 		// We use the dot product function here
 		// Dot product dictates,   dot prod between a and b =  mag(a) * mag(b) * cos(theta)    where theta is the angle between the 2 vectors
@@ -237,17 +237,12 @@ public partial class Utility
 		return arcCossed;
 	}
 
-	public static float SignedAngleBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
+	public static float SignedRadianBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
 	{
-		float nonSignedAngle = AngleBetweenVectors(inputFirst, inputSecond);
+		float nonSignedAngle = RadianBetweenVectors(inputFirst, inputSecond);
+		Vector3 crossBetween = Cross(in inputFirst, in inputSecond);
 
-		Vector2 deltaVector = inputSecond - inputFirst;
-		Vector2 left = Vector2.left;
-
-		float dotBetween = deltaVector.x * left.x + deltaVector.y * left.y;
-		bool isLeft = dotBetween >= 0.0f;
-
-		if (isLeft)
+		if (crossBetween.z > 0)
 		{
 			return nonSignedAngle;
 		}
@@ -259,13 +254,30 @@ public partial class Utility
 
 	public static float ThetaBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
 	{
-		return AngleBetweenVectors(inputFirst, inputSecond);
+		return RadianBetweenVectors(inputFirst, inputSecond);
 	}
 
 
 	public static float RadianToAngle(in float radians)
 	{
 		return radians * PiRadToDegrees;
+	}
+
+
+
+	public static Vector3 Cross(in Vector2 inputFirst, in Vector2 inputSecond)
+	{
+		// We always work in the domain of vector3 but the z component is 0 for our input.
+		Vector3 f = inputFirst;
+		Vector3 s = inputSecond;
+
+		Vector3 result = Vector3.zero;
+
+		result.x = (f.y * s.z) - (f.z * s.y);
+		result.y = (f.z * s.x) - (f.x * s.z);
+		result.z = (f.x * s.y) - (f.y * s.x);
+
+		return result;
 	}
 
 

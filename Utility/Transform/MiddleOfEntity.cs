@@ -7,13 +7,25 @@ public class MiddleOfEntity : MonoBehaviour
 
 	private Collider2D _collider;
 
+	private bool _hasInitted = false;
+
 	private void Awake()
 	{
-		_collider = GetComponent<Collider2D>();
+		Init();
+	}
+
+	private void Init()
+	{
+		if (!_hasInitted)
+		{
+			_collider = GetComponent<Collider2D>();
+			_hasInitted = true;
+		}
 	}
 
 	private Vector2 GetMiddleOfEntity()
 	{
+		Init();
 		return transform.position + (new Vector3(0, _collider.offset.y * transform.localScale.y));
 	}
 }
