@@ -85,6 +85,36 @@ public static class VectorExtensions
 
 		return !isPositiveInfi && !isNegativeInfi && !isNan;
 	}
+
+	public static Vector3 Average(this IList<Vector3> input)
+	{
+		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty list");
+
+		float averageWeight = 1.0f / input.Count;
+		Vector3 averageValue = Vector3.zero;
+
+		for (int i = 0; i < input.Count; ++i)
+		{
+			averageValue += input[i] * averageWeight;
+		}
+
+		return averageValue;
+	}
+
+	public static Vector3 Average(this Vector3[] input)
+	{
+		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty array");
+
+		float averageWeight = 1.0f / input.Length;
+		Vector3 averageValue = Vector3.zero;
+
+		for (int i = 0; i < input.Length; ++i)
+		{
+			averageValue += input[i] * averageWeight;
+		}
+
+		return averageValue;
+	}
 	#endregion
 
 	#region CONVERTERS
@@ -269,6 +299,36 @@ public static class VectorExtensions
 		}
 
 		return result;
+	}
+
+	public static Vector2 Average(this IList<Vector2> input)
+	{
+		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty list");
+
+		float averageWeight = 1.0f / input.Count;
+		Vector2 averageValue = Vector2.zero;
+
+		for (int i = 0; i < input.Count; ++i)
+		{
+			averageValue += input[i] * averageWeight;
+		}
+
+		return averageValue;
+	}
+
+	public static Vector2 Average(this Vector2[] input)
+	{
+		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty array");
+
+		float averageWeight = 1.0f / input.Length;
+		Vector2 averageValue = Vector2.zero;
+
+		for (int i = 0; i < input.Length; ++i)
+		{
+			averageValue += input[i] * averageWeight;
+		}
+
+		return averageValue;
 	}
 	#endregion
 }
