@@ -10,4 +10,6 @@ public class IniControl
 
 	public static LevelGeneratorDataScriptable LevelGenData { get { return LevelGeneratorDataScriptable.Instance; } }
 #endif
+
+	public static GeneralScriptableData GeneralScriptableData { get { return GeneralScriptableData.Instance; } }
 }

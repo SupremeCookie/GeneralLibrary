@@ -23,7 +23,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 {
 	private const string DEBUG_MENU = "DEBUG_MENU";
 
-	public static BuildPlayerOptions buildOptions { get { return IniControl.GlobalData.BuildOptions; } set { IniControl.GlobalData.BuildOptions = value; } }
+	public static BuildPlayerOptions buildOptions { get { return IniControl.GeneralScriptableData.BuildOptions; } set { IniControl.GeneralScriptableData.BuildOptions = value; } }
 
 	private void OnGUI()
 	{
