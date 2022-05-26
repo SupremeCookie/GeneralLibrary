@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if RogueLike
+using UnityEngine;
 
 namespace RogueLike
 {
@@ -20,3 +21,4 @@ namespace RogueLike
 #endif
 	}
 }
+#endif
