@@ -199,7 +199,6 @@ namespace Curves
 			}
 		}
 
-		private Vector2 previousPos;
 		private void OnDrawGizmos()
 		{
 			if (Spline == null)

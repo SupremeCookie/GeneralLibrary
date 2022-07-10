@@ -12,12 +12,12 @@ public class GizmosDrawCollider2D : MonoBehaviour
 
 	private BoxCollider2D _boxCollider;
 	private CircleCollider2D _circleCollider;
-	private CapsuleCollider2D _capsuleCollider;
+	//private CapsuleCollider2D _capsuleCollider;
 	private PolygonCollider2D _polyGonCollider;
 	private CompositeCollider2D _compositeCollider;
 
 	private Color _circleColor;
-	private Color _capsuleColor;
+	//private Color _capsuleColor;
 
 	private void OnDrawGizmos()
 	{
@@ -167,11 +167,11 @@ public class GizmosDrawCollider2D : MonoBehaviour
 			{
 				_circleCollider = _collider as CircleCollider2D;
 				MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
-				_capsuleColor = Gizmos.color;
+				_circleColor = Gizmos.color;
 			}
 			else
 			{
-				Gizmos.color = _capsuleColor;
+				Gizmos.color = _circleColor;
 
 				Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
 			}
@@ -183,11 +183,11 @@ public class GizmosDrawCollider2D : MonoBehaviour
 		//	{
 		//		_capsuleCollider = _collider as CapsuleCollider2D;
 		//		MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
-		//		_circleColor = Gizmos.color;
+		//		_capsuleColor = Gizmos.color;
 		//	}
 		//	else
 		//	{
-		//		Gizmos.color = _circleColor;
+		//		Gizmos.color = _capsuleColor;
 
 		//		Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
 		//	}

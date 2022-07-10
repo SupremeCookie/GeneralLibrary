@@ -11,6 +11,7 @@ namespace RogueLike
 			_managedDelays = new Dictionary<string, ManagedDelay>();
 		}
 
+
 		public void Update(float deltaTime)
 		{
 			if (_managedDelays != null)
@@ -83,6 +84,19 @@ namespace RogueLike
 			bool hasKey = _managedDelays.ContainsKey(delayName);
 
 			return hasKey;
+		}
+
+
+		public void Reset()
+		{
+			if (_managedDelays != null)
+			{
+				_managedDelays.Clear();
+			}
+			else
+			{
+				_managedDelays = new Dictionary<string, ManagedDelay>();
+			}
 		}
 	}
 }

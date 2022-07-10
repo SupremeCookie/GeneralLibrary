@@ -16,6 +16,11 @@ public class SimpleAudioManager : MonoBehaviour, IInitialisable, IUpdatable
 
 	public void Init()
 	{
+		if (IsInitialised)
+		{
+			return;
+		}
+
 		currentAudio = 0;
 
 		StartAudio(currentAudio);
