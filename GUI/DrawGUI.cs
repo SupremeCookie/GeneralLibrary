@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#if DEBUG_MENU
+using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-#if DEBUG_MENU
 public enum OffsetType
 {
 	Left,
@@ -232,7 +233,10 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 
 			xOffset += size.x;
 		}
+
+#if GLOBALDATASCRIPTABLE_AVAILABLE
 		GUI.EndScrollView();
+#endif
 	}
 
 	private void OnDrawActiveScreen()
@@ -493,8 +497,12 @@ public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
 
 public class DrawGUIGroup
 {
+	private readonly int maxRowCountTextFields = 6;
+
 	private Rect _contentRect;
-	private Vector2 _scrollViewPos;
+	private float groupScrollYPosition;
+	private static Dictionary<string, Vector2> scrollPositions;
+	//private Vector2 _scrollViewPos;
 
 	public DrawGUIGroup(Rect contentRect)
 	{
@@ -510,15 +518,60 @@ public class DrawGUIGroup
 
 	public void DrawLabel(string label = "emptyLabel")
 	{
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		GUI.Label(rect, label);
+	}
+
+	public void DrawTextField(string content)
+	{
+		string[] splitContent = content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+		int entryCount = splitContent?.Length ?? 1;
+		int rowCount = Mathf.Min(entryCount, maxRowCountTextFields);
+
+		var customRect = GetNewRect(rowCount: rowCount, entryCount: entryCount);
+		var rect = customRect.rect;
+
+
+		string scrollPosKey = splitContent[0].Substring(0, 8);
+		var scrollPos = GetScrollPosition(scrollPosKey);
+		if (rowCount >= maxRowCountTextFields)
+		{
+			var scrollViewRect = new Rect(rect);
+			scrollViewRect.position -= new Vector2(10, 0);
+			scrollViewRect.height = customRect.rowSize * entryCount;
+			scrollViewRect.width = rect.width - 20;
+
+			var scrollViewPos = new Rect(rect);
+			scrollViewPos.position += new Vector2(0, 10);
+			scrollViewPos.height = (customRect.rowSize * rowCount) - 20;
+			scrollViewPos.width = rect.width;
+
+			scrollPos = GUI.BeginScrollView(scrollViewPos, scrollPos, scrollViewRect, alwaysShowHorizontal: false, alwaysShowVertical: true);
+			SetScrollPosition(scrollPosKey, scrollPos);
+		}
+
+
+		var yPositions = customRect.rowYPositions;
+		for (int i = 0; i < entryCount; ++i)
+		{
+			var position = new Rect(rect.x, yPositions[i], rect.width, customRect.rowSize);
+			GUI.Label(position, splitContent[i]);
+		}
+
+
+		if (rowCount >= maxRowCountTextFields)
+		{
+			GUI.EndScrollView();
+		}
 	}
 
 	public int DrawSlider(int value, int min, int max, string label = "emptyLabel")
 	{
 		var result = Mathf.Max(value, min);
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		bool hasLabel = !label.Equals("emptyLabel");
 		var labelRect = rect;
@@ -543,7 +596,8 @@ public class DrawGUIGroup
 	public float DrawSlider(float value, float min, float max, string label = "emptyLabel")
 	{
 		var result = Mathf.Max(value, min);
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		bool hasLabel = !label.Equals("emptyLabel");
 		var labelRect = rect;
@@ -569,7 +623,8 @@ public class DrawGUIGroup
 	public int DrawIntField(int defaultValue, string label = "emptyLabel")
 	{
 		var result = defaultValue;
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		bool hasLabel = !label.Equals("emptyLabel");
 		var labelRect = rect;
@@ -599,7 +654,8 @@ public class DrawGUIGroup
 	public float DrawFloatField(float defaultValue, string label = "emptyLabel")
 	{
 		var result = defaultValue;
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		bool hasLabel = !label.Equals("emptyLabel");
 		var labelRect = rect;
@@ -639,7 +695,8 @@ public class DrawGUIGroup
 	public Vector2 DrawVectorField(Vector2 defaultValue, string label = "emptyLabel")
 	{
 		var result = defaultValue;
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		bool hasLabel = !label.Equals("emptyLabel");
 		var labelRect = rect;
@@ -678,7 +735,8 @@ public class DrawGUIGroup
 	public bool DrawCheckBox(bool defaultValue, string label = "emptyLabel")
 	{
 		bool result = defaultValue;
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		result = GUI.Toggle(rect, result, label);
 
@@ -687,7 +745,8 @@ public class DrawGUIGroup
 
 	public void DrawButton(string label = "emptyLabel", System.Action callback = null)
 	{
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		if (GUI.Button(rect, label))
 		{
@@ -702,7 +761,8 @@ public class DrawGUIGroup
 
 		var models = group.models;
 
-		var rect = GetNewRect();
+		var customRect = GetNewRect();
+		var rect = customRect.rect;
 
 		float widthPerElement = rect.width / models.Length;
 
@@ -729,9 +789,41 @@ public class DrawGUIGroup
 		}
 	}
 
+
 	public void DrawSpace(float size)
 	{
 		GetNewRect(size: size);
+	}
+
+
+	private Vector2 GetScrollPosition(string key)
+	{
+		if (scrollPositions == null)
+		{
+			scrollPositions = new Dictionary<string, Vector2>();
+		}
+
+		if (scrollPositions.ContainsKey(key))
+		{
+			return scrollPositions[key];
+		}
+		else
+		{
+			scrollPositions.Add(key, new Vector2(0, 0));
+			return scrollPositions[key];
+		}
+	}
+
+	private void SetScrollPosition(string key, Vector2 pos)
+	{
+		if (scrollPositions.ContainsKey(key))
+		{
+			scrollPositions[key] = pos;
+		}
+		else
+		{
+			scrollPositions.Add(key, pos);
+		}
 	}
 
 #if false  // Under construction, not usable yet.
@@ -746,18 +838,44 @@ public class DrawGUIGroup
 #endif
 
 
+	private class CustomRect
+	{
+		public Rect rect;
+		public List<float> rowYPositions;
+		public float rowSize;
+	}
+
+
 	private const int elementSize = 20;
 	private float totalElementOffset = 0;
-	private Rect GetNewRect(bool autoIncrementElementOffset = true, float size = elementSize)
+	private CustomRect GetNewRect(bool autoIncrementElementOffset = true, float size = elementSize, int rowCount = 1, int entryCount = 1)
 	{
+		float rowSize = size * 1.05f;
+		float rectSize = rowCount * rowSize;
+
 		var rect = new Rect(_contentRect);
-		rect.y += totalElementOffset + (size * 1.15f);
-		rect.height = elementSize;
+		float startYPos = totalElementOffset + rowSize + rect.y;
+
+		rect.y += totalElementOffset + elementSize;
+		rect.height = rectSize;
 
 		if (autoIncrementElementOffset)
-			totalElementOffset += size * 1.15f;
+			totalElementOffset += rectSize;
 
-		return rect;
+
+		List<float> rowPositions = new List<float>(entryCount);
+		for (int i = 0; i < entryCount; ++i)
+		{
+			rowPositions.Add(startYPos + (i * rowSize));
+		}
+
+
+		return new CustomRect
+		{
+			rect = rect,
+			rowYPositions = rowPositions,
+			rowSize = rowSize,
+		};
 	}
 }
 #endif
