@@ -1,0 +1,3 @@
+[submodule "localPersistency"]
+	path = c-_LocalPersistency
+	url = https://github.com/SupremeCookie/c-_LocalPersistency.git
