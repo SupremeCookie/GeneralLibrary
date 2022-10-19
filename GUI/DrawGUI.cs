@@ -500,8 +500,8 @@ public class DrawGUIGroup
 	private readonly int maxRowCountTextFields = 6;
 
 	private Rect _contentRect;
-	private float groupScrollYPosition;
 	private static Dictionary<string, Vector2> scrollPositions;
+	//private float groupScrollYPosition;
 	//private Vector2 _scrollViewPos;
 
 	public DrawGUIGroup(Rect contentRect)
