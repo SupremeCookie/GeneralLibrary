@@ -24,7 +24,10 @@ namespace Curves
 		[Range(0.01f, 7.5f)] [HideInInspector] [SerializeField] private float _scaleFactor = 1.0f;
 #pragma warning restore 0649, 0414
 
+#if UNITY_EDITOR
 		private GUIStyle blackText;
+#endif
+
 		private List<PointObject> _worldPoints;
 
 

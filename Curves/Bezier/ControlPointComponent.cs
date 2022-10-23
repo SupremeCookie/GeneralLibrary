@@ -8,7 +8,9 @@ namespace Curves
 		public BezierControlPointData PointData;
 		public System.Action OnUpdateData;
 
+#if UNITY_EDITOR
 		private PointComponent _parent;
+#endif
 
 		private void Start() { }
 

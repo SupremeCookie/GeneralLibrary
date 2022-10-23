@@ -53,12 +53,10 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 	private GameObject _spritePrefab;
 #pragma warning restore 0649
 
-	[SerializeField]
-	[Readonly]
-	private int _currentJobRegister;
-	[SerializeField]
-	[Readonly]
-	private int _currentActiveSubJobs;
+#if UNITY_EDITOR
+	[SerializeField] [Readonly] private int _currentJobRegister;
+	[SerializeField] [Readonly] private int _currentActiveSubJobs;
+#endif
 
 	private Dictionary<string, List<GUID>> _jobRegister;
 	private Dictionary<GUID, Coroutine> _subJobs;
@@ -290,11 +288,11 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 		if (data.PlacementType == SpritePlaceType.Normal)
 		{
 #endif
-		spriteInstance = GameObject.Instantiate(_spritePrefab);
-		spriteInstance.transform.position = data.Position;
-		spriteInstance.transform.SetParent(parentObject, true);
+			spriteInstance = GameObject.Instantiate(_spritePrefab);
+			spriteInstance.transform.position = data.Position;
+			spriteInstance.transform.SetParent(parentObject, true);
 
-		return spriteInstance;
+			return spriteInstance;
 
 #if RogueLike
 		}
