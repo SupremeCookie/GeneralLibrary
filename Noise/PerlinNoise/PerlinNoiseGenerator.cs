@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿#define REMAP_OCTAVES
+
+using UnityEngine;
 
 namespace Noise.PerlinNoise
 {
-	// TODO DK: Make some functionality to renormalize all colors back to 0-1 space after done. But make it optional.
 	// TODO DK: Make some functionality to shift all values by a certain amount
 	// TODO DK: Maybe make some functionality to multiply certain values against a certain amount. Like a gradiant vs gradiant multiplication.
 
@@ -95,13 +96,72 @@ namespace Noise.PerlinNoise
 			// Note DK: The strength is inversed, as we are playing in the -1 to 1 space, doing for example 0.5^2 will result in a smaller value. 0.5^0.5 on the other hand increases the result.
 			float calculationStrength = 1.0f / strength;
 
+			Vector2 minMaxValue = new Vector2(float.MaxValue, float.MinValue);
 			for (int y = 0; y < resolution; ++y)
 			{
 				for (int x = 0; x < resolution; ++x)
 				{
-					_noiseMap[x, y] = SumNoise(x, y, resolution, octaves, frequency, calculationStrength);
+					float newValue = SumNoise(x, y, resolution, octaves, frequency, calculationStrength);
+					_noiseMap[x, y] = newValue;
+
+					if (newValue < minMaxValue.x) { minMaxValue.x = newValue; }
+					if (newValue > minMaxValue.y) { minMaxValue.y = newValue; }
 				}
 			}
+
+			//Debug.Log($"---------------------");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"---------------------");
+
+#if REMAP_OCTAVES
+			// So we take the minMaxValue
+			// We need to know how much we need to expand downwards and upwards
+			// Everything below 0.5 needs to expand that measure to 0
+			// Every above 0.5 needs to expand that measure to 1
+
+			// so if new minmax lies on 0-.6
+			// we do the total range which is 0.6, and we separate 1 by that amount
+			// then each value multiples against it
+
+			// if new minmax lies on .4-1
+			// we do the total range which is 0.6, and we separate 1 by that amount
+			// then each value is multipled against it, but we lower the value by .4 at the same time.
+
+			float minMaxRange = minMaxValue.y - minMaxValue.x;
+			Debug.Assert(minMaxRange > 0, $"The minMaxRange is 0 or less than, that is invalid, minMaxRange: ({minMaxRange}), minMaxValues: ({minMaxValue})");
+
+			float multiplicationFactor = 1.0f / minMaxRange;
+
+			float lowerThreshold = minMaxValue.x;
+			float valuesReduction = 0 - lowerThreshold;
+
+			for (int y = 0; y < resolution; ++y)
+			{
+				for (int x = 0; x < resolution; ++x)
+				{
+					float currentNoise = _noiseMap[x, y];
+					currentNoise += valuesReduction;
+					currentNoise *= multiplicationFactor;
+					_noiseMap[x, y] = currentNoise;
+
+					if (currentNoise < minMaxValue.x) { minMaxValue.x = currentNoise; }
+					if (currentNoise > minMaxValue.y) { minMaxValue.y = currentNoise; }
+				}
+			}
+
+
+			//Debug.Log($"minMaxRange: {minMaxRange},  multiplicationFactor: {multiplicationFactor},  lowerThresh/valuesReduct: {lowerThreshold}/{valuesReduction}");
+
+			//Debug.Log($"---------------------");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"{minMaxValue.ToString("N4")}");
+			//Debug.Log($"---------------------");
+#endif
 		}
 
 		private float SumNoise(int x, int y, float resolution, int octaves, float frequency, float strength)
