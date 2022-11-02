@@ -47,7 +47,15 @@ public class StaticSingletonMonoBehaviour<T> : MonoBehaviour where T : StaticSin
 		}
 		else
 		{
-			Destroy(gameObject);
+			if (pInstance.gameObject == null)
+			{
+				Debug.Log($"Existing instance of type :({typeof(T)})'s gameobject is null, replacing pInstance with new instance");
+				pInstance = (T)this;
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
 		}
 	}
 }

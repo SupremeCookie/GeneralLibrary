@@ -148,6 +148,7 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 
 #if RogueLike
 				var containerObjectForParent = placementType == SpritePlaceType.Ground ? RogueLike.LevelSpriteObjectCreator.Instance.GroundTileContainer : null;
+				Debug.Assert(RogueLike.LevelSpriteObjectCreator.Instance.GroundTileContainer != null, $"RogueLike.LevelSpriteObjectCreator.Instance.GroundTileContainer is null, {RogueLike.LevelSpriteObjectCreator.Instance?.name ?? "emptyName"}", RogueLike.LevelSpriteObjectCreator.Instance);
 #else
 				Transform containerObjectForParent = null;
 #endif

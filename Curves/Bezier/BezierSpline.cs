@@ -105,6 +105,7 @@ namespace Curves
 
 			int chosenIndex = -1;
 			var points = spline.GetPoints();
+			Debug.Assert(!points.IsNullOrEmpty(), $"No points could be found for the spline, spline data: length {spline.Length}, isClosed {spline.IsClosed}");
 			for (int i = 0; i < points.Count; ++i)
 			{
 				var currP = points[i];
@@ -134,7 +135,7 @@ namespace Curves
 		{
 			var result = defaultResult;
 
-			Debug.Assert(chosenIndex >= 0, "Couldn't find a valid point for distance: " + distance);
+			Debug.Assert(chosenIndex >= 0, "Couldn't find a valid point for distance: " + distance + "  chosenIndex: " + chosenIndex);
 			bool isLastPoint = chosenIndex == (points.Count - 1);
 			if (isLastPoint)
 			{
