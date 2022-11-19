@@ -144,6 +144,13 @@ public static class VectorExtensions
 			&& (first.z.IsCloseTo(second.z));
 	}
 
+	public static bool IsCloseTo(this Vector3 first, Vector3 second, float maxDistance)
+	{
+		return (first.x.IsCloseTo(second.x, maxDistance))
+			&& (first.y.IsCloseTo(second.y, maxDistance))
+			&& (first.z.IsCloseTo(second.z, maxDistance));
+	}
+
 	public static bool EqualTo(this Vector2 first, Vector2 second)
 	{
 		return (first.x.IsCloseTo(second.x))
