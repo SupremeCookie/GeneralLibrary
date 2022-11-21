@@ -11,3 +11,17 @@ public class LocTerm
 		return fallback;
 	}
 }
+
+
+// TODO DK: Propertydrawer so its all drawn on 1 line
+[System.Serializable]
+public class LocTermModel
+{
+	[SerializeField] private string key;
+	[SerializeField] private string fallback;
+
+	public override string ToString()
+	{
+		return LocTerm.GetLoca(key, fallback);
+	}
+}
