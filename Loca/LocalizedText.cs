@@ -22,9 +22,9 @@ namespace RogueLike
 		[Space(10)]
 		[SerializeField] [Readonly] private ControlType lastKnownInputDevice;
 
-		private void Start()
+		private void OnEnable()
 		{
-			updateCount = everySoManyFrames;
+			TryUpdateInputDeviceAndBinding();
 		}
 
 		private void Update()
@@ -41,6 +41,11 @@ namespace RogueLike
 			}
 
 
+			TryUpdateInputDeviceAndBinding();
+		}
+
+		private void TryUpdateInputDeviceAndBinding()
+		{
 			bool updateRegularKeybinding = !hasInputKeybindingsInside;
 			if (updateRegularKeybinding)
 			{

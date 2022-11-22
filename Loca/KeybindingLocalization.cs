@@ -15,9 +15,9 @@ namespace RogueLike
 
 		[SerializeField] [Readonly] [Space(10)] private ControlType lastKnownInputDevice;
 
-		private void Start()
+		private void OnEnable()
 		{
-			updateCount = everySoManyFrames;
+			TryUpdateInputDeviceAndBinding();
 		}
 
 		private void Update()
@@ -33,7 +33,11 @@ namespace RogueLike
 				updateCount = 0;
 			}
 
+			TryUpdateInputDeviceAndBinding();
+		}
 
+		private void TryUpdateInputDeviceAndBinding()
+		{
 			bool inputControlExists = InputControl.HasInstance;
 			if (inputControlExists)
 			{
