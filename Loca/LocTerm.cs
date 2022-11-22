@@ -21,6 +21,9 @@ public class LocTermModel
 	[SerializeField] private string key;
 	[SerializeField] private string fallback;   // TODO DK: Upgrade to multiline if character count is high enough
 
+	public LocTermModel() { }
+	public LocTermModel(string key, string fallback) { this.key = key; this.fallback = fallback; }
+
 	public override string ToString()
 	{
 		return LocTerm.GetLoca(key, fallback);

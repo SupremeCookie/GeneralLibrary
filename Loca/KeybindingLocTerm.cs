@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class KeybindingLocTerm
 {
-	public static string GetLoca(string keyBindingKey, string fallback)
+	public static string GetLoca(string keyBindingKey, string fallback, ControlType controlType)
 	{
 		Debug.Assert(!string.IsNullOrEmpty(keyBindingKey), $"An empty key has been passed on, fallback value will be returned: {fallback}");
 
@@ -20,9 +20,13 @@ public class KeybindingLocTermModel
 {
 	[SerializeField] private string key;
 	[SerializeField] private string fallback;   // TODO DK: Upgrade to multiline if character count is high enough
+	[SerializeField] private ControlType controlType = ControlType.KeyBoardMouse;
+
+	public KeybindingLocTermModel() { }
+	public KeybindingLocTermModel(string key, string fallback, ControlType controlType) { this.key = key; this.fallback = fallback; this.controlType = controlType; }
 
 	public override string ToString()
 	{
-		return KeybindingLocTerm.GetLoca(key, fallback);
+		return KeybindingLocTerm.GetLoca(key, fallback, controlType);
 	}
 }
