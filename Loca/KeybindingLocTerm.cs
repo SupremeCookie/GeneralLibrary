@@ -8,6 +8,7 @@ public static class KeybindingLocTerm
 		Debug.Assert(!string.IsNullOrEmpty(keyBindingKey), $"An empty key has been passed on, fallback value will be returned: {fallback}");
 
 		// TODO DK: Once loca is in, make something here.
+		fallback = fallback.Replace("\\n", System.Environment.NewLine);
 		return fallback;
 	}
 }
@@ -18,7 +19,7 @@ public static class KeybindingLocTerm
 public class KeybindingLocTermModel
 {
 	[SerializeField] private string key;
-	[SerializeField] private string fallback;
+	[SerializeField] private string fallback;   // TODO DK: Upgrade to multiline if character count is high enough
 
 	public override string ToString()
 	{
