@@ -21,25 +21,28 @@ public class Vector2PointsGizmo : MonoBehaviour
 		for (int i = 0; i < splinePoints.Count; ++i)
 		{
 			var listOfPoints = splinePoints[i];
-			for (int k = 0; k < listOfPoints.Count; ++k)
+			if (!listOfPoints.IsNullOrEmpty())
 			{
-				switch (gizmoType)
+				for (int k = 0; k < listOfPoints.Count; ++k)
 				{
-					case GizmoType.WireSphere: { Gizmos.DrawWireSphere(listOfPoints[k] + pos, size); break; }
-					case GizmoType.Sphere: { Gizmos.DrawSphere(listOfPoints[k] + pos, size); break; }
-					case GizmoType.WireCube: { Gizmos.DrawWireCube(listOfPoints[k] + pos, UnityEngine.Vector3.one * size); break; }
-					case GizmoType.Cube: { Gizmos.DrawCube(listOfPoints[k] + pos, UnityEngine.Vector3.one * size); break; }
+					switch (gizmoType)
+					{
+						case GizmoType.WireSphere: { Gizmos.DrawWireSphere(listOfPoints[k] + pos, size); break; }
+						case GizmoType.Sphere: { Gizmos.DrawSphere(listOfPoints[k] + pos, size); break; }
+						case GizmoType.WireCube: { Gizmos.DrawWireCube(listOfPoints[k] + pos, UnityEngine.Vector3.one * size); break; }
+						case GizmoType.Cube: { Gizmos.DrawCube(listOfPoints[k] + pos, UnityEngine.Vector3.one * size); break; }
+					}
+
+					if (k > 0 && DrawLines)
+					{
+						Gizmos.DrawRay(listOfPoints[k] + pos, listOfPoints[k - 1] - listOfPoints[k]);
+					}
 				}
 
-				if (k > 0 && DrawLines)
+				if (ClosePoints && DrawLines)
 				{
-					Gizmos.DrawRay(listOfPoints[k] + pos, listOfPoints[k - 1] - listOfPoints[k]);
+					Gizmos.DrawRay(listOfPoints[0] + pos, listOfPoints[listOfPoints.Count - 1] - listOfPoints[0]);
 				}
-			}
-
-			if (ClosePoints && DrawLines)
-			{
-				Gizmos.DrawRay(listOfPoints[0] + pos, listOfPoints[listOfPoints.Count - 1] - listOfPoints[0]);
 			}
 		}
 	}
