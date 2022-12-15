@@ -59,7 +59,7 @@ public class CustomRandom
 		byteBuffer = buffer;
 	}
 
-	public Vector2 NextVector(/*bool normalised = true*/) // Note DK: New functionality automatically normalises.
+	public Vector2 NextVector(/*bool normalised = true*/) // Note DK: Current implementation automatically normalises.
 	{
 		float angle = Range(-1f, 1f) * Mathf.PI; // Note DK: -1 to 1, because we do PI-radials
 
