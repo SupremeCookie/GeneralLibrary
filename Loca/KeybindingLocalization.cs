@@ -54,6 +54,8 @@ namespace RogueLike
 		private void Reset()
 		{
 			targetText = GetComponentInChildren<TextMeshProUGUI>();
+			gamepadKeyBinding = new KeybindingLocTermModel();
+			gamepadKeyBinding.SetControlType(ControlType.GamePad);
 		}
 #endif
 

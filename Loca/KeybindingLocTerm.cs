@@ -29,4 +29,11 @@ public class KeybindingLocTermModel
 	{
 		return KeybindingLocTerm.GetLoca(key, fallback, controlType);
 	}
+
+#if UNITY_EDITOR
+	public void SetControlType(ControlType controlType)
+	{
+		this.controlType = controlType;
+	}
+#endif
 }
