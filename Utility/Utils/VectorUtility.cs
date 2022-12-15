@@ -4,6 +4,12 @@ public partial class Utility
 {
 	private const float PiRadToDegrees = 180f / Mathf.PI;
 
+	private static CustomRandom _random;
+	private static CustomRandom random
+	{
+		get { if (_random == null) { _random = new CustomRandom(); } return _random; }
+	}
+
 	/// <summary>
 	/// Steps:
 	/// 
@@ -92,6 +98,12 @@ public partial class Utility
 		float xDelta = System.Math.Abs(second.x - first.x);
 		float yDelta = System.Math.Abs(second.y - first.y);
 		return Mathf.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+	}
+
+	public static Vector2 RandomVector2()
+	{
+		Vector2 vec = random.NextVector();
+		return vec;
 	}
 
 	public static Vector2 AngleToVector(float angle)
