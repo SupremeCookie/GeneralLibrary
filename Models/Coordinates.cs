@@ -23,6 +23,27 @@ public class Coordinates
 	{
 		return $"({x}, {y})";
 	}
+
+
+	public static Coordinates operator -(Coordinates first, Coordinates second)
+	{
+		Coordinates result = new Coordinates(first.x - second.x, first.y - second.y);
+		return result;
+	}
+
+	public static Coordinates operator +(Coordinates first, Coordinates second)
+	{
+		Coordinates result = new Coordinates(first.x + second.x, first.y + second.y);
+		return result;
+	}
+
+	public float sqrMagnitude
+	{
+		get
+		{
+			return (x * x) + (y * y);
+		}
+	}
 }
 
 public static class CoordinatesExtensions
@@ -42,6 +63,11 @@ public static class CoordinatesExtensions
 	public static Vector2 ToVector2(this Coordinates input)
 	{
 		return new Vector2(input.x, input.y);
+	}
+
+	public static Vector3 ToVector3(this Coordinates input)
+	{
+		return new Vector3(input.x, input.y, 0);
 	}
 
 	public static int GetCoordinateHash(int x, int y)
