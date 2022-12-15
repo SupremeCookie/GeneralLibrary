@@ -743,13 +743,14 @@ public class DrawGUIGroup
 		return result;
 	}
 
-	public void DrawButton(string label = "emptyLabel", System.Action callback = null)
+	public void DrawButton(string label = "emptyLabel", System.Action callback = null, bool sendActivationMessage = false)
 	{
 		var customRect = GetNewRect();
 		var rect = customRect.rect;
 
 		if (GUI.Button(rect, label))
 		{
+			if (sendActivationMessage) { Debug.Log($"DrawGUI-DrawButton-- {label}"); }
 			callback?.Invoke();
 		}
 	}
