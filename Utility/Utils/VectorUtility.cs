@@ -234,19 +234,25 @@ public partial class Utility
 		float sqrMag_1 = (inputFirst.x * inputFirst.x + inputFirst.y * inputFirst.y);
 		float sqrMag_2 = (inputSecond.x * inputSecond.x + inputSecond.y * inputSecond.y);
 		float sqrMagnitudes = sqrMag_1 * sqrMag_2;  // We can do this multiplication because the initial formula dictates this relation
-		float sqrtMags = Mathf.Sqrt(sqrMagnitudes);
+		float magnitude = Mathf.Sqrt(sqrMagnitudes);
 
-		float nonArcCossed = resultingDotProd / sqrtMags;
+		Debug.Assert(magnitude != 0, $"magnitude is 0, ({magnitude}), inputFirst: {inputFirst}, inputSecond: {inputSecond}, dotProd: {resultingDotProd}, sqrMag1: {sqrMag_1}, sqrMag2: {sqrMag_2}, sqrMagnitudes: {sqrMagnitudes}");
+		float nonArcCossed = resultingDotProd / magnitude;
 		float arcCossed = Mathf.Acos(nonArcCossed);
 
 		Debug.Assert(!float.IsNaN(resultingDotProd), "-resultingDotProd- is NaN");
 		Debug.Assert(!float.IsNaN(sqrMag_1), "-sqrMag_1- is NaN");
 		Debug.Assert(!float.IsNaN(sqrMag_2), "-sqrMag_2- is NaN");
 		Debug.Assert(!float.IsNaN(sqrMagnitudes), "-sqrMagnitudes- is NaN");
-		Debug.Assert(!float.IsNaN(sqrtMags), "-sqrtMags- is NaN");
+		Debug.Assert(!float.IsNaN(magnitude), "-magnitude- is NaN");
 		Debug.Assert(!float.IsNaN(nonArcCossed), "-nonArcCossed- is NaN");
 		Debug.Assert(!float.IsNaN(arcCossed), "-arcCossed- is NaN");
 		return arcCossed;
+	}
+
+	public static float SignedThetaBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
+	{
+		return SignedRadianBetweenVectors(in inputFirst, in inputSecond);
 	}
 
 	public static float SignedRadianBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
