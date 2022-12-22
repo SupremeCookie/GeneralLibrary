@@ -20,6 +20,7 @@ public class ButtonModel
 {
 	public string label;
 	public System.Action callback;
+	public bool sendActivationMessage = false;
 }
 
 
@@ -773,6 +774,7 @@ public class DrawGUIGroup
 			var buttonRect = new Rect(rect.x + widthPerElement * i, rect.y, widthPerElement, rect.height);
 			if (GUI.Button(buttonRect, currentModel.label))
 			{
+				if (currentModel.sendActivationMessage) { Debug.Log($"DrawGUI-DrawButton-- {currentModel.label}"); }
 				currentModel.callback?.Invoke();
 			}
 		}
