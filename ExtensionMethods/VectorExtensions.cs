@@ -115,6 +115,24 @@ public static class VectorExtensions
 
 		return averageValue;
 	}
+
+	public static bool ContainsCloseEnough(this List<Vector3> input, in Vector3 containingPoint)
+	{
+		if (input.IsNullOrEmpty())
+		{
+			return false;
+		}
+
+		for (int i = 0; i < input.Count; ++i)
+		{
+			if (input[i].IsCloseTo(containingPoint, 0.001f))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 	#endregion
 
 	#region CONVERTERS
@@ -336,6 +354,25 @@ public static class VectorExtensions
 		}
 
 		return averageValue;
+	}
+
+
+	public static bool ContainsCloseEnough(this List<Vector2> input, in Vector2 containingPoint)
+	{
+		if (input.IsNullOrEmpty())
+		{
+			return false;
+		}
+
+		for (int i = 0; i < input.Count; ++i)
+		{
+			if (input[i].IsCloseTo(containingPoint, 0.001f))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 	#endregion
 }
