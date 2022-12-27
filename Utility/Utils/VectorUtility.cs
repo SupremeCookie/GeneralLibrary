@@ -240,13 +240,19 @@ public partial class Utility
 		float nonArcCossed = resultingDotProd / magnitude;
 		float arcCossed = Mathf.Acos(nonArcCossed);
 
+		if (float.IsNaN(arcCossed) && nonArcCossed.IsCloseTo(1.0f))
+		{
+			Debug.LogError($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed}, hard setting arcCossed to 0");
+			arcCossed = 0;
+		}
+
 		Debug.Assert(!float.IsNaN(resultingDotProd), "-resultingDotProd- is NaN");
 		Debug.Assert(!float.IsNaN(sqrMag_1), "-sqrMag_1- is NaN");
 		Debug.Assert(!float.IsNaN(sqrMag_2), "-sqrMag_2- is NaN");
 		Debug.Assert(!float.IsNaN(sqrMagnitudes), "-sqrMagnitudes- is NaN");
 		Debug.Assert(!float.IsNaN(magnitude), "-magnitude- is NaN");
 		Debug.Assert(!float.IsNaN(nonArcCossed), "-nonArcCossed- is NaN");
-		Debug.Assert(!float.IsNaN(arcCossed), "-arcCossed- is NaN");
+		Debug.Assert(!float.IsNaN(arcCossed), $"-arcCossed- is NaN, arcCossed:{arcCossed}, nonArcCossed: {nonArcCossed},   arcCossed = mathf.Acos(nonArcCossed)");
 		return arcCossed;
 	}
 
