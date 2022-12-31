@@ -1,24 +1,16 @@
 ﻿public class StaticSingleton<T> where T : class, new()
 {
 #pragma warning disable 0649
-	private static T _instance;
+	protected static T pInstance;
 #pragma warning restore 0649
 
 	public static T Instance
 	{
 		get
 		{
-			return _instance;
+			return pInstance;
 		}
 	}
 
-	public bool HasInstance { get { return _instance != null; } }
-
-	public StaticSingleton()
-	{
-		if (!HasInstance)
-		{
-			_instance = new T();
-		}
-	}
+	public bool HasInstance { get { return pInstance != null; } }
 }
