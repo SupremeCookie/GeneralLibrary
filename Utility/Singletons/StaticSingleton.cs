@@ -12,5 +12,7 @@
 		}
 	}
 
-	public bool HasInstance { get { return pInstance != null; } }
+	public static bool HasInstance { get { return pInstance != null; } }
+
+	public static System.Action OnInstanceInjected;
 }
