@@ -1,4 +1,4 @@
-﻿public class StaticSingleton<T> where T : class
+﻿public class StaticSingleton<T> where T : class, new()
 {
 #pragma warning disable 0649
 	private static T _instance;
@@ -12,5 +12,13 @@
 		}
 	}
 
-	public static bool HasInstance { get { return _instance != null; } }
+	public bool HasInstance { get { return _instance != null; } }
+
+	public StaticSingleton()
+	{
+		if (!HasInstance)
+		{
+			_instance = new T();
+		}
+	}
 }
