@@ -242,7 +242,7 @@ public partial class Utility
 
 		if (float.IsNaN(arcCossed) && nonArcCossed.IsCloseTo(1.0f))
 		{
-			Debug.LogError($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed}, hard setting arcCossed to 0");
+			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed}, hard setting arcCossed to 0");
 			arcCossed = 0;
 		}
 
