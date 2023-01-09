@@ -19,4 +19,9 @@ public partial class Utility
 
 		return Mathf.RoundToInt(input);
 	}
+
+	public static Vector2Int RoundToNearestIntOrCeil(Vector2 input)
+	{
+		return new Vector2Int(RoundToNearestIntOrCeil(input.x), RoundToNearestIntOrCeil(input.y));
+	}
 }
