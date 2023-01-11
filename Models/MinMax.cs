@@ -9,6 +9,8 @@ public class MinMax
 	public float Width { get { return Max.x - Min.x; } }
 	public float Height { get { return Max.y - Min.y; } }
 
+	public Vector2 Size { get { return Max - Min; } }
+
 	public MinMax()
 	{
 		Min = new Vector2(float.MaxValue, float.MaxValue);

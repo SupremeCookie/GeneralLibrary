@@ -242,7 +242,7 @@ public partial class Utility
 
 		if (float.IsNaN(arcCossed) && nonArcCossed.IsCloseTo(1.0f))
 		{
-			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed}, hard setting arcCossed to 0");
+			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed.ToString("N2")}, hard setting arcCossed to 0");
 			arcCossed = 0;
 		}
 
@@ -252,7 +252,7 @@ public partial class Utility
 		Debug.Assert(!float.IsNaN(sqrMagnitudes), "-sqrMagnitudes- is NaN");
 		Debug.Assert(!float.IsNaN(magnitude), "-magnitude- is NaN");
 		Debug.Assert(!float.IsNaN(nonArcCossed), "-nonArcCossed- is NaN");
-		Debug.Assert(!float.IsNaN(arcCossed), $"-arcCossed- is NaN, arcCossed:{arcCossed}, nonArcCossed: {nonArcCossed},   arcCossed = mathf.Acos(nonArcCossed)");
+		Debug.Assert(!float.IsNaN(arcCossed), $"-arcCossed- is NaN, arcCossed:{arcCossed}, nonArcCossed: {nonArcCossed.ToString("N2")},   arcCossed = mathf.Acos(nonArcCossed)");
 		return arcCossed;
 	}
 
