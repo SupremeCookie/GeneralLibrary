@@ -220,6 +220,11 @@ public partial class Utility
 		return _rand.NextVector();
 	}
 
+	public static Vector2 Abs(Vector2 input)
+	{
+		return new Vector2(Mathf.Abs(input.x), Mathf.Abs(input.y));
+	}
+
 
 
 	// Angle in Radians
