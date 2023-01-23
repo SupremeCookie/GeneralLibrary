@@ -8,6 +8,7 @@ public class Coordinates
 
 	public Coordinates() { }
 	public Coordinates(int x, int y) { this.x = x; this.y = y; }
+	public Coordinates(Vector2 input) { this.x = Utility.RoundToNearestIntOrCeil(input.x); this.y = Utility.RoundToNearestIntOrCeil(input.y); }
 
 	public override int GetHashCode()
 	{

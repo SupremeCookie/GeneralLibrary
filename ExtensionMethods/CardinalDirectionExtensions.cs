@@ -59,4 +59,36 @@ public static class CardinalDirectionExtensions
 
 		return newDir;
 	}
+
+	public static CARDINAL_DIRECTION[] GetPerpendiculars(this CARDINAL_DIRECTION dir)
+	{
+		var result = new CARDINAL_DIRECTION[2];
+
+		switch (dir)
+		{
+			case CARDINAL_DIRECTION.Down:
+			case CARDINAL_DIRECTION.Up:
+			{
+				result[0] = CARDINAL_DIRECTION.Left;
+				result[1] = CARDINAL_DIRECTION.Right;
+				break;
+			}
+
+			case CARDINAL_DIRECTION.Left:
+			case CARDINAL_DIRECTION.Right:
+			{
+				result[0] = CARDINAL_DIRECTION.Up;
+				result[1] = CARDINAL_DIRECTION.Down;
+				break;
+			}
+
+			case CARDINAL_DIRECTION.None:
+			{
+				Debug.LogError($"No perpendicular direction can be made for direction: {CARDINAL_DIRECTION.None}");
+				break;
+			}
+		}
+
+		return result;
+	}
 }
