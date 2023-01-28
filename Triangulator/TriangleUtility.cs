@@ -9,12 +9,26 @@ namespace Triangulator
 {
 	public enum CWType { CW, CCW, }    // Clock-Wise, Counter-Clock-Wise
 
+
 #if USE_ROTARY_WALKING_METHOD
 	public enum RotaryEvaluationPointMode { Baricenter, RandomVertex, };
 #endif
 
+
+
 	public static class TriangleUtility
 	{
+
+#if USE_ROTARY_WALKING_METHOD
+		public static CWType CheckClockwiseTypeOfLoop(in Vector2[] meshVertexLoop, RotaryEvaluationPointMode evalMode)
+#else
+		public static CWType CheckClockwiseTypeOfLoop(in Vector2[] meshVertexLoop)
+#endif
+		{
+			return CheckClockwiseTypeOfLoop(new List<Vector2>(meshVertexLoop));
+		}
+
+
 #if USE_ROTARY_WALKING_METHOD
 		public static CWType CheckClockwiseTypeOfLoop(in List<Vector2> meshVertexLoop, RotaryEvaluationPointMode evalMode)
 #else
@@ -39,7 +53,18 @@ namespace Triangulator
 			return GetCWTypeForVertexLoop(in meshVertexLoop, evalMode);
 #endif
 #endif
+		}
 
+
+
+
+#if USE_ROTARY_WALKING_METHOD
+		public static CWType CheckClockwiseTypeOfLoop(in Coordinates[] meshVertexLoop, RotaryEvaluationPointMode evalMode)
+#else
+		public static CWType CheckClockwiseTypeOfLoop(in Coordinates[] meshVertexLoop)
+#endif
+		{
+			return CheckClockwiseTypeOfLoop(new List<Coordinates>(meshVertexLoop));
 		}
 
 #if USE_ROTARY_WALKING_METHOD
