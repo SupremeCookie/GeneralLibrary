@@ -23,6 +23,13 @@ namespace Triangulator
 
 		public int[] Triangulate()
 		{
+#if UNITY_EDITOR
+			var cwType = TriangleUtility.CheckClockwiseTypeOfLoop(in vertexPositions, out var metaData);
+			//Debug.Log($"cwType for vertices: {vertexPositions.Count} is: CWType.{cwType},   totalSum: {metaData.totalSum}");
+			Debug.Assert(metaData.cwType != CWType.Default, $"We got a totalSum of: {metaData.totalSum}, this results in a cwType of: CWType.{metaData.cwType}, this is incorrect");
+#endif
+
+
 			var vertexCount = vertexPositions.Count;
 
 			const int minimumVerticesForTriangle = 3;
