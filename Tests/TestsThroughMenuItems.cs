@@ -1,6 +1,5 @@
 ﻿
 #if UNITY_EDITOR
-using RogueLike;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +7,7 @@ public class TestsThroughMenuItems
 {
 	private const string TestDirName = "Tests/";
 	private const string ExtensionsDirName = "ExtensionMethods/";
+	private const string UtilityDirName = "UtilityMethods/";
 
 	[MenuItem(TestDirName + ExtensionsDirName + "Test Rotation Matrices")]
 	private static void TestRotationVector()
@@ -274,6 +274,12 @@ public class TestsThroughMenuItems
 		Debug.Log($"From ({sixth}) to ({sixth.Flip()})");
 		Debug.Log($"From ({seventh}) to ({seventh.Flip()})");
 		Debug.Log($"From ({eighth}) to ({eighth.Flip()})");
+	}
+
+	[MenuItem(TestDirName + UtilityDirName + "Test Line Intersection")]
+	private static void TestLineIntersection()
+	{
+		Utility.RunLineUtilUnitTests();
 	}
 }
 #endif
