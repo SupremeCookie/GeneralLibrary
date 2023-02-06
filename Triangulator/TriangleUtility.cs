@@ -7,7 +7,13 @@ using UnityEngine;
 
 namespace Triangulator
 {
-	public enum CWType { CW, CCW, }    // Clock-Wise, Counter-Clock-Wise
+	public enum CWType { CW, CCW, Default, }    // Clock-Wise, Counter-Clock-Wise
+
+	public class MetaData
+	{
+		public float totalSum = float.MinValue;
+		public CWType cwType = CWType.Default;
+	}
 
 
 #if USE_ROTARY_WALKING_METHOD
@@ -22,17 +28,17 @@ namespace Triangulator
 #if USE_ROTARY_WALKING_METHOD
 		public static CWType CheckClockwiseTypeOfLoop(in Vector2[] meshVertexLoop, RotaryEvaluationPointMode evalMode)
 #else
-		public static CWType CheckClockwiseTypeOfLoop(in Vector2[] meshVertexLoop)
+		public static CWType CheckClockwiseTypeOfLoop(in Vector2[] meshVertexLoop, out MetaData metaData)
 #endif
 		{
-			return CheckClockwiseTypeOfLoop(new List<Vector2>(meshVertexLoop));
+			return CheckClockwiseTypeOfLoop(new List<Vector2>(meshVertexLoop), out metaData);
 		}
 
 
 #if USE_ROTARY_WALKING_METHOD
 		public static CWType CheckClockwiseTypeOfLoop(in List<Vector2> meshVertexLoop, RotaryEvaluationPointMode evalMode)
 #else
-		public static CWType CheckClockwiseTypeOfLoop(in List<Vector2> meshVertexLoop)
+		public static CWType CheckClockwiseTypeOfLoop(in List<Vector2> meshVertexLoop, out MetaData metaData)
 #endif
 		{
 #if USE_RANDOM_TRIANGLE_METHOD
@@ -48,7 +54,7 @@ namespace Triangulator
 
 #if USE_ROTARY_WALKING_METHOD || USE_PROPER_MATHS
 #if USE_PROPER_MATHS
-			return GetCWTypeForVertexLoop(in meshVertexLoop);
+			return GetCWTypeForVertexLoop(in meshVertexLoop, out metaData);
 #else
 			return GetCWTypeForVertexLoop(in meshVertexLoop, evalMode);
 #endif
@@ -61,16 +67,16 @@ namespace Triangulator
 #if USE_ROTARY_WALKING_METHOD
 		public static CWType CheckClockwiseTypeOfLoop(in Coordinates[] meshVertexLoop, RotaryEvaluationPointMode evalMode)
 #else
-		public static CWType CheckClockwiseTypeOfLoop(in Coordinates[] meshVertexLoop)
+		public static CWType CheckClockwiseTypeOfLoop(in Coordinates[] meshVertexLoop, out MetaData metaData)
 #endif
 		{
-			return CheckClockwiseTypeOfLoop(new List<Coordinates>(meshVertexLoop));
+			return CheckClockwiseTypeOfLoop(new List<Coordinates>(meshVertexLoop), out metaData);
 		}
 
 #if USE_ROTARY_WALKING_METHOD
 		public static CWType CheckClockwiseTypeOfLoop(in List<Coordinates> meshVertexLoop, RotaryEvaluationPointMode evalMode)
 #else
-		public static CWType CheckClockwiseTypeOfLoop(in List<Coordinates> meshVertexLoop)
+		public static CWType CheckClockwiseTypeOfLoop(in List<Coordinates> meshVertexLoop, out MetaData metaData)
 #endif
 		{
 #if USE_RANDOM_TRIANGLE_METHOD
@@ -92,7 +98,7 @@ namespace Triangulator
 			}
 
 #if USE_PROPER_MATHS
-			return GetCWTypeForVertexLoop(in meshVertexLoopConverted);
+			return GetCWTypeForVertexLoop(in meshVertexLoopConverted, out metaData);
 #else
 			return GetCWTypeForVertexLoop(in meshVertexLoopConverted, evalMode);
 #endif
@@ -216,8 +222,10 @@ namespace Triangulator
 
 #if USE_PROPER_MATHS
 		// This method uses the logic as described in: https://www.element84.com/blog/determining-the-winding-of-a-polygon-given-as-a-set-of-ordered-points
-		private static CWType GetCWTypeForVertexLoop(in List<Vector2> vertexLoop)
+		private static CWType GetCWTypeForVertexLoop(in List<Vector2> vertexLoop, out MetaData metaData)
 		{
+			metaData = new MetaData();
+
 			// sum_{n=1}^N(x_{n+1} – x_n)(y_{n+1} + y_n)
 			// If result is above 0, we are CW, if below 0, we are CCW
 			float totalSum = 0f;
@@ -230,14 +238,21 @@ namespace Triangulator
 				totalSum += calcVector.x * calcVector.y;
 			}
 
+			var result = CWType.Default;
 			if (totalSum > 0)
 			{
-				return CWType.CW;
+				result = CWType.CW;
 			}
-			else
+			else if (totalSum < 0)
 			{
-				return CWType.CCW;
+				result = CWType.CCW;
 			}
+
+
+			metaData.totalSum = totalSum;
+			metaData.cwType = result;
+
+			return result;
 		}
 #endif
 	}
