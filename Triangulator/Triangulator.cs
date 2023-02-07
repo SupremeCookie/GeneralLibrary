@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿//#define LOGGING
+
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -97,7 +99,10 @@ namespace Triangulator
 
 			Debug.Assert(vertexOrder.Count < minimumVerticesForTriangle, $"We stopped iterating, but we still have {minimumVerticesForTriangle} or more vertices available, {vertexOrder.Count}");
 
+#if LOGGING
 			Debug.Log($"Fully triangulated the shape, had to iterate: {tracker} times");
+#endif
+
 			return indices.ToArray();
 		}
 
