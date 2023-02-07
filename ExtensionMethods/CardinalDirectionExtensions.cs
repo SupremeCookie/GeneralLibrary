@@ -29,7 +29,7 @@ public static class CardinalDirectionExtensions
 	public static CARDINAL_DIRECTION ToCardinalDirection(this Vector2 dir)
 	{
 		float highestDot = 0f;
-		int index = 0;
+		int index = -1;
 		Vector2 inputNormalized = dir.normalized;
 
 		for (int i = 0; i < _octagonalDirectionArray.Length; ++i)
