@@ -1,5 +1,6 @@
 ﻿
 #if UNITY_EDITOR
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class TestsThroughMenuItems
 	private const string TestDirName = "Tests/";
 	private const string ExtensionsDirName = "ExtensionMethods/";
 	private const string UtilityDirName = "UtilityMethods/";
+	private const string MultithreadDirName = "MultiThreading/";
 
 	[MenuItem(TestDirName + ExtensionsDirName + "Test Rotation Matrices")]
 	private static void TestRotationVector()
@@ -280,6 +282,49 @@ public class TestsThroughMenuItems
 	private static void TestLineIntersection()
 	{
 		Utility.RunLineUtilUnitTests();
+	}
+
+
+	private static ThreadChecker tc;
+	private static bool threadIsMainThread = false;
+	private static bool threadIsRunning = false;
+
+	[MenuItem(TestDirName + MultithreadDirName + "Test ThreadChecker")]
+	private static void TestThreadChecker()
+	{
+		if (!Application.isPlaying)
+		{
+			Debug.LogError($"Can't run this test without running the game");
+			return;
+		}
+
+		Debug.Log($"Test the Thread Checker");
+
+		threadIsMainThread = false;
+		tc = new ThreadChecker();
+		tc.SetMainThreadID();
+
+		bool mainThreadIsMainThread = tc.IsCurrentThreadMainThread();
+
+		var newThread = new Thread(ThreadRunner);
+		threadIsRunning = true;
+		newThread.Start();
+
+		while (threadIsRunning)
+		{
+			Thread.Sleep(10);
+		}
+
+		Debug.Log($"MainThreadIsMainThread: {mainThreadIsMainThread}   (should be true)");
+		Debug.Log($"Worked thread is main thread: {threadIsMainThread}   (should be false)");
+	}
+
+	private static void ThreadRunner()
+	{
+		threadIsMainThread = tc.IsCurrentThreadMainThread();
+		Thread.Sleep(10);
+
+		threadIsRunning = false;
 	}
 }
 #endif
