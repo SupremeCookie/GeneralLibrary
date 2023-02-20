@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define LOG_WARNINGS
+
+using UnityEngine;
 
 public partial class Utility
 {
@@ -247,7 +249,9 @@ public partial class Utility
 
 		if (float.IsNaN(arcCossed) && nonArcCossed.IsCloseTo(1.0f))
 		{
+#if LOG_WARNINGS
 			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed.ToString("N2")}, hard setting arcCossed to 0");
+#endif
 			arcCossed = 0;
 		}
 
