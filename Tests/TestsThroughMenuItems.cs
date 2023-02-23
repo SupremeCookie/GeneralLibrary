@@ -145,12 +145,13 @@ public class TestsThroughMenuItems
 		var res7 = Vector2.SignedAngle(vec1, vec5);
 		var res8 = Vector2.SignedAngle(vec5, vec1);
 
-		Debug.Assert(res1.IsCloseTo(Mathf.PI * 0.5f));  // Half-Pi in radians
-		Debug.Assert(res2.IsCloseTo(Mathf.PI * 0.5f));  // Half-Pi in radians
-		Debug.Assert(res3.IsCloseTo(Mathf.PI * 1.0f));  // Full-Pi in radians
-		Debug.Assert(res4.IsCloseTo(Mathf.PI * 1.0f));  // Full-Pi in radians
-		Debug.Assert(res5.IsCloseTo(Mathf.PI * 0.0f));  // No-Pi in radians
-		Debug.Assert(res6.IsCloseTo(Mathf.PI * 0.0f));  // No-Pi in radians
+		Debug.Assert(res1.IsCloseTo(Mathf.PI * 0.5f), $"res1 is not close to half pi: {res1}, halfPi: {Mathf.PI * 0.5f}");  // Half-Pi in radians
+		Debug.Assert(res2.IsCloseTo(Mathf.PI * 0.5f), $"res2 is not close to half pi: {res2}, halfPi: {Mathf.PI * 0.5f}");  // Half-Pi in radians
+		Debug.Assert(res3.IsCloseTo(Mathf.PI * 1.0f), $"res3 is not close to full pi: {res3}");  // Full-Pi in radians
+		Debug.Assert(res4.IsCloseTo(Mathf.PI * 1.0f), $"res4 is not close to full pi: {res4}");  // Full-Pi in radians
+		Debug.Assert(res5.IsCloseTo(Mathf.PI * 0.0f), $"res5 is not close to no pi: {res5}");  // No-Pi in radians
+		Debug.Assert(res6.IsCloseTo(Mathf.PI * 0.0f), $"res6 is not close to no pi: {res6}");  // No-Pi in radians
+
 		Debug.Log("Res7:  " + res7.ToString("N2"));
 		Debug.Log("Res8:  " + res8.ToString("N2"));
 
