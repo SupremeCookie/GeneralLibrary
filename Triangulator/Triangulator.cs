@@ -201,7 +201,7 @@ namespace Triangulator
 
 			float thetaAngle = Utility.SignedThetaBetweenVectors(currentToNext, currentToPrevious);
 			float angleInDegrees = Mathf.Rad2Deg * thetaAngle;
-			bool isReflex = angleInDegrees < 0 || angleInDegrees > 180;
+			bool isReflex = angleInDegrees <= 0.01f || angleInDegrees >= 179.99f;
 
 			if (isReflex)
 			{
