@@ -233,47 +233,24 @@ public partial class Utility
 	// Unfortunately this takes the shortest angle, always.
 	public static float RadianBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
 	{
-		// We use the dot product function here
-		// Dot product dictates,   dot prod between a and b =  mag(a) * mag(b) * cos(theta)    where theta is the angle between the 2 vectors
-		// Now we need the theta, and we luckily can calculate the result of the dot product differently. 
+		var dotProductOfVectors = inputFirst.x * inputSecond.x + inputFirst.y * inputSecond.y;
+		var firstMag = Mathf.Sqrt(inputFirst.x * inputFirst.x + inputFirst.y * inputFirst.y);
+		var secondMag = Mathf.Sqrt(inputSecond.x * inputSecond.x + inputSecond.y * inputSecond.y);
+		var preArcCosine = dotProductOfVectors / (firstMag * secondMag);
 
-		float resultingDotProd = inputFirst.x * inputSecond.x + inputFirst.y * inputSecond.y;
-		float sqrMag_1 = (inputFirst.x * inputFirst.x + inputFirst.y * inputFirst.y);
-		float sqrMag_2 = (inputSecond.x * inputSecond.x + inputSecond.y * inputSecond.y);
-		float sqrMagnitudes = sqrMag_1 * sqrMag_2;  // We can do this multiplication because the initial formula dictates this relation
-		float magnitude = Mathf.Sqrt(sqrMagnitudes);
-
-		Debug.Assert(magnitude != 0, $"magnitude is 0, ({magnitude}), inputFirst: {inputFirst}, inputSecond: {inputSecond}, dotProd: {resultingDotProd}, sqrMag1: {sqrMag_1}, sqrMag2: {sqrMag_2}, sqrMagnitudes: {sqrMagnitudes}");
-		Debug.Assert(magnitude > 0, $"Somehow the magnitude is below 0, this shouldn't every happen");
-		float nonArcCossed = resultingDotProd / magnitude;
-		float arcCossed = Mathf.Acos(nonArcCossed);
-
-		if (float.IsNaN(arcCossed))
+		float result = float.NegativeInfinity;
+		bool isNegativePreCosine = preArcCosine < 0;
+		if (isNegativePreCosine)
 		{
-			if (nonArcCossed.IsCloseTo(1.0f))
-			{
-#if LOG_WARNINGS
-			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed.ToString("N2")}, hard setting arcCossed to 0");
-#endif
-				arcCossed = 0;
-			}
-			else if (nonArcCossed.IsCloseTo(-1.0f))
-			{
-#if LOG_WARNINGS
-			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to -1: {nonArcCossed.ToString("N2")}, hard setting arcCossed to pi");
-#endif
-				arcCossed = Mathf.PI;
-			}
+			preArcCosine = Mathf.Abs(preArcCosine);
+			result = Mathf.PI - Mathf.Acos(preArcCosine);
+		}
+		else
+		{
+			result = Mathf.Acos(preArcCosine);
 		}
 
-		Debug.Assert(!float.IsNaN(resultingDotProd), "-resultingDotProd- is NaN");
-		Debug.Assert(!float.IsNaN(sqrMag_1), "-sqrMag_1- is NaN");
-		Debug.Assert(!float.IsNaN(sqrMag_2), "-sqrMag_2- is NaN");
-		Debug.Assert(!float.IsNaN(sqrMagnitudes), "-sqrMagnitudes- is NaN");
-		Debug.Assert(!float.IsNaN(magnitude), "-magnitude- is NaN");
-		Debug.Assert(!float.IsNaN(nonArcCossed), "-nonArcCossed- is NaN");
-		Debug.Assert(!float.IsNaN(arcCossed), $"-arcCossed- is NaN, arcCossed:{arcCossed}, nonArcCossed: {nonArcCossed.ToString("N2")},   arcCossed = mathf.Acos(nonArcCossed)");
-		return arcCossed;
+		return result;
 	}
 
 	public static float SignedThetaBetweenVectors(in Vector2 inputFirst, in Vector2 inputSecond)
