@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿//#define LOGGING_ENABLED
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MainThreadActionRunner
 {
-	private const int MaxPerFrame = 10;
+	private const int MaxPerFrame = 25;
 
 	private ThreadChecker tc = null;
 	private Queue<System.Action> actions;
@@ -18,10 +20,12 @@ public class MainThreadActionRunner
 	{
 		Debug.Assert(tc.IsCurrentThreadMainThread(), $"We are not on the main thread, please fix");
 
-		if ((actions?.Count ?? -1) != 0)
+#if LOGGING_ENABLED
+        if ((actions?.Count ?? -1) != 0)
 		{
 			Debug.Log($"Update ThreadActionRunner, actionsCount: {actions?.Count ?? -1}");
 		}
+#endif
 
 		for (int i = 0; i < MaxPerFrame; ++i)
 		{
