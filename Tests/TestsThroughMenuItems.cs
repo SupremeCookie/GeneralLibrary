@@ -326,5 +326,75 @@ public class TestsThroughMenuItems
 
 		threadIsRunning = false;
 	}
+
+
+	private static PerformanceMeasurer pm;
+	private static float timeToWait;
+	private static float timeSinceStart;
+	private static System.Action onFinishedDelay;
+
+	[MenuItem(TestDirName + MultithreadDirName + "Test PerformanceMeasurer")]
+	private static void TestPerformanceMeasurer()
+	{
+		void Finalize()
+		{
+			var metrics = pm.GetMetrics();
+			Debug.Assert(metrics[1].durationSincePrevious > 0, $"Duration of the last metric is not more than 0, this is wrong, returned value: {metrics[1].durationSincePrevious}");
+			Debug.Assert(metrics[1].timeTicks > 0, $"There's no positive time ticks for the last metric, this is wrong, returned value: {metrics[1].timeTicks}");
+			Debug.Log($"If no errors popped up, the tests were completed properly");
+
+			PerformanceMeasurer.ShowEditorMetrics(pm.GetMetrics());
+		}
+
+
+
+		Debug.Log($"Start Performance Measurer");
+		pm = new PerformanceMeasurer();
+		pm.StoreEntry("First");
+
+		timeToWait = 0.5f;
+		timeSinceStart = Time.realtimeSinceStartup;
+
+		onFinishedDelay = () =>
+		{
+			pm.StoreEntry("Second");
+			EditorApplication.update -= UpdateDelay;
+
+
+			timeToWait = 1.35f;
+			timeSinceStart = Time.realtimeSinceStartup;
+			onFinishedDelay = () =>
+			{
+				pm.StoreEntry("Third");
+				EditorApplication.update -= UpdateDelay;
+
+				timeToWait = 6f;
+				timeSinceStart = Time.realtimeSinceStartup;
+				onFinishedDelay = () =>
+				{
+					pm.StoreEntry("Fourth");
+					EditorApplication.update -= UpdateDelay;
+
+					Finalize();
+				};
+
+				EditorApplication.update += UpdateDelay;
+			};
+
+			EditorApplication.update += UpdateDelay;
+		};
+
+		EditorApplication.update -= UpdateDelay;
+		EditorApplication.update += UpdateDelay;
+	}
+
+	private static void UpdateDelay()
+	{
+		if (Time.realtimeSinceStartup - timeSinceStart > timeToWait)
+		{
+			Debug.Log($"Duration: {Time.realtimeSinceStartup - timeSinceStart}");
+			onFinishedDelay();
+		}
+	}
 }
 #endif
