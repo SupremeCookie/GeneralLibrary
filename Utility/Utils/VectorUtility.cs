@@ -244,15 +244,26 @@ public partial class Utility
 		float magnitude = Mathf.Sqrt(sqrMagnitudes);
 
 		Debug.Assert(magnitude != 0, $"magnitude is 0, ({magnitude}), inputFirst: {inputFirst}, inputSecond: {inputSecond}, dotProd: {resultingDotProd}, sqrMag1: {sqrMag_1}, sqrMag2: {sqrMag_2}, sqrMagnitudes: {sqrMagnitudes}");
+		Debug.Assert(magnitude > 0, $"Somehow the magnitude is below 0, this shouldn't every happen");
 		float nonArcCossed = resultingDotProd / magnitude;
 		float arcCossed = Mathf.Acos(nonArcCossed);
 
-		if (float.IsNaN(arcCossed) && nonArcCossed.IsCloseTo(1.0f))
+		if (float.IsNaN(arcCossed))
 		{
+			if (nonArcCossed.IsCloseTo(1.0f))
+			{
 #if LOG_WARNINGS
 			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to 1: {nonArcCossed.ToString("N2")}, hard setting arcCossed to 0");
 #endif
-			arcCossed = 0;
+				arcCossed = 0;
+			}
+			else if (nonArcCossed.IsCloseTo(-1.0f))
+			{
+#if LOG_WARNINGS
+			Debug.LogWarning($"arcCossed is considered NaN, nonArcCossed is close to -1: {nonArcCossed.ToString("N2")}, hard setting arcCossed to pi");
+#endif
+				arcCossed = Mathf.PI;
+			}
 		}
 
 		Debug.Assert(!float.IsNaN(resultingDotProd), "-resultingDotProd- is NaN");
