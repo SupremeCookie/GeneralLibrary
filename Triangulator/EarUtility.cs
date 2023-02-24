@@ -57,26 +57,26 @@ namespace Triangulator
 			Debug.Assert(!targetEar.vertices.IsNullOrEmpty(), $"Given Ear's vertices are null or empty, please fix");
 			var targetVertices = targetEar.vertices;
 
-			Vertex[][] pointTriangles = new Vertex[3][]
+			VertexTriangle[] pointTriangles = new VertexTriangle[3]
 			{
-				new Vertex[]
-				{
+				new VertexTriangle
+				(
 					point,
 					targetVertices[0],
-					targetVertices[1],
-				},
-				new Vertex[]
-				{
+					targetVertices[1]
+				),
+				new VertexTriangle
+				(
 					point,
 					targetVertices[1],
-					targetVertices[2],
-				},
-				new Vertex[]
-				{
+					targetVertices[2]
+				),
+				new VertexTriangle
+				(
 					point,
 					targetVertices[2],
-					targetVertices[0],
-				},
+					targetVertices[0]
+				),
 			};
 
 			float earArea = targetEar.GetArea();
@@ -95,6 +95,11 @@ namespace Triangulator
 		public static float CalculateArea(in Vertex[] vertices)
 		{
 			return CalculateArea(in vertices[0].position, in vertices[1].position, in vertices[2].position);
+		}
+
+		private static float CalculateArea(in VertexTriangle vTriangle)
+		{
+			return CalculateArea(vTriangle[0].position, vTriangle[1].position, vTriangle[2].position);
 		}
 
 
