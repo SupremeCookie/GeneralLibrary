@@ -6,6 +6,17 @@ namespace Triangulator
 	// Refactor through to some kind of TriangleUtility class, this class should be ear specific logic, or be a passthrough/converter from Ear to Triangle
 	public static class EarUtility
 	{
+
+		private static VertexTriangle[] pointTriangles;
+
+		static EarUtility()
+		{
+			pointTriangles = new VertexTriangle[3];
+			pointTriangles[0] = new VertexTriangle();
+			pointTriangles[1] = new VertexTriangle();
+			pointTriangles[2] = new VertexTriangle();
+		}
+
 		public static bool AnyPointLiesWithinEar(in Ear ear, in List<Vertex> points)
 		{
 			bool defaultReturn = false;
@@ -57,27 +68,26 @@ namespace Triangulator
 			Debug.Assert(!targetEar.vertices.IsNullOrEmpty(), $"Given Ear's vertices are null or empty, please fix");
 			var targetVertices = targetEar.vertices;
 
-			VertexTriangle[] pointTriangles = new VertexTriangle[3]
-			{
-				new VertexTriangle
-				(
-					point,
-					targetVertices[0],
-					targetVertices[1]
-				),
-				new VertexTriangle
-				(
-					point,
-					targetVertices[1],
-					targetVertices[2]
-				),
-				new VertexTriangle
-				(
-					point,
-					targetVertices[2],
-					targetVertices[0]
-				),
-			};
+			pointTriangles[0] = new VertexTriangle
+			(
+				point,
+				targetVertices[0],
+				targetVertices[1]
+			);
+
+			pointTriangles[1] = new VertexTriangle
+			(
+				point,
+				targetVertices[1],
+				targetVertices[2]
+			);
+
+			pointTriangles[2] = new VertexTriangle
+			(
+				point,
+				targetVertices[2],
+				targetVertices[0]
+			);
 
 			float earArea = targetEar.GetArea();
 			float pointArea = 0;
