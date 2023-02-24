@@ -9,6 +9,11 @@ namespace Triangulator
 		public static bool AnyPointLiesWithinEar(in Ear ear, in List<Vertex> points)
 		{
 			bool defaultReturn = false;
+			if (points.Count == 0)
+			{
+				return defaultReturn;
+			}
+
 
 			Debug.Assert(ear != null, $"Given ear is null, gotta fix this");
 			Debug.Assert(!ear.vertices.IsNullOrEmpty(), $"Given ear's vertices are null or empty, gotta fix this");
