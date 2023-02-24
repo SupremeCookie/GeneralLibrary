@@ -30,7 +30,7 @@ namespace Triangulator
 			Debug.Assert(ear != null, $"Given ear is null, gotta fix this");
 			Debug.Assert(!ear.vertices.IsNullOrEmpty(), $"Given ear's vertices are null or empty, gotta fix this");
 
-			pointsCopy = ScrubEarVertices(in ear, in points);
+			ScrubEarVertices(in ear, in points, ref pointsCopy);
 
 			//Caching the pointsCopy is going to save soooo much garbage
 			for (int i = 0; i < pointsCopy.Length; ++i)
@@ -45,9 +45,9 @@ namespace Triangulator
 			return defaultReturn;
 		}
 
-		private static Vertex[] ScrubEarVertices(in Ear ear, in List<Vertex> vertices)
+		private static Vertex[] ScrubEarVertices(in Ear ear, in List<Vertex> vertices, ref Vertex[] result)
 		{
-			var result = new Vertex[vertices.Count];
+			result = new Vertex[vertices.Count];
 			var earVerts = ear.vertices;
 			for (int i = 0; i < vertices.Count; ++i)
 			{
