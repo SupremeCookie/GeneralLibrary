@@ -18,9 +18,10 @@ namespace Triangulator
 			Debug.Assert(ear != null, $"Given ear is null, gotta fix this");
 			Debug.Assert(!ear.vertices.IsNullOrEmpty(), $"Given ear's vertices are null or empty, gotta fix this");
 
-			List<Vertex> pointsCopy = ScrubEarVertices(in ear, in points);
+			Vertex[] pointsCopy = ScrubEarVertices(in ear, in points);
 
-			for (int i = 0; i < pointsCopy.Count; ++i)
+			//Caching the pointsCopy is going to save soooo much garbage
+			for (int i = 0; i < pointsCopy.Length; ++i)
 			{
 				var point = pointsCopy[i];
 				if (DoesPointLieWithinEar(point, in ear))
@@ -32,9 +33,9 @@ namespace Triangulator
 			return defaultReturn;
 		}
 
-		private static List<Vertex> ScrubEarVertices(in Ear ear, in List<Vertex> vertices)
+		private static Vertex[] ScrubEarVertices(in Ear ear, in List<Vertex> vertices)
 		{
-			var result = new List<Vertex>(vertices.Count);
+			var result = new Vertex[vertices.Count];
 			var earVerts = ear.vertices;
 			for (int i = 0; i < vertices.Count; ++i)
 			{
@@ -42,7 +43,7 @@ namespace Triangulator
 				bool canAddVert = !earVerts.ContainsCloseEnough(in vert);
 				if (canAddVert)
 				{
-					result.Add(vert);
+					result[i] = vert;
 				}
 			}
 
@@ -56,7 +57,7 @@ namespace Triangulator
 			Debug.Assert(!targetEar.vertices.IsNullOrEmpty(), $"Given Ear's vertices are null or empty, please fix");
 			var targetVertices = targetEar.vertices;
 
-			List<List<Vertex>> pointTriangles = new List<List<Vertex>>(3)
+			List<Vertex>[] pointTriangles = new List<Vertex>[3]
 			{
 				new List<Vertex>
 				{
@@ -81,7 +82,7 @@ namespace Triangulator
 			float earArea = targetEar.GetArea();
 			float pointArea = 0;
 
-			for (int i = 0; i < pointTriangles.Count; ++i)
+			for (int i = 0; i < pointTriangles.Length; ++i)
 			{
 				pointArea += CalculateArea(pointTriangles[i]);
 			}
@@ -93,20 +94,26 @@ namespace Triangulator
 
 		public static float CalculateArea(in Vertex[] vertices)
 		{
-			return CalculateArea(new List<Vertex>(vertices));
+			return CalculateArea(in vertices[0].position, in vertices[1].position, in vertices[2].position);
 		}
+
+		public static float CalculateArea(in List<Vertex> vertices)
+		{
+			return CalculateArea(vertices[0].position, vertices[1].position, vertices[2].position);
+		}
+
 
 		// This is the SAS method of calculating a triangle's area
 		// It uses 2 square roots, to get the lengths of the triangle sides. 
-		public static float CalculateArea(in List<Vertex> vertices)
+		private static float CalculateArea(in Vector2 first, in Vector2 second, in Vector2 third)
 		{
-			var edge1 = vertices[2].position - vertices[0].position;
-			var edge2 = vertices[1].position - vertices[0].position;
+			var edge1 = third - first;
+			var edge2 = second - first;
 
 			const float margin = 0.01f;
 			bool firstHasNoMagnitude = edge1.sqrMagnitude.IsCloseTo(0, margin);
 			bool secondHasNoMagnitude = edge2.sqrMagnitude.IsCloseTo(0, margin);
-			Debug.Assert(!firstHasNoMagnitude && !secondHasNoMagnitude, $"Calculating area vertices are wrongly constructed, 2 of the vertices are the same, vert0: {vertices[0]}, vert1: {vertices[1]}, vert2: {vertices[2]}");
+			Debug.Assert(!firstHasNoMagnitude && !secondHasNoMagnitude, $"Calculating area vertices are wrongly constructed, 2 of the vertices are the same, vert0.position: {first}, vert1.position: {second}, vert2.position: {third}");
 
 			var angleBetween = Utility.ThetaBetweenVectors(in edge1, in edge2);
 			var sinBetween = Mathf.Sin(angleBetween);
