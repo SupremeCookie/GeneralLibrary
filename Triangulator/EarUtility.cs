@@ -9,6 +9,8 @@ namespace Triangulator
 
 		private static Vertex[] pointsCopy;
 		private static VertexTriangle[] pointTriangles;
+		private static int lastPointIndex;
+
 
 		static EarUtility()
 		{
@@ -32,8 +34,9 @@ namespace Triangulator
 
 			ScrubEarVertices(in ear, in points, ref pointsCopy);
 
-			//Caching the pointsCopy is going to save soooo much garbage
-			for (int i = 0; i < pointsCopy.Length; ++i)
+			Debug.Assert(!pointsCopy.IsNullOrEmpty(), $"PointsCopy is null or empty, that's not good. Original collection size:{points?.Count ?? -1}, if -1 the original collection is null");
+			Debug.Assert(lastPointIndex <= pointsCopy.Length, $"We have a lastPointIndex that's higher than the pointsCopy collection is big, lastPointIndex:{lastPointIndex}, pointsCopyLength: {pointsCopy?.Length ?? -1}");
+			for (int i = 0; i < lastPointIndex; ++i)
 			{
 				var point = pointsCopy[i];
 				if (DoesPointLieWithinEar(point, in ear))
@@ -47,17 +50,28 @@ namespace Triangulator
 
 		private static Vertex[] ScrubEarVertices(in Ear ear, in List<Vertex> vertices, ref Vertex[] result)
 		{
-			result = new Vertex[vertices.Count];
+			lastPointIndex = vertices.Count;
+			if (lastPointIndex > (result?.Length ?? -1))
+			{
+				result = new Vertex[lastPointIndex];
+			}
+
+			// TODO DK: These 3 vertices on the ear checks could be made concurrently/parallel if we're not on the mainthread.
+			int currentIndex = -1;
+
 			var earVerts = ear.vertices;
-			for (int i = 0; i < vertices.Count; ++i)
+			for (int i = 0; i < lastPointIndex; ++i)
 			{
 				Vertex vert = vertices[i];
 				bool canAddVert = !earVerts.ContainsCloseEnough(in vert);
 				if (canAddVert)
 				{
-					result[i] = vert;
+					currentIndex++;
+					result[currentIndex] = vert;
 				}
 			}
+
+			lastPointIndex = currentIndex + 1;  // Note DK: When a vertex is in the ear, it isn't added, we need to take this reduction into account. + 1 because indices are 0 based.
 
 			return result;
 		}
