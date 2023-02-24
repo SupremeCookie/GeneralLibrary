@@ -64,7 +64,7 @@ namespace Triangulator
 			// Then we store that at the end of the loop, and tally that up to a big total. 
 			// The big total is total time across all loop counts, so we display that, and then tracker, and then divide by tracker.
 			// That way we can somewhat see how long each step takes.
-			while (vertexOrder.Count > minimumVerticesForTriangle)
+			while (vertexOrder.Count >= minimumVerticesForTriangle)
 			{
 				if (tracker > maxTracker)
 				{
