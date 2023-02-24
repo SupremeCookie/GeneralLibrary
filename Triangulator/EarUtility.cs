@@ -7,6 +7,7 @@ namespace Triangulator
 	public static class EarUtility
 	{
 
+		private static Vertex[] pointsCopy;
 		private static VertexTriangle[] pointTriangles;
 
 		static EarUtility()
@@ -29,7 +30,7 @@ namespace Triangulator
 			Debug.Assert(ear != null, $"Given ear is null, gotta fix this");
 			Debug.Assert(!ear.vertices.IsNullOrEmpty(), $"Given ear's vertices are null or empty, gotta fix this");
 
-			Vertex[] pointsCopy = ScrubEarVertices(in ear, in points);
+			pointsCopy = ScrubEarVertices(in ear, in points);
 
 			//Caching the pointsCopy is going to save soooo much garbage
 			for (int i = 0; i < pointsCopy.Length; ++i)
