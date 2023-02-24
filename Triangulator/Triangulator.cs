@@ -58,7 +58,13 @@ namespace Triangulator
 
 			int tracker = 0;
 			int maxTracker = vertexCount * 5;   // To ensure we don't get stuck in infinite loops, we add a maximum iteration count.
-			while (vertexOrder.Count >= minimumVerticesForTriangle)
+
+			// TODO DK: Measure total performance here.
+			// Can use a performance measurer, and clear on first step of while loop. Then each time we go through we measure how much each step costs.
+			// Then we store that at the end of the loop, and tally that up to a big total. 
+			// The big total is total time across all loop counts, so we display that, and then tracker, and then divide by tracker.
+			// That way we can somewhat see how long each step takes.
+			while (vertexOrder.Count > minimumVerticesForTriangle)
 			{
 				if (tracker > maxTracker)
 				{
