@@ -24,6 +24,13 @@
 			vertices[2] = third;
 		}
 
+		public void SetVertices(Vertex first, Vertex second, Vertex third)
+		{
+			vertices[0] = first;
+			vertices[1] = second;
+			vertices[2] = third;
+		}
+
 		public void Clear()
 		{
 			//vertices[0] = default(Vertex);
