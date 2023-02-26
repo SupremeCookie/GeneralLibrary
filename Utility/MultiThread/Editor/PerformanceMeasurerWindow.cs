@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class PerformanceMeasurerWindow : EditorWindow
 {
-	private static List<PerformanceMeasurer.MetricMeasurement> metricData => PerformanceMeasurererWindowUtility.metricData;
+	private System.Func<List<PerformanceMeasurer.MetricMeasurement>> getMetricData;
+	private List<PerformanceMeasurer.MetricMeasurement> metricData => getMetricData?.Invoke();
 
 	private static GUIStyle _mainEntry;
 	private static GUIStyle mainEntry { get { if (_mainEntry == null) { InitStyles(); } return _mainEntry; } }
@@ -18,21 +19,51 @@ public class PerformanceMeasurerWindow : EditorWindow
 	[MenuItem(PerformanceMeasurererWindowUtility.MenuItem)]
 	private static void MenuItem()
 	{
-		ShowWindowInternal();
+		ShowWindowInternal(() => { return PerformanceMeasurererWindowUtility.metricData[0]; });
 	}
 
-	public static void ShowWindow(List<PerformanceMeasurer.MetricMeasurement> metricData)
+	[MenuItem(PerformanceMeasurererWindowUtility.MenuItem + "_2")]
+	private static void MenuItem2()
 	{
-		PerformanceMeasurererWindowUtility.metricData = metricData;
-		ShowWindowInternal();
+		ShowWindowInternal(() => { return PerformanceMeasurererWindowUtility.metricData[1]; }, $"2nd - {typeof(PerformanceMeasurerWindow).ToString()}");
 	}
 
-	private static void ShowWindowInternal()
+
+
+	private static void ShowWindowInternal(System.Func<List<PerformanceMeasurer.MetricMeasurement>> getMetricData, string windowName = "")
 	{
 		InitStyles();
 
-		PerformanceMeasurerWindow window = (PerformanceMeasurerWindow)EditorWindow.GetWindow(typeof(PerformanceMeasurerWindow));
+		var searchableName = windowName;
+		if (string.IsNullOrEmpty(windowName))
+		{
+			searchableName = typeof(PerformanceMeasurerWindow).ToString();
+		}
+
+
+		PerformanceMeasurerWindow window = null;
+		var editorWindows = Resources.FindObjectsOfTypeAll<EditorWindow>();
+		for (int i = 0; i < (editorWindows?.Length ?? 0); ++i)
+		{
+			if (editorWindows[i] is PerformanceMeasurerWindow)
+			{
+				//Debug.Log($"Found pmeasurererWindow with name: {editorWindows[i].titleContent.text}");
+				if (editorWindows[i].titleContent.text.Equals(searchableName))
+				{
+					window = editorWindows[i] as PerformanceMeasurerWindow;
+					break;
+				}
+			}
+		}
+
+		if (window == null)
+		{
+			window = EditorWindow.CreateWindow<PerformanceMeasurerWindow>(searchableName, typeof(PerformanceMeasurerWindow));
+		}
+
+		window.getMetricData = getMetricData;
 		window.Show();
+		window.Focus();
 	}
 
 	private static void InitStyles()
@@ -56,6 +87,8 @@ public class PerformanceMeasurerWindow : EditorWindow
 		color = new Color(101f / 255f, 34f / 255f, 26f / 255f);
 		setBackground(ref _megaWarningEntry, color);
 	}
+
+
 
 	private void OnGUI()
 	{

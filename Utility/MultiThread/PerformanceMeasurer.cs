@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEditor;
 
 public class PerformanceMeasurer
@@ -88,9 +89,13 @@ public class PerformanceMeasurer
 		return result;
 	}
 
-	public static void ShowEditorMetrics(List<MetricMeasurement> metrics)
+	// We can support multiple windows
+	public static void ShowEditorMetrics(List<MetricMeasurement> metrics, int windowIndex = 0)
 	{
-		PerformanceMeasurererWindowUtility.metricData = metrics;
+		Debug.Assert(PerformanceMeasurererWindowUtility.metricData.Length > windowIndex, $"The window we are trying to set metrics for does not exist, " +
+			$"max count: {PerformanceMeasurererWindowUtility.metricData.Length},  current windowIndex: {windowIndex}");
+
+		PerformanceMeasurererWindowUtility.metricData[windowIndex] = metrics;
 		EditorApplication.ExecuteMenuItem(PerformanceMeasurererWindowUtility.MenuItem);
 	}
 }

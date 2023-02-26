@@ -3,6 +3,14 @@
 
 public static class PerformanceMeasurererWindowUtility
 {
-    public const string MenuItem = "Window/GeneralLibrary/PerformanceMeasurerMetrics";
-    public static List<PerformanceMeasurer.MetricMeasurement> metricData;
+	// Note DK: Should at some point become key based, not index based.
+	private const int MaxMeasurerWindowCount = 2;
+
+	public const string MenuItem = "Window/GeneralLibrary/PerformanceMeasurerMetrics";
+	public static List<PerformanceMeasurer.MetricMeasurement>[] metricData;
+
+	static PerformanceMeasurererWindowUtility()
+	{
+		metricData = new List<PerformanceMeasurer.MetricMeasurement>[MaxMeasurerWindowCount];
+	}
 }
