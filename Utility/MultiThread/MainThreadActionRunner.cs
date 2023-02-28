@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainThreadActionRunner
+public class MainThreadActionRunner : IPushAction
 {
 	private const int MaxPerFrame = 25;
 
