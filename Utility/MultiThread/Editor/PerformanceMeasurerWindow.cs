@@ -16,13 +16,13 @@ public class PerformanceMeasurerWindow : EditorWindow
 	private static GUIStyle _megaWarningEntry;
 	private static GUIStyle megaWarningEntry { get { if (_megaWarningEntry == null) { InitStyles(); } return _megaWarningEntry; } }
 
-	[MenuItem(PerformanceMeasurererWindowUtility.MenuItem)]
+	[MenuItem(PerformanceMeasurererWindowUtility.MenuItem + "_0")]
 	private static void MenuItem()
 	{
 		ShowWindowInternal(() => { return PerformanceMeasurererWindowUtility.metricData[0]; });
 	}
 
-	[MenuItem(PerformanceMeasurererWindowUtility.MenuItem + "_2")]
+	[MenuItem(PerformanceMeasurererWindowUtility.MenuItem + "_1")]
 	private static void MenuItem2()
 	{
 		ShowWindowInternal(() => { return PerformanceMeasurererWindowUtility.metricData[1]; }, $"2nd - {typeof(PerformanceMeasurerWindow).ToString()}");
@@ -106,9 +106,12 @@ public class PerformanceMeasurerWindow : EditorWindow
 		}
 	}
 
+
+	private Vector2 scrollPos;
 	private void DrawMetricData()
 	{
 		EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+		scrollPos = EditorGUILayout.BeginScrollView(scrollPos, alwaysShowHorizontal: false, alwaysShowVertical: true);
 
 		DrawHeading();
 
@@ -117,6 +120,7 @@ public class PerformanceMeasurerWindow : EditorWindow
 			DrawEntry(metricData[i]);
 		}
 
+		EditorGUILayout.EndScrollView();
 		EditorGUILayout.EndHorizontal();
 	}
 

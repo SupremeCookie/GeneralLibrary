@@ -55,6 +55,11 @@ public class PerformanceMeasurer
 		measurements.Clear();
 	}
 
+	public int Count()
+	{
+		return measurements?.Count ?? 0;
+	}
+
 
 	public void StoreEntry(string id)
 	{
@@ -96,6 +101,6 @@ public class PerformanceMeasurer
 			$"max count: {PerformanceMeasurererWindowUtility.metricData.Length},  current windowIndex: {windowIndex}");
 
 		PerformanceMeasurererWindowUtility.metricData[windowIndex] = metrics;
-		EditorApplication.ExecuteMenuItem(PerformanceMeasurererWindowUtility.MenuItem);
+		EditorApplication.ExecuteMenuItem($"{PerformanceMeasurererWindowUtility.MenuItem}_{windowIndex}");
 	}
 }
