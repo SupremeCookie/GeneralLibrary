@@ -7,116 +7,13 @@ using System.Linq;
 using UnityEngine;
 
 
-// Add unit testing
+// TODO DK: Add unit testing
+// Note DK: So the performance of the triangulator approximates O(n^2) each extra vertex to triangulate makes the algorithm run a whole lot slower
+// I will not (2023-3-1) be solving this, the solution is to prepare the data differently.
 namespace Triangulator
 {
 	public class Main
 	{
-#if MEASURING_PERFORMANCE || MEASURING_STATIC_PERFORMANCE
-		public const int PerformanceMeasurerWindowIndex = 1;
-		private PerformanceMeasurer performanceMeasurer;
-#endif
-
-#if MEASURING_STATIC_PERFORMANCE
-		public static string MeasurementPrefix;
-		private static long utcTicks;
-		private static Dictionary<string, double> measuredTimings;
-#endif
-
-
-		private void StorePerformanceMeasurement(string id)
-		{
-#if !UNITY_EDITOR
-            return;
-#endif
-
-			if (performanceMeasurer == null)
-			{
-				performanceMeasurer = new PerformanceMeasurer();
-			}
-
-#if MEASURING_PERFORMANCE
-            performanceMeasurer.StoreEntry(id);
-#endif
-
-#if MEASURING_STATIC_PERFORMANCE
-			var key = $"{MeasurementPrefix}_{id}";
-			if (measuredTimings == null)
-			{
-				const int defaultKeys = 5;
-				measuredTimings = new Dictionary<string, double>(defaultKeys);
-			}
-
-			double addedTime = System.TimeSpan.FromTicks(System.DateTime.UtcNow.Ticks - utcTicks).TotalSeconds;
-			if (measuredTimings.ContainsKey(key))
-			{
-				measuredTimings[key] += addedTime;
-			}
-			else
-			{
-				measuredTimings.Add(key, addedTime);
-			}
-#endif
-		}
-
-		private void StorePerformanceMeasurements()
-		{
-#if !UNITY_EDITOR
-            return;
-#endif
-
-#if MEASURING_STATIC_PERFORMANCE
-			var timingMetrics = new List<PerformanceMeasurer.MetricMeasurement>(measuredTimings.Count);
-			var metrics = PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex];
-			if (metrics == null)
-			{
-				metrics = new List<PerformanceMeasurer.MetricMeasurement>();
-			}
-
-			foreach (var kvp in measuredTimings)
-			{
-				var existingItem = PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex]?.FirstOrDefault(s => s?.name.Equals(kvp.Key) ?? false);
-				if (existingItem != null)
-				{
-					metrics[metrics.IndexOf(existingItem)].durationSincePrevious += kvp.Value;
-				}
-				else
-				{
-					metrics.Add(new PerformanceMeasurer.MetricMeasurement
-					{
-						name = kvp.Key,
-						durationSincePrevious = kvp.Value,
-						timeTicks = -1,
-					});
-				}
-			}
-
-			PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex] = metrics;
-#endif
-
-#if MEASURING_PERFORMANCE
-            var metrics = performanceMeasurer.GetMetrics();
-
-            if (PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex] == null)
-            {
-                PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex] = new List<PerformanceMeasurer.MetricMeasurement>();
-            }
-
-            var measurementCount = performanceMeasurer.Count();
-            StorePerformanceMeasurement($"Total Triangulations So Far: " +
-                $"{(PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex].Count / (measurementCount + 1)) + 1}");
-
-            PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex].AddRange(metrics);
-#endif
-		}
-
-		public static void ResetTheMeasurements()
-		{
-			measuredTimings = new Dictionary<string, double>();
-		}
-
-
-
 		private List<Vector2> vertexPositions = new List<Vector2>();
 		private List<int> indices = new List<int>();
 
@@ -344,6 +241,113 @@ namespace Triangulator
 
 			nextVertex = vertexOrder[(vertexIndex + 1) % count];
 			previousVertex = vertexOrder[((vertexIndex - 1) + count) % count];
+		}
+
+
+
+
+
+#if MEASURING_PERFORMANCE || MEASURING_STATIC_PERFORMANCE
+		public const int PerformanceMeasurerWindowIndex = 1;
+		private PerformanceMeasurer performanceMeasurer;
+#endif
+
+#if MEASURING_STATIC_PERFORMANCE
+		public static string MeasurementPrefix;
+		private static long utcTicks;
+		private static Dictionary<string, double> measuredTimings;
+#endif
+
+
+		private void StorePerformanceMeasurement(string id)
+		{
+#if !UNITY_EDITOR
+            return;
+#endif
+
+			if (performanceMeasurer == null)
+			{
+				performanceMeasurer = new PerformanceMeasurer();
+			}
+
+#if MEASURING_PERFORMANCE
+            performanceMeasurer.StoreEntry(id);
+#endif
+
+#if MEASURING_STATIC_PERFORMANCE
+			var key = $"{MeasurementPrefix}_{id}";
+			if (measuredTimings == null)
+			{
+				const int defaultKeys = 5;
+				measuredTimings = new Dictionary<string, double>(defaultKeys);
+			}
+
+			double addedTime = System.TimeSpan.FromTicks(System.DateTime.UtcNow.Ticks - utcTicks).TotalSeconds;
+			if (measuredTimings.ContainsKey(key))
+			{
+				measuredTimings[key] += addedTime;
+			}
+			else
+			{
+				measuredTimings.Add(key, addedTime);
+			}
+#endif
+		}
+
+		private void StorePerformanceMeasurements()
+		{
+#if !UNITY_EDITOR
+            return;
+#endif
+
+#if MEASURING_STATIC_PERFORMANCE
+			var timingMetrics = new List<PerformanceMeasurer.MetricMeasurement>(measuredTimings.Count);
+			var metrics = PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex];
+			if (metrics == null)
+			{
+				metrics = new List<PerformanceMeasurer.MetricMeasurement>();
+			}
+
+			foreach (var kvp in measuredTimings)
+			{
+				var existingItem = PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex]?.FirstOrDefault(s => s?.name.Equals(kvp.Key) ?? false);
+				if (existingItem != null)
+				{
+					metrics[metrics.IndexOf(existingItem)].durationSincePrevious += kvp.Value;
+				}
+				else
+				{
+					metrics.Add(new PerformanceMeasurer.MetricMeasurement
+					{
+						name = kvp.Key,
+						durationSincePrevious = kvp.Value,
+						timeTicks = -1,
+					});
+				}
+			}
+
+			PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex] = metrics;
+#endif
+
+#if MEASURING_PERFORMANCE
+            var metrics = performanceMeasurer.GetMetrics();
+
+            if (PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex] == null)
+            {
+                PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex] = new List<PerformanceMeasurer.MetricMeasurement>();
+            }
+
+            var measurementCount = performanceMeasurer.Count();
+            StorePerformanceMeasurement($"Total Triangulations So Far: " +
+                $"{(PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex].Count / (measurementCount + 1)) + 1}");
+
+            PerformanceMeasurererWindowUtility.metricData[PerformanceMeasurerWindowIndex].AddRange(metrics);
+#endif
+		}
+
+		public static void ResetTheMeasurements()
+		{
+			measuredTimings = new Dictionary<string, double>();
 		}
 	}
 }
