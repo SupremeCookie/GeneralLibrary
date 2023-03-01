@@ -283,6 +283,7 @@ namespace Triangulator
 			}
 
 			double addedTime = System.TimeSpan.FromTicks(System.DateTime.UtcNow.Ticks - utcTicks).TotalSeconds;
+			utcTicks = System.DateTime.UtcNow.Ticks;
 			if (measuredTimings.ContainsKey(key))
 			{
 				measuredTimings[key] += addedTime;
