@@ -78,6 +78,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		if (GUILayout.Button("Build Player"))
 		{
 			BuildPipeline.BuildPlayer(buildOptions);
+			Close();
 		}
 	}
 }
