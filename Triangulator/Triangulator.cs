@@ -2,6 +2,7 @@
 //#define MEASURING_PERFORMANCE
 #define MEASURING_STATIC_PERFORMANCE
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -255,7 +256,7 @@ namespace Triangulator
 #if MEASURING_STATIC_PERFORMANCE
 		public static string MeasurementPrefix;
 		private static long utcTicks;
-		private static Dictionary<string, double> measuredTimings;
+		private static ConcurrentDictionary<string, double> measuredTimings;
 #endif
 
 
@@ -279,7 +280,7 @@ namespace Triangulator
 			if (measuredTimings == null)
 			{
 				const int defaultKeys = 5;
-				measuredTimings = new Dictionary<string, double>(defaultKeys);
+				measuredTimings = new ConcurrentDictionary<string, double>();
 			}
 
 			double addedTime = System.TimeSpan.FromTicks(System.DateTime.UtcNow.Ticks - utcTicks).TotalSeconds;
@@ -290,7 +291,7 @@ namespace Triangulator
 			}
 			else
 			{
-				measuredTimings.Add(key, addedTime);
+				measuredTimings.AddOrUpdate(key, addedTime, (returnKey, oldValue) => oldValue + addedTime);
 			}
 #endif
 		}
@@ -348,7 +349,7 @@ namespace Triangulator
 
 		public static void ResetTheMeasurements()
 		{
-			measuredTimings = new Dictionary<string, double>();
+			measuredTimings = new ConcurrentDictionary<string, double>();
 		}
 	}
 }
