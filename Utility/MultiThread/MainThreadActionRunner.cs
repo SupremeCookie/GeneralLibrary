@@ -1,6 +1,6 @@
 ﻿//#define LOGGING_ENABLED
 
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using UnityEngine;
 
 public class MainThreadActionRunner : IPushAction
@@ -8,12 +8,12 @@ public class MainThreadActionRunner : IPushAction
 	private const int MaxPerFrame = 25;
 
 	private ThreadChecker tc = null;
-	private Queue<System.Action> actions;
+	private ConcurrentQueue<System.Action> actions;
 
 	public MainThreadActionRunner()
 	{
 		tc = new ThreadChecker(); tc.SetMainThreadID();
-		actions = new Queue<System.Action>();
+		actions = new ConcurrentQueue<System.Action>();
 	}
 
 	public void Update()
@@ -21,7 +21,7 @@ public class MainThreadActionRunner : IPushAction
 		Debug.Assert(tc.IsCurrentThreadMainThread(), $"We are not on the main thread, please fix");
 
 #if LOGGING_ENABLED
-        if ((actions?.Count ?? -1) != 0)
+		if ((actions?.Count ?? -1) != 0)
 		{
 			Debug.Log($"Update ThreadActionRunner, actionsCount: {actions?.Count ?? -1}");
 		}
@@ -32,7 +32,8 @@ public class MainThreadActionRunner : IPushAction
 			System.Action nextAction = null;
 			if (actions.Count > 0)
 			{
-				nextAction = actions.Dequeue();
+				var success = actions.TryDequeue(out nextAction);
+				Debug.Assert(success, $"Did not succeed in dequeue-ing an action, please try to fix");
 			}
 
 			if (nextAction == null)
