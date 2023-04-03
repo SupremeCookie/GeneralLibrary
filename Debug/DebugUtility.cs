@@ -13,4 +13,11 @@
 	{
 		return debugColors[index % debugColors.Length];
 	}
+
+	public static UnityEngine.Color GetDebugColor(int index, float alpha)
+	{
+		var color = GetDebugColor(index);
+		color.a = alpha;
+		return color;
+	}
 }
