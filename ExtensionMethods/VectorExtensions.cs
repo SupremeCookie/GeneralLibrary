@@ -17,6 +17,30 @@ public static class VectorExtensions
 		}
 	}
 
+
+	#region Converters
+	public static Vector2 ToVector2(this Vector3 input)
+	{
+		return (Vector2)input;
+	}
+
+	public static Vector2 ToVector2(this Vector2 input)
+	{
+		return input;
+	}
+
+	public static Vector3 ToVector3(this Vector3 input)
+	{
+		return input;
+	}
+
+	public static Vector3 ToVector3(this Vector2 input)
+	{
+		return (Vector3)input;
+	}
+	#endregion
+
+
 	#region VEC 3
 	public static Vector3 MultiplyByVec3(this Vector3 vec, Vector3 mult)
 	{
