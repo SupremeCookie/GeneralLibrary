@@ -94,21 +94,22 @@ namespace Triangulator
 
 					if (ears.Count <= 0)
 					{
-						convexVertices.Clear();
-						reflexVertices.Clear();
-						for (int i = 0; i < vertexOrder.Count; ++i)
-						{
-							EvaluateVertexAngle(vertexOrder[i]);
-						}
+						// Note DK: This below change could do something, but I haven't really noticed its effects.
+						//convexVertices.Clear();
+						//reflexVertices.Clear();
+						//for (int i = 0; i < vertexOrder.Count; ++i)
+						//{
+						//	EvaluateVertexAngle(vertexOrder[i]);
+						//}
 
-						MakeEars();
-						Debug.Log($"Tried redoing the ears and vertices AGAIN, convexCount: {convexVertices.Count}, reflexCount: {reflexVertices.Count}, leftOver: {vertexOrder.Count}, ears: {ears.Count}");
+						//MakeEars();
+						//Debug.Log($"Tried redoing the ears and vertices AGAIN, convexCount: {convexVertices.Count}, reflexCount: {reflexVertices.Count}, leftOver: {vertexOrder.Count}, ears: {ears.Count}");
 
-						if (ears.Count <= 0)
-						{
-							Debug.LogError($"Didn't create any new ears, abort triangulation");
-							break;
-						}
+						//if (ears.Count <= 0)
+						//{
+						Debug.LogError($"Didn't create any new ears, abort triangulation");
+						break;
+						//}
 					}
 				}
 
