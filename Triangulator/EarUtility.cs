@@ -95,7 +95,21 @@ namespace Triangulator
 				pointArea += CalculateArea(pointTriangles[i]);
 			}
 
-			bool areasMatch = earArea.IsCloseTo(pointArea, 0.001f);
+			bool areasMatch = earArea.IsCloseTo(pointArea, 0.01f);
+
+			if (!areasMatch)
+			{
+				if (earArea.IsCloseTo(pointArea, 0.01f))
+				{
+					Debug.Log($"Within 0.01f of the area. first: {earArea}, second: {pointArea}");
+				}
+
+				if (earArea.IsCloseTo(pointArea, 1.0f))
+				{
+					Debug.Log($"Within 1.0f of the area. first: {earArea}, second: {pointArea}");
+				}
+			}
+
 			return areasMatch;
 		}
 
