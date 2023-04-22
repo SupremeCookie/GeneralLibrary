@@ -1,6 +1,13 @@
 ﻿//#define LOGGING
+
+#if UNITY_EDITOR
 //#define MEASURING_PERFORMANCE
-#define MEASURING_STATIC_PERFORMANCE
+//#define MEASURING_STATIC_PERFORMANCE
+
+#if MEASURING_PERFORMANCE || MEASURING_STATIC_PERFORMANCE
+#define HAS_PERFORMANCE_MEASURING
+#endif
+#endif
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -280,10 +287,12 @@ namespace Triangulator
             return;
 #endif
 
-			if (performanceMeasurer == null)
-			{
-				performanceMeasurer = new PerformanceMeasurer();
-			}
+#if HAS_PERFORMANCE_MEASURING
+            if (performanceMeasurer == null)
+            {
+                performanceMeasurer = new PerformanceMeasurer();
+            }
+#endif
 
 #if MEASURING_PERFORMANCE
             performanceMeasurer.StoreEntry(id);
@@ -363,7 +372,24 @@ namespace Triangulator
 
 		public static void ResetTheMeasurements()
 		{
-			measuredTimings = new ConcurrentDictionary<string, double>();
+#if HAS_PERFORMANCE_MEASURING
+            measuredTimings = new ConcurrentDictionary<string, double>();
+#endif
+		}
+
+		public static void SetMeasurementPrefix(string prefix)
+		{
+#if HAS_PERFORMANCE_MEASURING
+            MeasurementPrefix = prefix;
+#endif
+		}
+
+		public static int GetMeasurerWindowIndex()
+		{
+#if HAS_PERFORMANCE_MEASURING
+            return PerformanceMeasurerWindowIndex;
+#endif
+			return -1;
 		}
 	}
 }
