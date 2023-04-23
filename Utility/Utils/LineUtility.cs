@@ -23,6 +23,26 @@ public partial class Utility
 		return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
 	}
 
+	public static Vector2 GetLinesIntersectionPoint(Line first, Line second)
+	{
+		float determinant, lambda;
+
+		var fStart = first.start;
+		var fEnd = first.end;
+		var sStart = second.start;
+		var sEnd = second.end;
+
+		determinant = (fEnd.x - fStart.x) * (sEnd.y - sStart.y) - (sEnd.x - sStart.x) * (fEnd.y - fStart.y);
+		if (determinant.IsCloseTo(0, 0.001f))
+		{
+			Debug.Log($"No intersection found between lines: {first}, and {second}");
+			return Vector2.negativeInfinity;
+		}
+
+		lambda = ((sEnd.y - sStart.y) * (sEnd.x - fStart.x) + (sStart.x - sEnd.x) * (sEnd.y - fStart.y)) / determinant;
+		return Vector2.Lerp(first.start, first.end, lambda);
+	}
+
 
 
 	public static void RunLineUtilUnitTests()
@@ -34,6 +54,8 @@ public partial class Utility
 		Test_E();
 		Test_F();
 		Test_G();
+		Test_H();
+		Test_I();
 
 		Debug.Log("If no errors showed up, everything went well");
 	}
@@ -120,5 +142,29 @@ public partial class Utility
 
 		Debug.Assert(!intersect, $"G) The lines {first} and {second} should not intersect, yet they do");
 		Debug.Log("Ran test (G)");
+	}
+
+	private static void Test_H()
+	{
+		Line first = new Line(new Vector2(0, -1), new Vector2(0, 1));
+		Line second = new Line(new Vector2(4, 0), new Vector2(6, 0));
+
+		// Should intersect
+		var intersect = DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"H) The lines {first} and {second} shouldn't intersect, and they don't, this proves that Line-Intersections are only on the line segments");
+		Debug.Log("Ran test (H)");
+	}
+
+	private static void Test_I()
+	{
+		Line first = new Line(new Vector2(-10, -1), new Vector2(-1, 1));
+		Line second = new Line(new Vector2(0, -5), new Vector2(1, -6));
+
+		// Should intersect
+		var intersect = DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"I) The lines {first} and {second} shouldn't intersect, and they don't, this proves that Line-Intersections are only on the line segments");
+		Debug.Log("Ran test (I)");
 	}
 }
