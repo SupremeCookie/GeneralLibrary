@@ -49,4 +49,9 @@ public class MainThreadActionRunner : IPushAction
 	{
 		actions.Enqueue(action);
 	}
+
+	public bool HasAnyInQueue()
+	{
+		return actions.Count > 0;
+	}
 }
