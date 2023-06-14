@@ -54,4 +54,9 @@ public class MainThreadActionRunner : IPushAction
 	{
 		return actions.Count > 0;
 	}
+
+	public void Clear()
+	{
+		actions = new ConcurrentQueue<System.Action>();
+	}
 }
