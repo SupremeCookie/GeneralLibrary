@@ -5,6 +5,7 @@ using UnityEditor;
 
 public class PerformanceMeasurer
 {
+#if UNITY_EDITOR
 	private class Measurement : IComparable
 	{
 		public string name;
@@ -103,4 +104,5 @@ public class PerformanceMeasurer
 		PerformanceMeasurererWindowUtility.metricData[windowIndex] = metrics;
 		EditorApplication.ExecuteMenuItem($"{PerformanceMeasurererWindowUtility.MenuItem}_{windowIndex}");
 	}
+#endif
 }

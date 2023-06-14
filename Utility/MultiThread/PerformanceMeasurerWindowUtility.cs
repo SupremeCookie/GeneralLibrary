@@ -3,6 +3,7 @@
 
 public static class PerformanceMeasurererWindowUtility
 {
+#if UNITY_EDITOR
 	// Note DK: Should at some point become key based, not index based.
 	private const int MaxMeasurerWindowCount = 2;
 
@@ -13,4 +14,5 @@ public static class PerformanceMeasurererWindowUtility
 	{
 		metricData = new List<PerformanceMeasurer.MetricMeasurement>[MaxMeasurerWindowCount];
 	}
+#endif
 }
