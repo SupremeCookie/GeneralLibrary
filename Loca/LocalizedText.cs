@@ -6,7 +6,7 @@ namespace RogueLike
 	// Note DK: This is more or less fully related to a configurable game component. For in-code we now use LocTerm
 	public class LocalizedText : MonoBehaviour
 	{
-		[SerializeField] private TextMeshProUGUI targetText;
+		[SerializeField] private TMP_Text targetText;
 		[SerializeField] private LocTermModel locTerm;
 
 		[Space(5)]
@@ -17,10 +17,10 @@ namespace RogueLike
 		[Space(5)]
 		[SerializeField] private bool updateEverySoManyFrames = true;
 		[SerializeField] private int everySoManyFrames = 10;
-		[SerializeField] [Readonly] private int updateCount = 0;
+		[SerializeField][Readonly] private int updateCount = 0;
 
 		[Space(10)]
-		[SerializeField] [Readonly] private ControlType lastKnownInputDevice;
+		[SerializeField][Readonly] private ControlType lastKnownInputDevice;
 
 		private void OnEnable()
 		{
