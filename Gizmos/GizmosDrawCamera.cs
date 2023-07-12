@@ -15,7 +15,7 @@ public class GizmosDrawCamera : MonoBehaviour
 			return;
 		}
 
-		if (MainCameraControl.Instance == null || MainCameraControl.Instance.Camera == null)
+		if (MainCameraControl.HasInstance || MainCameraControl.Instance.Camera == null)
 		{
 			return;
 		}
