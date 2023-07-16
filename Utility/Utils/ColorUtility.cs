@@ -35,6 +35,14 @@ public partial class Utility
 		return false;
 	}
 
+	public static void KeepBiggestColor(Color first, Color second, ref Color result)
+	{
+		result.r = Mathf.Max(first.r, second.r);
+		result.g = Mathf.Max(first.g, second.g);
+		result.b = Mathf.Max(first.b, second.b);
+		result.a = Mathf.Max(first.a, second.a);
+	}
+
 	private static Color[] randomColors = new Color[]
 	{
 		new Color(1.0f, 0.0f, 0.0f),
