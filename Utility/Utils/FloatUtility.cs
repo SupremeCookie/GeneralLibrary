@@ -43,4 +43,19 @@ public partial class Utility
 
 		return result;
 	}
+
+	public static float ConvertToDB(float volume, float volumeBase)
+	{
+		float dbVolume = -80f;
+
+		// We re-map the linear scale we have to the logarithmic one of db, which goes as follows.
+		// Can't log10 a 0 value.
+		if (volume > 0)
+		{
+			float relativeVolume = volume / volumeBase;
+			dbVolume = 20 * Mathf.Log10(relativeVolume);
+		}
+
+		return dbVolume;
+	}
 }
