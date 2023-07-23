@@ -58,4 +58,12 @@ public partial class Utility
 
 		return dbVolume;
 	}
+
+	public static float ConvertFromDB(float volume, float volumeBase)
+	{
+		float preLogValue = volume / 20;
+		float reLogged = Mathf.Pow(10, preLogValue);
+
+		return volumeBase * reLogged;
+	}
 }
