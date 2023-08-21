@@ -26,7 +26,7 @@ public static class ArrayExtensions
 		return false;
 	}
 
-	private static CustomRandom _shuffleRandom = new CustomRandom(SeedGenerator.UtilitySeed);
+	private static CustomRandom _shuffleRandom = CustomRandomContainer.GetRandomInstance("ShuffleRandom");
 	public static void Shuffle<T>(this T[] array)
 	{
 		int n = array.Length;

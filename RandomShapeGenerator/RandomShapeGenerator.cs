@@ -15,7 +15,7 @@ namespace RandomShapeGenerator
 			{
 				if (_rand == null)
 				{
-					_rand = CustomRandomContainer.GetRandom("RandomShapeGen");
+					_rand = CustomRandomContainer.GetRandomInstance("RandomShapeGen");
 				}
 
 				return _rand;

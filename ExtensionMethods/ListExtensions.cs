@@ -4,7 +4,7 @@ public static class ListExtensions
 {
 	public static void Shuffle<T>(this IList<T> list)
 	{
-		var rng = CustomRandomContainer.GetRandom("ListShuffle");
+		var rng = CustomRandomContainer.GetRandomInstance("ListShuffle");
 		int n = list.Count;
 		while (n > 0)
 		{

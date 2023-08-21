@@ -11,7 +11,7 @@ public partial class Utility
 
 		if (customRandom == null)
 		{
-			customRandom = CustomRandomContainer.GetRandom("RandomUtility");
+			customRandom = CustomRandomContainer.GetRandomInstance("RandomUtility");
 		}
 
 

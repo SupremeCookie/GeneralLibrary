@@ -10,13 +10,13 @@ public static class CustomRandomContainer
 	private static ConcurrentDictionary<string, CustomRandom> _customRandoms = new ConcurrentDictionary<string, CustomRandom>();
 	public static ConcurrentDictionary<string, CustomRandom> CustomRandoms { get { return _customRandoms; } }
 
-	// TODO: test if this is deterministic. Test this by changing dependencies to a CustomRand using a seed.
-	// Note DK: Above test results in being deterministic, as the given seed is constantly returning the same results
-	public static CustomRandom GetRandom(string key)
-	{
-		CustomRandom customRand = GetRandomInstanceInternal(key);
-		return new CustomRandom(customRand.Seed);
-	}
+	//// TODO: test if this is deterministic. Test this by changing dependencies to a CustomRand using a seed.
+	//// Note DK: Above test results in being deterministic, as the given seed is constantly returning the same results. It "restarts" basically
+	//public static CustomRandom GetRandom(string key)
+	//{
+	//	CustomRandom customRand = GetRandomInstanceInternal(key);
+	//	return new CustomRandom(customRand.Seed);
+	//}
 
 	// Note DK: This method, will return the actual instance of the custom random. The GetRandom method will return a fresh CustomRandom instead.
 	public static CustomRandom GetRandomInstance(string key)
@@ -28,10 +28,8 @@ public static class CustomRandomContainer
 	{
 		if (!_customRandoms.ContainsKey(key))
 		{
-			//int seedKey = KeyToInt(key);
-			int seedKey = SeedGenerator.GetRandomSeed();
-
-			bool hasAdded = _customRandoms.TryAdd(key, new CustomRandom(seedKey));  // Note DK: hasAdded being false means 
+			int seedKey = SeedGenerator.GameSeed;/* SeedGenerator.GetRandomSeed();*/
+			bool hasAdded = _customRandoms.TryAdd(key, new CustomRandom(seedKey));  // Note DK: hasAdded being false means the key is already present which could happen in a multi-threaded environment. (which is why they're concurrent dictionaries)
 		}
 
 		return _customRandoms[key];

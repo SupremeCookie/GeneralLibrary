@@ -6,17 +6,7 @@
 
 		public static CustomRandom GetRandom(bool useSeededRandom)
 		{
-			CustomRandom rand;
-			if (useSeededRandom)
-			{
-				rand = CustomRandomContainer.GetRandom("Noise-Utility");
-			}
-			else
-			{
-				int seed = SeedGenerator.GetRandomSeed();
-				rand = new CustomRandom(seed);
-			}
-
+			CustomRandom rand = CustomRandomContainer.GetRandomInstance("Noise-Utility");
 			return rand;
 		}
 

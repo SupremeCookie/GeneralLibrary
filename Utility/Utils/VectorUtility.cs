@@ -6,11 +6,7 @@ public partial class Utility
 {
 	private const float PiRadToDegrees = 180f / Mathf.PI;
 
-	private static CustomRandom _random;
-	private static CustomRandom random
-	{
-		get { if (_random == null) { _random = new CustomRandom(); } return _random; }
-	}
+	private static CustomRandom random => _rand;
 
 	/// <summary>
 	/// Steps:

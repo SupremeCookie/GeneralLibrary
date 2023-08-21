@@ -1,6 +1,9 @@
 ﻿
 #if UNITY_EDITOR
+using System.Collections;
+using System.Security.AccessControl;
 using System.Threading;
+using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -164,11 +167,13 @@ public class TestsThroughMenuItems
 	{
 		Debug.Log("============ Test =============");
 
+		const int runAmount = 30;
+
 		{
 			var rand = new CustomRandom(SeedGenerator.GetRandomSeed());
 
 			string result = "";
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += rand.Next() % 100;
 			}
@@ -177,7 +182,7 @@ public class TestsThroughMenuItems
 
 			result = "";
 			var newRand = new CustomRandom(rand.Seed);
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += newRand.Next() % 100;
 			}
@@ -189,7 +194,7 @@ public class TestsThroughMenuItems
 			var rand = new CustomRandom(SeedGenerator.GetRandomSeed());
 
 			string result = "";
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += rand.Next() % 100;
 			}
@@ -198,7 +203,7 @@ public class TestsThroughMenuItems
 
 			result = "";
 			var newRand = new CustomRandom(rand.Seed);
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += newRand.Next() % 100;
 			}
@@ -210,7 +215,7 @@ public class TestsThroughMenuItems
 			var rand = new CustomRandom(SeedGenerator.GetRandomSeed());
 
 			string result = "";
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += rand.Next() % 100;
 			}
@@ -219,7 +224,7 @@ public class TestsThroughMenuItems
 
 			result = "";
 			var newRand = new CustomRandom(rand.Seed);
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += newRand.Next() % 100;
 			}
@@ -234,7 +239,7 @@ public class TestsThroughMenuItems
 			var systemRandom = new System.Random(seed);
 
 			string result = "";
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += systemRandom.Next() % 100;
 			}
@@ -243,7 +248,7 @@ public class TestsThroughMenuItems
 
 			result = "";
 			var newSystemRandom = new System.Random(seed);
-			for (int i = 0; i < 20; ++i)
+			for (int i = 0; i < runAmount; ++i)
 			{
 				result += newSystemRandom.Next() % 100;
 			}
@@ -251,9 +256,55 @@ public class TestsThroughMenuItems
 			Debug.Log(result);
 		}
 
+		// Make a custom random within an editor coroutine
+		// Run the code, wait a few seconds, make it anew, run it again.0
+		//eDITORCOroutineUtility
+		EditorCoroutine coroutine = null;
+		void killCoroutine()
+		{
+			if (coroutine != null)
+			{
+				EditorCoroutineUtility.StopCoroutine(coroutine);
+			}
+		}
 
+		coroutine = EditorCoroutineUtility.StartCoroutineOwnerless(DelayedTest(killCoroutine));
 
 		Debug.Log("=========== Test Done ===========");
+	}
+
+	private static IEnumerator DelayedTest(System.Action onFinished)
+	{
+		const int runAmount = 30;
+		CustomRandom random = new CustomRandom(SeedGenerator.GetRandomSeed());
+		string result = "";
+		for (int i = 0; i < runAmount; ++i)
+		{
+			result += random.Next() % 100;
+		}
+
+		Debug.Log(result);
+
+		bool shouldRun = true;
+		while (shouldRun)
+		{
+			Debug.Log($"Waiting a duration");
+			yield return new EditorWaitForSeconds(2.5f);
+
+			random = new CustomRandom(random.Seed);
+			result = "";
+			for (int i = 0; i < runAmount; ++i)
+			{
+				result += random.Next() % 100;
+			}
+
+			Debug.Log(result);
+			shouldRun = false;
+		}
+
+		onFinished?.Invoke();
+
+		Debug.Log("=========== Delayed Test Done ===========");
 	}
 
 

@@ -10,7 +10,7 @@ public static class VectorExtensions
 		{
 			if (_rand == null)
 			{
-				_rand = new CustomRandom();
+				_rand = CustomRandomContainer.GetRandomInstance("Vector_Extensions");
 			}
 
 			return _rand;
