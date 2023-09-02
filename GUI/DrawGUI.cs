@@ -23,6 +23,17 @@ public class ButtonModel
 	public bool sendActivationMessage = false;
 }
 
+public class DisplayCheckboxGroup
+{
+	public DisplayCheckboxModel[] models;
+}
+
+public class DisplayCheckboxModel
+{
+	public string label;
+	public bool checkboxValue;
+}
+
 
 //Note: If needed, make GUISkin to change style of assets.
 public class DrawGUI : SingletonMonoBehaviour<DrawGUI>
@@ -742,6 +753,33 @@ public class DrawGUIGroup
 		result = GUI.Toggle(rect, result, label);
 
 		return result;
+	}
+
+	public void DrawCheckBoxGroup(DisplayCheckboxGroup group)
+	{
+		Debug.Assert(group != null, $"DisplayCheckboxGroup is null, please fix");
+		Debug.Assert(!group.models.IsNullOrEmpty(), $"DisplayCheckboxGroup's models collection is null, please fix");
+
+		var models = group.models;
+
+		const int maxElementsPerHorizontal = 5;
+		int rowCount = Mathf.CeilToInt(models.Length / maxElementsPerHorizontal);
+
+		var customRect = GetNewRect(rowCount: rowCount);
+		var rect = customRect.rect;
+
+		float widthPerElement = rect.width / maxElementsPerHorizontal;
+
+		for (int i = 0; i < models.Length; ++i)
+		{
+			var currentModel = models[i];
+
+			float x = rect.x + (widthPerElement * (i % maxElementsPerHorizontal));
+			float y = rect.y + (elementSize * Mathf.FloorToInt(i / maxElementsPerHorizontal));
+
+			var toggleRect = new Rect(x, y, widthPerElement, rect.height);
+			GUI.Toggle(toggleRect, currentModel.checkboxValue, currentModel.label);
+		}
 	}
 
 	public void DrawButton(string label = "emptyLabel", System.Action callback = null, bool sendActivationMessage = false)
