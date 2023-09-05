@@ -21,6 +21,14 @@ public static class ListExtensions
 		return list == null || list.Count == 0;
 	}
 
+	public static void ClearIfNotNull<T>(this IList<T> list)
+	{
+		if (list != null)
+		{
+			list.Clear();
+		}
+	}
+
 	public static List<T> Populate<T>(this List<T> list) where T : new()
 	{
 		for (int i = 0; i < list.Capacity; i++)
