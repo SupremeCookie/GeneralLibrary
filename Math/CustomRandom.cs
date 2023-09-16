@@ -32,6 +32,7 @@ public class CustomRandom
 		return _rand.Next();
 	}
 
+	// Exlusive upper bound.
 	public int Next(int maxValue)
 	{
 		return _rand.Next(maxValue);
