@@ -23,6 +23,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 {
 	private const string DEBUG_MENU = "DEBUG_MENU";
 	private const string DISABLE_COMBAT_GROUPS = "DISABLE_COMBAT_GROUPS";
+	private const string FAVOR_DEBUG_UNLOCKER = "FAVOR_DEBUG_UNLOCKER";
 
 	public static BuildPlayerOptions buildOptions { get { return IniControl.GeneralScriptableData.BuildOptions; } set { IniControl.GeneralScriptableData.BuildOptions = value; } }
 
@@ -31,12 +32,12 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		{
 			var scriptingDefinesForTarget = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildOptions.targetGroup);
 
-			bool debugMenuIsEnabled = scriptingDefinesForTarget.Contains(DEBUG_MENU);
-			var newDebugMenuIsEnabled = GUILayout.Toggle(debugMenuIsEnabled, "Is Debug Menu Enabled");
+			bool valueIsEnabled = scriptingDefinesForTarget.Contains(DEBUG_MENU);
+			var newValueIsEnabled = GUILayout.Toggle(valueIsEnabled, "Is Debug Menu Enabled");
 
-			if (debugMenuIsEnabled != newDebugMenuIsEnabled)
+			if (valueIsEnabled != newValueIsEnabled)
 			{
-				if (!newDebugMenuIsEnabled)
+				if (!newValueIsEnabled)
 				{
 					var startIndexOfString = scriptingDefinesForTarget.IndexOf(DEBUG_MENU);
 					scriptingDefinesForTarget = scriptingDefinesForTarget.Remove(startIndexOfString, DEBUG_MENU.Length);
@@ -54,12 +55,12 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		{
 			var scriptingDefinesForTarget = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildOptions.targetGroup);
 
-			bool combatGroupsDisabled = scriptingDefinesForTarget.Contains(DISABLE_COMBAT_GROUPS);
-			var newCombatGroupsDisabled = GUILayout.Toggle(combatGroupsDisabled, "Are Combat Groups Disabled");
+			bool valueIsEnabled = scriptingDefinesForTarget.Contains(DISABLE_COMBAT_GROUPS);
+			var newValueIsEnabled = GUILayout.Toggle(valueIsEnabled, "Are Combat Groups Disabled");
 
-			if (combatGroupsDisabled != newCombatGroupsDisabled)
+			if (valueIsEnabled != newValueIsEnabled)
 			{
-				if (!newCombatGroupsDisabled)
+				if (!newValueIsEnabled)
 				{
 					var startIndexOfString = scriptingDefinesForTarget.IndexOf(DISABLE_COMBAT_GROUPS);
 					scriptingDefinesForTarget = scriptingDefinesForTarget.Remove(startIndexOfString, DISABLE_COMBAT_GROUPS.Length);
@@ -67,6 +68,29 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 				else
 				{
 					scriptingDefinesForTarget += $";{DISABLE_COMBAT_GROUPS}";
+				}
+
+				PlayerSettings.SetScriptingDefineSymbolsForGroup(buildOptions.targetGroup, scriptingDefinesForTarget);
+			}
+		}
+
+
+		{
+			var scriptingDefinesForTarget = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildOptions.targetGroup);
+
+			bool valueIsEnabled = scriptingDefinesForTarget.Contains(FAVOR_DEBUG_UNLOCKER);
+			var newValueIsEnabled = GUILayout.Toggle(valueIsEnabled, "Is the Favor Debug Unlocker Enabled");
+
+			if (valueIsEnabled != newValueIsEnabled)
+			{
+				if (!newValueIsEnabled)
+				{
+					var startIndexOfString = scriptingDefinesForTarget.IndexOf(FAVOR_DEBUG_UNLOCKER);
+					scriptingDefinesForTarget = scriptingDefinesForTarget.Remove(startIndexOfString, FAVOR_DEBUG_UNLOCKER.Length);
+				}
+				else
+				{
+					scriptingDefinesForTarget += $";{FAVOR_DEBUG_UNLOCKER}";
 				}
 
 				PlayerSettings.SetScriptingDefineSymbolsForGroup(buildOptions.targetGroup, scriptingDefinesForTarget);
