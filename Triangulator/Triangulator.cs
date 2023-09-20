@@ -12,6 +12,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using RogueLike;
 using UnityEngine;
 
 
@@ -86,6 +87,11 @@ namespace Triangulator
 			// That way we can somewhat see how long each step takes.
 			while (vertexOrder.Count >= minimumVerticesForTriangle)
 			{
+				if (ApplicationManager.HasBeenQuit)
+				{
+					return null;
+				}
+
 				if (tracker > maxTracker)
 				{
 					Debug.LogError($"Went over maxTracker: {maxTracker},  currentTracker: {tracker}");

@@ -89,6 +89,11 @@ namespace Triangulator
 					if (dot >= 0.98f)
 					{
 						// Note DK: This means the ear is a line.
+						if (RogueLike.ApplicationManager.HasBeenQuit)
+						{
+							Debug.Log($"We've already quit the game, so stop it.");
+						}
+
 						Debug.LogWarning($"We've encountered an ear that's basically a line, this means we have 0 area");
 						return 0;
 					}
