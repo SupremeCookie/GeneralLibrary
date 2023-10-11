@@ -7,8 +7,6 @@ using UnityEditor;
 
 public class ScriptingDefineSymbolsWindow : EditorWindow
 {
-	private bool hasInitialised = false;
-
 	[MenuItem("Tools/ScriptingDefineSymbols")]
 	private static void OpenWindow()
 	{
@@ -19,10 +17,10 @@ public class ScriptingDefineSymbolsWindow : EditorWindow
 
 	private void OnGUI()
 	{
-		if (!hasInitialised)
+		if (!ScriptingDefineSymbolsSection.HasLoaded)
 		{
 			ScriptingDefineSymbolsSection.Load();
-			hasInitialised = true;
+			return;
 		}
 
 		ScriptingDefineSymbolsSection.DrawSection();

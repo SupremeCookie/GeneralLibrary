@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class ScriptingDefineSymbolsSection
 {
+	public static bool HasLoaded => !string.IsNullOrEmpty(scriptingDefines);
+
 	private static BuildPlayerOptions buildOptions => GeneralPreBuildWindow.buildOptions;
 	private static ScriptingDefineSymbolsScriptableObject symbolsData => ScriptingDefineSymbolsScriptableObject.Instance;
 
@@ -20,6 +22,13 @@ public class ScriptingDefineSymbolsSection
 
 	public static void Load()
 	{
+		if (buildOptions.targetGroup == BuildTargetGroup.Unknown)
+		{
+			var copyBuildOptions = buildOptions;
+			copyBuildOptions.targetGroup = BuildTargetGroup.Standalone;
+			GeneralPreBuildWindow.buildOptions = copyBuildOptions;
+		}
+
 		scriptingDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildOptions.targetGroup);
 		originalScriptingDefines = scriptingDefines;
 		LoadStyles();
@@ -61,6 +70,11 @@ public class ScriptingDefineSymbolsSection
 		if (header == null)
 		{
 			LoadStyles();
+		}
+
+		if (string.IsNullOrEmpty(scriptingDefines))
+		{
+			return;
 		}
 
 		GUILayout.BeginHorizontal();
