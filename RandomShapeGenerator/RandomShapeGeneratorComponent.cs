@@ -14,23 +14,23 @@ namespace RandomShapeGenerator
 			BetweenTwoFloats,
 		};
 
-		[SerializeField] [HideInInspector] private JitterModeType _jitterMode;
+		[SerializeField][HideInInspector] private JitterModeType _jitterMode;
 		public JitterModeType JitterMode
 		{
 			get { return _jitterMode; }
 		}
 
-		[SerializeField] [HideInInspector] private JitterModeType _jitterModeCenterPos;
+		[SerializeField][HideInInspector] private JitterModeType _jitterModeCenterPos;
 		public JitterModeType JitterModeCenterPos
 		{
 			get { return _jitterModeCenterPos; }
 		}
 
-		[SerializeField] [HideInInspector] private Vector2 _jitterRange;
+		[SerializeField][HideInInspector] private Vector2 _jitterRange;
 		private Vector2 _positionJitterFromCenter;
 
 
-		[SerializeField] [HideInInspector] private int _randomShapeCount;
+		[SerializeField][HideInInspector] private int _randomShapeCount;
 		public int RandomShapeCount
 		{
 			get { return _randomShapeCount; }
@@ -51,14 +51,14 @@ namespace RandomShapeGenerator
 #pragma warning restore 0649
 
 
-		[SerializeField] [HideInInspector] private List<NamedBezierSpline> _splines;
-		[SerializeField] [HideInInspector] private List<SplineDisplayerComponent> _splineDisplayers;
+		[SerializeField][HideInInspector] private List<NamedBezierSpline> _splines;
+		[SerializeField][HideInInspector] private List<SplineDisplayerComponent> _splineDisplayers;
 
 		public List<NamedBezierSpline> Splines { get { return _splines; } }
 		public List<SplineDisplayerComponent> SplineDisplayers { get { return _splineDisplayers; } }
 
 
-		[SerializeField] [HideInInspector] private List<RandomShapeComponent> _randomShapes = new List<RandomShapeComponent>();
+		[SerializeField][HideInInspector] private List<RandomShapeComponent> _randomShapes = new List<RandomShapeComponent>();
 
 
 
@@ -270,6 +270,7 @@ namespace RandomShapeGenerator
 				}
 			}
 
+			//Debug.Log($"DesiredCount of Random Shapes: {desiredCount},  structuresCount: {structuresCount},  randomShapeCount: {_randomShapeCount}");
 			for (int i = 0; i < desiredCount; ++i)
 			{
 				int splineIndex = i % structuresCount;
