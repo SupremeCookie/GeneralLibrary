@@ -9,6 +9,8 @@ namespace Curves
 	{
 		public static int GENERAL_RESOLUTION = 50;
 
+		public GUID ID;
+
 
 		[SerializeField] private float _totalDistance;
 		public float TotalDistance
@@ -37,7 +39,16 @@ namespace Curves
 
 		public BezierSpline()
 		{
+			ID = new GUID();
 			Points = new List<BezierSplineChainPoint>();
+		}
+
+		public BezierSpline(float totalDistance, bool isClosed, List<BezierSplineChainPoint> points, GUID id)
+		{
+			_totalDistance = totalDistance;
+			_isClosed = isClosed;
+			_points = points;
+			ID = id;
 		}
 
 		public List<BezierSplineChainPoint> GetPoints()
@@ -56,6 +67,7 @@ namespace Curves
 			for (int i = 0; i < input.Count; ++i)
 			{
 				_points[i].Distance = input[i].Distance;
+				_points[i].ClosedLoopDistance = input[i].ClosedLoopDistance;
 				_points[i].ArcLengthsToNextPoint = input[i].ArcLengthsToNextPoint.Copy();
 			}
 		}
@@ -73,11 +85,8 @@ namespace Curves
 
 		public static BezierSpline Copy(this BezierSpline input)
 		{
-			var result = new BezierSpline();
+			var result = new BezierSpline(input.TotalDistance, input.IsClosed, input.GetPoints(), input.ID);
 
-			result.Points = input.GetPoints();  // Note DK: This calls RecalculateDistance.
-			result.TotalDistance = input.TotalDistance;
-			result.IsClosed = input.IsClosed;   // Note DK: This calls RecalculateDistance.
 
 			return result;
 		}
@@ -170,7 +179,7 @@ namespace Curves
 			var result = defaultResult;
 
 			var firstPointInSpline = points[0];
-			Debug.Assert(firstPointInSpline.ClosedLoopDistance >= distance, "The closed loop distance is not bigger than distance:  " + firstPointInSpline.ClosedLoopDistance + " : " + distance + "    We can't find a proper chosen index");
+			Debug.Assert(firstPointInSpline.ClosedLoopDistance >= distance, "The closed loop distance is not bigger than asked-distance,  " + firstPointInSpline.ClosedLoopDistance + " : " + distance + ",    We can't find a proper chosen index");
 
 			var firstPoint = points[points.Count - 1];
 			var secondPoint = points[0];

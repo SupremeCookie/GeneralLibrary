@@ -42,6 +42,9 @@ namespace RandomShapeGenerator
 			float totalDistance = ShapeSpline.TotalDistance;
 			float distancePerPoint = totalDistance / pointCount;
 
+			var points = ShapeSpline.GetPoints();
+			float closedLength = points[0].ClosedLoopDistance;
+			float lastPointLength = points[points.Count - 1].Distance;
 
 			var startPoint = rand.Range(0, totalDistance);
 			for (int i = 0; i < pointCount; ++i)
@@ -57,7 +60,7 @@ namespace RandomShapeGenerator
 				newPointFloatPos %= totalDistance;
 				if (newPointFloatPos < 0) { newPointFloatPos += totalDistance; }
 
-				//Debug.Log(newPointFloatPos + " : " + addition + " : " + (isPositiveOffset) + " :  " + jitterRange + " :  " + maxOffset + " :  " + randomJitter + " :  " + offset);
+				//Debug.Log(newPointFloatPos + " : " + addition + " : " + (isPositiveOffset) + " :  " + jitterRange + " :  " + maxOffset + " :  " + randomJitter + " :  " + offset + "  ,   " + totalDistance);
 
 				var newPoint = ShapeSpline.Evaluate(newPointFloatPos);
 				result.Add(newPoint);
