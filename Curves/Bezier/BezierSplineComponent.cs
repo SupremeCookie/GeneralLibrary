@@ -21,7 +21,7 @@ namespace Curves
 		[Readonly] public BezierSpline Spline;
 
 #pragma warning disable 0649, 0414
-		[Range(0.01f, 7.5f)] [HideInInspector] [SerializeField] private float _scaleFactor = 1.0f;
+		[Range(0.01f, 7.5f)][HideInInspector][SerializeField] private float _scaleFactor = 1.0f;
 #pragma warning restore 0649, 0414
 
 #if UNITY_EDITOR
@@ -335,6 +335,7 @@ namespace Curves
 			if (GUILayout.Button("Save Spline"))
 			{
 				casted.SplineStorage.Spline = casted.Spline.Copy();
+				EditorUtility.SetDirty(casted.SplineStorage);
 				UnityEditor.SceneView.RepaintAll();
 			}
 
