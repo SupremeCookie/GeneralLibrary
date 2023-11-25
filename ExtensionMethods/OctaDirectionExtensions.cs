@@ -64,4 +64,9 @@ public static class OctaDirectionExtensions
 
 		return newDir;
 	}
+
+	public static OCTA_DIRECTION Inverse(this OCTA_DIRECTION dir)
+	{
+		return dir.Flip();
+	}
 }
