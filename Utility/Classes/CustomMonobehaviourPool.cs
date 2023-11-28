@@ -125,8 +125,23 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 
 	public void ReturnObject(T key, U value)
 	{
-		// Puts an item back in it's collection, but rather than doing that, we simply tick the box that it was taken to false
-		// It also needs to be placed back in the parent transform?
+		value.transform.SetParent(_parentObject, false);
+
+		var poolItems = pool[key];
+		for (int i = 0; i < poolItems.Count; ++i)
+		{
+			if (!poolItems[i].isUsed)
+			{
+				continue;
+			}
+
+			if (poolItems[i].instance == value)
+			{
+				Debug.Log($"Found the instance! go and return :)");
+				poolItems[i].isUsed = false;
+				break;
+			}
+		}
 	}
 
 
