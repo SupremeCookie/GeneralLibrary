@@ -34,8 +34,8 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 	}
 
 	private Transform _parentObject;
-	private Dictionary<T, IList<UWrapper>> pool;       // Make custom editor to portray this? Gonna be difficult as it needs to be a property drawer :thinking_face:
-	private Dictionary<T, GameObject> prefabs;  // In order to grow the pool further, we store the 'impression' of a pool (the prefab)
+	private Dictionary<T, IList<UWrapper>> pool;    // Make custom editor to portray this? Gonna be difficult as it needs to be a property drawer :thinking_face:
+	private Dictionary<T, GameObject> prefabs;      // In order to grow the pool further, we store the 'impression' of a pool (the prefab)
 
 	public void CreatePool<P>(T key, int size, GameObject prefab, out CreatePoolReturnValue returnValue) where P : U
 	{
