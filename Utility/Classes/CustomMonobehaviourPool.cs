@@ -68,6 +68,21 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 		AddToPool<P>(key, size, prefab);
 	}
 
+	public void CleanupPool()
+	{
+		foreach (var collection in pool)
+		{
+			for (int i = 0; i < collection.Value.Count; ++i)
+			{
+				if (collection.Value[i].isUsed)
+				{
+					ReturnObject(collection.Key, collection.Value[i].instance);
+				}
+			}
+		}
+	}
+
+
 	private void AddToPool<P>(T key, int size, GameObject prefab) where P : U
 	{
 		Debug.Assert(pool != null, $"No pool has been made yet, please make it before trying to assign anything");
