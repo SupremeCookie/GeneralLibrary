@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 namespace RogueLike
@@ -63,6 +64,10 @@ namespace RogueLike
 						UpdateKeybindingWithInput();
 					}
 				}
+				else
+				{
+					UpdateKeybindingNormally();
+				}
 			}
 		}
 
@@ -72,6 +77,11 @@ namespace RogueLike
 			targetText = GetComponentInChildren<TextMeshProUGUI>();
 		}
 #endif
+
+		public void DebugUpdate()
+		{
+			TryUpdateInputDeviceAndBinding();
+		}
 
 		private void UpdateKeybindingNormally()
 		{
