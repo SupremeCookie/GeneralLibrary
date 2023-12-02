@@ -152,7 +152,6 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 
 			if (poolItems[i].instance == value)
 			{
-				Debug.Log($"Found the instance! go and return :)");
 				poolItems[i].isUsed = false;
 				break;
 			}
