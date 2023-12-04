@@ -23,6 +23,9 @@ namespace RogueLike
 		[Space(10)]
 		[SerializeField][Readonly] private ControlType lastKnownInputDevice;
 
+		[Space(10)]
+		[SerializeField][Readonly] private bool canUpdate = true;
+
 		private void OnEnable()
 		{
 			TryUpdateInputDeviceAndBinding();
@@ -30,6 +33,11 @@ namespace RogueLike
 
 		private void Update()
 		{
+			if (!canUpdate)
+			{
+				return;
+			}
+
 			if (updateEverySoManyFrames)
 			{
 				if (updateCount < everySoManyFrames)
@@ -43,6 +51,22 @@ namespace RogueLike
 
 
 			TryUpdateInputDeviceAndBinding();
+		}
+
+		public void TurnOffUpdate()
+		{
+			canUpdate = false;
+		}
+
+		public void TurnOnUpdate()
+		{
+			canUpdate = true;
+			updateCount = everySoManyFrames;
+		}
+
+		public void EmptyText()
+		{
+			targetText.text = "";
 		}
 
 		private void TryUpdateInputDeviceAndBinding()

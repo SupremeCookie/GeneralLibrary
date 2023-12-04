@@ -52,10 +52,11 @@ namespace RandomShapeGenerator
 
 			totalRotationAngles = Mathf.Abs(totalRotationAngles);   // Note DK: I don't care if the points are clock or counter-clockwise rotationally distributed, so the total angles need to be absed before evaluating.
 
+			bool isCloseTo720 = totalRotationAngles.IsCloseTo(720, 0.5f);
 			bool isCloseTo360 = totalRotationAngles.IsCloseTo(360, 0.5f);
 			bool isCloseToZero = totalRotationAngles.IsCloseTo(0, 0.5f);
 
-			Debug.Assert(isCloseTo360 || isCloseToZero, "Total Rotations is not close to either zero or 360:   " + totalRotationAngles);
+			Debug.Assert(isCloseTo360 || isCloseToZero || isCloseTo720, "Total Rotations is not close to either zero or 360 or 720:   " + totalRotationAngles);
 
 			return isCloseTo360;
 		}
