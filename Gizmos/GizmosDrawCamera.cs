@@ -6,6 +6,8 @@ using UnityEngine;
 public class GizmosDrawCamera : MonoBehaviour
 {
 #if UNITY_EDITOR
+	private Camera gizmoCamera;
+
 	void Start() { }
 
 	private void OnDrawGizmos()
@@ -15,12 +17,18 @@ public class GizmosDrawCamera : MonoBehaviour
 			return;
 		}
 
-		if (MainCameraControl.HasInstance || MainCameraControl.Instance.Camera == null)
+		if ((MainCameraControl.HasInstance || MainCameraControl.Instance.Camera == null) && gizmoCamera == null)
 		{
+			TryCachingEditorCamera();
 			return;
 		}
 
-		var bounds = MainCameraControl.Instance.Camera.OrthographicWorldBounds();
+		if (MainCameraControl.HasInstance)
+		{
+			gizmoCamera = MainCameraControl.Instance.Camera;
+		}
+
+		var bounds = gizmoCamera.OrthographicWorldBounds();
 		var points = new Vector2[]
 		{
 			bounds.min,
@@ -35,6 +43,11 @@ public class GizmosDrawCamera : MonoBehaviour
 		{
 			Gizmos.DrawLine(positionOffset + points[i], positionOffset + points[(i + 1) % points.Length]);
 		}
+	}
+
+	private void TryCachingEditorCamera()
+	{
+		gizmoCamera = Camera.main;
 	}
 #endif
 }
