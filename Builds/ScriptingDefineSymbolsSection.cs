@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor;
+﻿#if UNITY_EDITOR
 using UnityEngine;
+using UnityEditor;
 
 public class ScriptingDefineSymbolsSection
 {
@@ -93,6 +89,7 @@ public class ScriptingDefineSymbolsSection
 		if (GUILayout.Button($"Apply Settings", GUILayout.MaxWidth(buttonWidth)))
 		{
 			PlayerSettings.SetScriptingDefineSymbolsForGroup(buildOptions.targetGroup, scriptingDefines);
+			originalScriptingDefines = scriptingDefines;
 		}
 		GUILayout.EndHorizontal();
 
@@ -136,3 +133,4 @@ public class ScriptingDefineSymbolsSection
 		}
 	}
 }
+#endif

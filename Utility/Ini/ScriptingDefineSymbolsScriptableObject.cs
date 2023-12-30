@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = NAME, menuName = "_scriptables/" + NAME, order = 0)]
 public class ScriptingDefineSymbolsScriptableObject : ScriptableObject

@@ -1,7 +1,5 @@
-﻿
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections;
-using System.Security.AccessControl;
 using System.Threading;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor;
