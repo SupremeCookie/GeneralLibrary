@@ -73,18 +73,16 @@ public static class CoordinatesExtensions
 
 	public static int GetCoordinateHash(int x, int y)
 	{
-		int hash = 19;
-		hash = hash * 233 + x.GetHashCode();
-		hash = hash * 2777 + y.GetHashCode();
-		return hash;
+		x += 1000;
+		y += 1000;
+
+		int temp = y + ((x + 1) / 2);
+		return x + (temp * temp);
 	}
 
 	public static int GetCoordinateHash(this Coordinates input)
 	{
-		int hash = 19;
-		hash = hash * 233 + input.x.GetHashCode();
-		hash = hash * 2777 + input.y.GetHashCode();
-		return hash;
+		return GetCoordinateHash(input.x, input.y);
 	}
 
 	public static int ToHash(this Coordinates input)
