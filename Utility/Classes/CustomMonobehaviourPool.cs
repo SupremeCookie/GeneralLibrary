@@ -142,6 +142,13 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 
 	public void ReturnObject(T key, U value)
 	{
+		Debug.Assert(value != null, $"The value we're trying to return is null");
+		Debug.Assert(value.transform != null, $"The value we're trying to return doesn't have a transform associated");
+		Debug.Assert(parentObject != null, $"Our parent object is present");
+		Debug.Assert(pool != null, $"There is no object pool to return our items to");
+		Debug.Assert(!pool[key].IsNullOrEmpty(), $"The pool we're trying to put our item ({key}) into is null or empty");
+
+
 		value.transform.SetParent(parentObject, false);
 
 		var poolItems = pool[key];
@@ -164,6 +171,8 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 	private void CreateParent()
 	{
 		GameObject newGO = new GameObject("CMP-ParentObject");
+		Object.DontDestroyOnLoad(newGO);
+
 		_parentObject = newGO.transform;
 		newGO.SetActive(false); // Note DK: ObjectPool objects should always be invisible.
 	}
