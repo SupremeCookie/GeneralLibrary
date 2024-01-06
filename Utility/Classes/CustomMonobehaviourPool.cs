@@ -74,8 +74,10 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 		{
 			for (int i = 0; i < collection.Value.Count; ++i)
 			{
+				Debug.Assert(collection.Value[i] != null, $"No value for collection item in index: {i}");
 				if (collection.Value[i].isUsed)
 				{
+					Debug.Assert(collection.Value[i].instance != null, $"No instance for the value at index: {i}");
 					ReturnObject(collection.Key, collection.Value[i].instance);
 				}
 			}
@@ -140,7 +142,7 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 
 	public void ReturnObject(T key, U value)
 	{
-		value.transform.SetParent(_parentObject, false);
+		value.transform.SetParent(parentObject, false);
 
 		var poolItems = pool[key];
 		for (int i = 0; i < poolItems.Count; ++i)
