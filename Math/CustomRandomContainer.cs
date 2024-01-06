@@ -3,13 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-// TODO DK: Output the Dictionary whenever we get into a crash, or when uploading data/a run
-// The problem with using the key as a seed, is that we get the same results, every single time. So that's now different. (by storing the key as an accessor, and just grabbing a random key)
+// TODO DK: figure out how to get deterministic seeding, and why certain things have become undeterministic in Wrath
 public static class CustomRandomContainer
 {
 	private static ConcurrentDictionary<string, CustomRandom> _customRandoms = new ConcurrentDictionary<string, CustomRandom>();
 	public static ConcurrentDictionary<string, CustomRandom> CustomRandoms { get { return _customRandoms; } }
 
+	// Note DK: The problem is though that in Wrath it has been found to be non-deterministic
 	//// TODO: test if this is deterministic. Test this by changing dependencies to a CustomRand using a seed.
 	//// Note DK: Above test results in being deterministic, as the given seed is constantly returning the same results. It "restarts" basically
 	//public static CustomRandom GetRandom(string key)
