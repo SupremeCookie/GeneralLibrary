@@ -35,24 +35,31 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		GUILayout.Space(25);
 
 		GUILayout.BeginHorizontal();
-		float width = Screen.width * 0.6f;
+		float width = Screen.width * 0.8f;
 		width = width < 300 ? 300 : width;
 
-		GUILayout.Space(width * 0.33f);
+		GUILayout.Space(width * 0.12f);
+		GUILayout.BeginVertical();
+
 		GUILayout.BeginVertical(GUI.skin.box, GUILayout.MaxWidth(width));
-
 		DrawChecklist();
-
 		GUILayout.EndVertical();
-		GUILayout.EndHorizontal();
 
-		GUILayout.Space(25);
+		GUILayout.Space(50);
 
-		if (GUILayout.Button("Build Player"))
+		string label = "Make a Build";
+#if DEMO_BUILD
+		label = "Make a (DEMO) Build";
+#endif
+
+		EditorWindowUtility.DrawButton(label, width, () =>
 		{
 			BuildPipeline.BuildPlayer(buildOptions);
 			Close();
-		}
+		});
+
+		GUILayout.EndVertical();
+		GUILayout.EndHorizontal();
 	}
 
 	private void DrawChecklist()
@@ -74,28 +81,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 	{
 		headerInternal = new GUIStyle(GUI.skin.label);
 
-		const int width = 300;
-		const int height = 20;
-		Texture2D newBackground = new Texture2D(width, height);
-
-		Color pixelColor = new Color(0.2f, 0.6f, 1f);
-		Color[] pixels = new Color[newBackground.width * newBackground.height];
-		for (int i = 0; i < pixels.Length; ++i)
-		{
-			if ((i % width) == 0 || (i % width) == (width - 1)
-				|| i < width || i >= (width * (height - 1)))
-			{
-				pixels[i] = Color.black;
-				continue;
-			}
-
-			pixels[i] = pixelColor;
-		}
-
-		newBackground.SetPixels(pixels);
-		newBackground.Apply();
-
-		headerInternal.normal.background = newBackground;
+		headerInternal.normal.background = EditorWindowUtility.CreateHeaderBackground(new Color(0.2f, 0.6f, 1f), 300, 20);
 		headerInternal.alignment = TextAnchor.MiddleCenter;
 
 		headerInternal.fontSize += 5;
