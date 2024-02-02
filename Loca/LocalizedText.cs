@@ -69,6 +69,11 @@ namespace RogueLike
 			targetText.text = "";
 		}
 
+		public void SetText(string text)
+		{
+			targetText.text = text;
+		}
+
 		private void TryUpdateInputDeviceAndBinding()
 		{
 			bool updateRegularKeybinding = !hasInputKeybindingsInside;
