@@ -23,13 +23,14 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 {
 	public static BuildPlayerOptions buildOptions { get { return IniControl.GeneralScriptableData.BuildOptions; } set { IniControl.GeneralScriptableData.BuildOptions = value; } }
 
-	private void OnEnable()
-	{
-		ScriptingDefineSymbolsSection.Load();
-	}
-
 	private void OnGUI()
 	{
+		if (!ScriptingDefineSymbolsSection.HasLoaded)
+		{
+			ScriptingDefineSymbolsSection.Load();
+			return;
+		}
+
 		ScriptingDefineSymbolsSection.DrawSection();
 
 		GUILayout.Space(25);
