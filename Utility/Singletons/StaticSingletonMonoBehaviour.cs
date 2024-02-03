@@ -42,7 +42,6 @@ public class StaticSingletonMonoBehaviour<T> : MonoBehaviour where T : StaticSin
 		if (pInstance == null)
 		{
 			pInstance = (T)this;
-			// DontDestroyOnLoad(_instance);
 		}
 		else
 		{

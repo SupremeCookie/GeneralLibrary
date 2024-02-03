@@ -2,6 +2,8 @@
 
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
 {
+	[SerializeField] private bool shouldNotDestroyOnLoad = true;
+
 	protected bool pDestroyedObject = false;
 
 	[Readonly]
@@ -53,7 +55,11 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBe
 		if (_instance == null)
 		{
 			_instance = (T)this;
-			DontDestroyOnLoad(_instance);
+
+			if (shouldNotDestroyOnLoad)
+			{
+				DontDestroyOnLoad(_instance);
+			}
 		}
 		else
 		{
