@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 
@@ -53,11 +54,20 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		label = "Make a (DEMO) Build";
 #endif
 
+		bool canBuild = !EditorApplication.isCompiling;
+
+		EditorGUI.BeginDisabledGroup(!canBuild);
+		if (!canBuild)
+		{
+			GUILayout.Label($"Cannot build whilst Unity is compiling");
+		}
+
 		EditorWindowUtility.DrawButton(label, width, () =>
 		{
 			BuildPipeline.BuildPlayer(buildOptions);
 			Close();
 		});
+		EditorGUI.EndDisabledGroup();
 
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
