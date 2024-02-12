@@ -53,7 +53,7 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 #pragma warning disable 0649
 	[SerializeField]
 	private GameObject _spritePrefab;
-	[SerializeField] private SpritePrefabs spritePrefabStorer;
+	[SerializeField] public SpritePrefabs spritePrefabs;
 #pragma warning restore 0649
 
 #if UNITY_EDITOR
@@ -292,7 +292,7 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 		if (data.PlacementType == SpritePlaceType.Normal)
 		{
 #endif
-			spriteInstance = GameObject.Instantiate(GetSpritePrefab(data.GroundSpriteMask));
+			spriteInstance = GameObject.Instantiate(_spritePrefab);
 			spriteInstance.transform.position = data.Position;
 			spriteInstance.transform.SetParent(parentObject, true);
 
@@ -303,7 +303,7 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 		else
 		{
 			Debug.Assert(data.PlacementType == SpritePlaceType.Ground, $"Trying to spawn a non placementType Ground, make a case for this: ({data.PlacementType})");
-			spriteInstance = RogueLike.LevelSpriteObjectCreator.GetGroundTileInstance(data.Position, addCollider: true, container: parentObject);
+			spriteInstance = RogueLike.LevelSpriteObjectCreator.GetGroundTileInstance(data.Position, data.GroundSpriteMask, addCollider: true, container: parentObject);
 		}
 
 		var spriteRenderer = spriteInstance.GetComponent<SpriteRenderer>();
@@ -316,11 +316,6 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 
 		return spriteInstance;
 #endif
-	}
-
-	private GameObject GetSpritePrefab(byte mask)
-	{
-		return spritePrefabStorer.GetSpritePrefab(mask);
 	}
 
 
