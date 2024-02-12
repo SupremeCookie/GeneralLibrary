@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net.Configuration;
 using UnityEngine;
 
 public enum SpritePlaceType
@@ -24,6 +25,7 @@ public class SpritePlacerData
 	public UnityEngine.Sprite Sprite;
 	public int SortingOrder;
 	public SpritePlaceType PlacementType;
+	public byte GroundSpriteMask;
 }
 
 public class SpriteInstanceData
@@ -51,11 +53,12 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 #pragma warning disable 0649
 	[SerializeField]
 	private GameObject _spritePrefab;
+	[SerializeField] private SpritePrefabs spritePrefabStorer;
 #pragma warning restore 0649
 
 #if UNITY_EDITOR
-	[SerializeField] [Readonly] private int _currentJobRegister;
-	[SerializeField] [Readonly] private int _currentActiveSubJobs;
+	[SerializeField][Readonly] private int _currentJobRegister;
+	[SerializeField][Readonly] private int _currentActiveSubJobs;
 #endif
 
 	private Dictionary<string, List<GUID>> _jobRegister;
@@ -289,7 +292,7 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 		if (data.PlacementType == SpritePlaceType.Normal)
 		{
 #endif
-			spriteInstance = GameObject.Instantiate(_spritePrefab);
+			spriteInstance = GameObject.Instantiate(GetSpritePrefab(data.GroundSpriteMask));
 			spriteInstance.transform.position = data.Position;
 			spriteInstance.transform.SetParent(parentObject, true);
 
@@ -313,6 +316,11 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 
 		return spriteInstance;
 #endif
+	}
+
+	private GameObject GetSpritePrefab(byte mask)
+	{
+		return spritePrefabStorer.GetSpritePrefab(mask);
 	}
 
 
