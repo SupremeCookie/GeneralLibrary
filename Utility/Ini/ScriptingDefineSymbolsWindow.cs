@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class ScriptingDefineSymbolsWindow : EditorWindow
 {
-	[MenuItem("Tools/ScriptingDefineSymbols")]
+	[MenuItem("DKat/ScriptingDefineSymbols", priority = 0)]
 	private static void OpenWindow()
 	{
 		ScriptingDefineSymbolsWindow window = (ScriptingDefineSymbolsWindow)EditorWindow.GetWindow(typeof(ScriptingDefineSymbolsWindow));

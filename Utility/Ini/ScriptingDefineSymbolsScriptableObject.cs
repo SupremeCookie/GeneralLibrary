@@ -52,3 +52,16 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 		return result;
 	}
 }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(ScriptingDefineSymbolsScriptableObject))]
+public class ScriptingDefineSymbolsScriptableObjectEditor : UnityEditor.Editor
+{
+	public override void OnInspectorGUI()
+	{
+		ScriptableUtility.DrawSaveButton_AtStart(this);
+
+		base.OnInspectorGUI();
+	}
+}
+#endif
