@@ -341,7 +341,7 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 
 			if (subJobs.Count == 0)
 			{
-				Debug.Log($"Cleanup Job: ({registration.Key})");
+				//Debug.Log($"Cleanup Job: ({registration.Key})");
 				CleanupRegisteredJob(registration.Key);
 				break;
 			}
