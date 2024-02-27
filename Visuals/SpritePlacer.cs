@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net.Configuration;
 using UnityEngine;
 
 public enum SpritePlaceType
@@ -292,11 +291,11 @@ public class SpritePlacer : SingletonMonoBehaviour<SpritePlacer>
 		if (data.PlacementType == SpritePlaceType.Normal)
 		{
 #endif
-			spriteInstance = GameObject.Instantiate(_spritePrefab);
-			spriteInstance.transform.position = data.Position;
-			spriteInstance.transform.SetParent(parentObject, true);
+		spriteInstance = GameObject.Instantiate(_spritePrefab);
+		spriteInstance.transform.position = data.Position;
+		spriteInstance.transform.SetParent(parentObject, true);
 
-			return spriteInstance;
+		return spriteInstance;
 
 #if RogueLike
 		}

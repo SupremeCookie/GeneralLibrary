@@ -11,13 +11,22 @@ public class ScriptingDefineSymbolsSection
 
 	private static GUIStyle mainHeader;
 	private static GUIStyle helpHeader;
+	private static GUIStyle applyBox;
 
 	private static string scriptingDefines;
 	private static string originalScriptingDefines;
 
 	private static ScriptingSymbol[] scriptingSymbols => symbolsData.GetSymbols();
 
+
 	public static void Load()
+	{
+		LoadBuildOptions();
+		LoadScriptingDefines();
+		LoadStyles();
+	}
+
+	private static void LoadBuildOptions()
 	{
 		if (buildOptions.targetGroup == BuildTargetGroup.Unknown)
 		{
@@ -25,29 +34,32 @@ public class ScriptingDefineSymbolsSection
 			copyBuildOptions.targetGroup = BuildTargetGroup.Standalone;
 			GeneralPreBuildWindow.buildOptions = copyBuildOptions;
 		}
+	}
 
+	private static void LoadScriptingDefines()
+	{
 		scriptingDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildOptions.targetGroup);
 		originalScriptingDefines = scriptingDefines;
-		LoadStyles();
 	}
 
 	private static void LoadStyles()
 	{
-		mainHeader = new GUIStyle(GUI.skin.label);
-
-		Texture2D newBackground = EditorWindowUtility.CreateHeaderBackground(new Color(0.8f, 0.1f, 0.4f), 300, 20);
-		mainHeader.normal.background = newBackground;
-		mainHeader.alignment = TextAnchor.MiddleCenter;
-
-		mainHeader.fontSize += 5;
+		mainHeader = EditorWindowUtility.CreateHeaderStyle();
+		mainHeader.normal.background = EditorWindowUtility.CreateHeaderBackground(new Color(0.8f, 0.1f, 0.4f), 300, 20);
 
 		helpHeader = new GUIStyle(mainHeader);
 		helpHeader.normal.background = EditorWindowUtility.CreateHeaderBackground(new Color(0.2f, 0.7f, 0.4f), 300, 20);
+
+		applyBox = new GUIStyle(EditorStyles.helpBox);
+		applyBox.normal.background = EditorWindowUtility.CreateHeaderBackground(new Color(1f, 0f, 0f), 300, 20);
+		applyBox.normal.textColor = Color.white;
+		applyBox.fontSize += 3;
 	}
+
 
 	public static void DrawSection()
 	{
-		if (mainHeader == null)
+		if (mainHeader == null || applyBox == null)
 		{
 			LoadStyles();
 		}
@@ -59,7 +71,7 @@ public class ScriptingDefineSymbolsSection
 
 		GUILayout.BeginHorizontal();
 		float width = Screen.width * 0.8f;
-		width = width < 300 ? 300 : width;
+		width = Mathf.Max(width, 300);
 
 		GUILayout.Space(width * 0.12f);
 		GUILayout.BeginVertical();
@@ -74,14 +86,19 @@ public class ScriptingDefineSymbolsSection
 
 	private static void DrawDefineSymbols(float width)
 	{
+		if (scriptingDefines == null)
+		{
+			return;
+		}
+
 		GUILayout.BeginVertical(GUI.skin.box, GUILayout.MaxWidth(width));
 		GUILayout.Label("Scripting Define Symbols", mainHeader);
 		GUILayout.Space(5);
 
 
-		if (originalScriptingDefines != scriptingDefines)
+		if (!originalScriptingDefines.Equals(scriptingDefines))
 		{
-			GUILayout.Box("[!!!] You've changed the Scripting Define Symbols, Press Apply Settings to make these changes persistent. [!!!]");
+			GUILayout.Box("[!!!] You've changed the Scripting Define Symbols, Press Apply Settings to make these changes persistent. [!!!]", applyBox);
 		}
 
 		EditorWindowUtility.DrawButton("Apply Settings", width, () =>

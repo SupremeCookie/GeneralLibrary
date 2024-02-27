@@ -1,3 +1,3 @@
-﻿public class U_OctaDirection : UpdatableObject<OCTA_DIRECTION>, IU_Object
+﻿public class U_OctaDirection : UpdatableObject<OctaDirection>, IU_Object
 {
 }

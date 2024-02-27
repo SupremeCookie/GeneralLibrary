@@ -7,6 +7,18 @@ using UnityEngine;
 
 public static class EditorWindowUtility
 {
+	public static GUIStyle CreateHeaderStyle()
+	{
+		var result = new GUIStyle(GUI.skin.label);
+
+		result.normal.background = CreateHeaderBackground(new Color(0.2f, 0.6f, 1f), 300, 20);
+		result.alignment = TextAnchor.MiddleCenter;
+
+		result.fontSize += 5;
+
+		return result;
+	}
+
 	public static Texture2D CreateHeaderBackground(Color color, in int width, in int height)
 	{
 		Texture2D newBackground = new Texture2D(width, height);

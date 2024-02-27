@@ -1,4 +1,4 @@
-﻿public enum CARDINAL_DIRECTION
+﻿public enum CardinalDirection
 {
 	None,
 	Left,

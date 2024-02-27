@@ -23,6 +23,14 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 {
 	public static BuildPlayerOptions buildOptions { get { return IniControl.GeneralScriptableData.BuildOptions; } set { IniControl.GeneralScriptableData.BuildOptions = value; } }
 
+	private GUIStyle header { get { if (headerInternal == null) { LoadStyles(); } return headerInternal; } }
+	private GUIStyle headerInternal;
+
+	private void LoadStyles()
+	{
+		headerInternal = EditorWindowUtility.CreateHeaderStyle();
+	}
+
 	private void OnGUI()
 	{
 		if (!ScriptingDefineSymbolsSection.HasLoaded)
@@ -66,6 +74,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 			BuildPipeline.BuildPlayer(buildOptions);
 			Close();
 		});
+
 		EditorGUI.EndDisabledGroup();
 
 		GUILayout.EndVertical();
@@ -80,21 +89,6 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 
 		bool emptyBool = false;
 		GUILayout.Toggle(emptyBool, $"Is ShouldResetFavors targeting the right version?");
-	}
-
-
-
-	private GUIStyle header { get { if (headerInternal == null) { LoadStyles(); } return headerInternal; } }
-	private GUIStyle headerInternal;
-
-	private void LoadStyles()
-	{
-		headerInternal = new GUIStyle(GUI.skin.label);
-
-		headerInternal.normal.background = EditorWindowUtility.CreateHeaderBackground(new Color(0.2f, 0.6f, 1f), 300, 20);
-		headerInternal.alignment = TextAnchor.MiddleCenter;
-
-		headerInternal.fontSize += 5;
 	}
 }
 #endif

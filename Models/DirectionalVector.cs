@@ -5,12 +5,12 @@ using UnityEngine;
 public struct DirectionalVector
 {
 	public Vector2 Vector;
-	public OCTA_DIRECTION Direction;
+	public OctaDirection Direction;
 }
 
 [Serializable]
 public struct CardinalDirectionalVector
 {
 	public Vector2 Vector;
-	public CARDINAL_DIRECTION Direction;
+	public CardinalDirection Direction;
 }

@@ -309,14 +309,14 @@ public class TestsThroughMenuItems
 	[MenuItem(TestDirName + ExtensionsDirName + "Test Octa Dir Flip")]
 	private static void TestOctaDirFlip()
 	{
-		var first = OCTA_DIRECTION.Left;
-		var second = OCTA_DIRECTION.Right;
-		var third = OCTA_DIRECTION.Up;
-		var fourth = OCTA_DIRECTION.Down;
-		var fifth = OCTA_DIRECTION.UpLeft;
-		var sixth = OCTA_DIRECTION.UpRight;
-		var seventh = OCTA_DIRECTION.DownLeft;
-		var eighth = OCTA_DIRECTION.DownRight;
+		var first = OctaDirection.Left;
+		var second = OctaDirection.Right;
+		var third = OctaDirection.Up;
+		var fourth = OctaDirection.Down;
+		var fifth = OctaDirection.UpLeft;
+		var sixth = OctaDirection.UpRight;
+		var seventh = OctaDirection.DownLeft;
+		var eighth = OctaDirection.DownRight;
 
 		Debug.Log($"From ({first}) to ({first.Flip()})");
 		Debug.Log($"From ({second}) to ({second.Flip()})");

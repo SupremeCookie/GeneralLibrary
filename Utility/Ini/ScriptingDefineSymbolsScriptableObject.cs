@@ -6,6 +6,7 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 	public const string NAME = "ScriptingDefinesScriptableObject";
 
 	private const string DEBUG_MENU = "DEBUG_MENU";
+	private const string DEMO_BUILD = "DEMO_BUILD";
 
 	private static ScriptingDefineSymbolsScriptableObject _instance;
 	public static ScriptingDefineSymbolsScriptableObject Instance
@@ -25,7 +26,7 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 	private static ScriptingDefineSymbolsScriptableObject LoadScriptableObject()
 	{
 		var scriptableObject = Resources.Load(NAME) as ScriptingDefineSymbolsScriptableObject;
-		Debug.AssertFormat(scriptableObject != null, $"ScriptableObject {0} is null, You have to create an instance of {typeof(ScriptingDefineSymbolsScriptableObject)} in your project", NAME);
+		Debug.AssertFormat(scriptableObject != null, "ScriptableObject {0} is null, You have to create an instance of {1} in your project", NAME, typeof(ScriptingDefineSymbolsScriptableObject));
 		return scriptableObject;
 	}
 
@@ -36,11 +37,18 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 	{
 		if (symbols.IsNullOrEmpty())
 		{
-			symbols = new ScriptingSymbol[1];
+			symbols = new ScriptingSymbol[2];
+
 			symbols[0] = new ScriptingSymbol
 			{
 				symbol = DEBUG_MENU,
 				label = "Is Debug Menu Enabled",
+			};
+
+			symbols[1] = new ScriptingSymbol
+			{
+				symbol = DEMO_BUILD,
+				label = "Is this a Demo Build",
 			};
 		}
 	}

@@ -11,24 +11,16 @@ namespace RogueLike
 		[SerializeField] private LocTermModel locTerm;
 
 		[Space(5)]
-		[SerializeField] private bool hasInputKeybindingsInside;
-		[SerializeField] private KeybindingLocTermModel gamepadKeyBinding;
-		[SerializeField] private KeybindingLocTermModel keyboardBinding;
-
-		[Space(5)]
 		[SerializeField] private bool updateEverySoManyFrames = true;
 		[SerializeField] private int everySoManyFrames = 10;
 		[SerializeField][Readonly] private int updateCount = 0;
-
-		[Space(10)]
-		[SerializeField][Readonly] private ControlType lastKnownInputDevice;
 
 		[Space(10)]
 		[SerializeField][Readonly] private bool canUpdate = true;
 
 		private void OnEnable()
 		{
-			TryUpdateInputDeviceAndBinding();
+			UpdateTextToLoca();
 		}
 
 		private void Update()
@@ -50,8 +42,16 @@ namespace RogueLike
 			}
 
 
-			TryUpdateInputDeviceAndBinding();
+			UpdateTextToLoca();
 		}
+
+#if UNITY_EDITOR
+		private void Reset()
+		{
+			targetText = GetComponentInChildren<TextMeshProUGUI>();
+		}
+#endif
+
 
 		public void TurnOffUpdate()
 		{
@@ -74,78 +74,15 @@ namespace RogueLike
 			targetText.text = text;
 		}
 
-		private void TryUpdateInputDeviceAndBinding()
+
+		public void UpdateManually()
 		{
-			bool updateRegularKeybinding = !hasInputKeybindingsInside;
-			if (updateRegularKeybinding)
-			{
-				UpdateKeybindingNormally();
-			}
-			else
-			{
-				bool inputControlExists = InputControl.HasInstance;
-				if (inputControlExists)
-				{
-					var inputDevice = InputControl.Instance.GetLastActiveInputDevice();
-					if (inputDevice != lastKnownInputDevice)
-					{
-						lastKnownInputDevice = inputDevice;
-						UpdateKeybindingWithInput();
-					}
-				}
-				else
-				{
-					UpdateKeybindingNormally();
-				}
-			}
+			UpdateTextToLoca();
 		}
 
-#if UNITY_EDITOR
-		private void Reset()
-		{
-			targetText = GetComponentInChildren<TextMeshProUGUI>();
-		}
-#endif
-
-		public void DebugUpdate()
-		{
-			TryUpdateInputDeviceAndBinding();
-		}
-
-		private void UpdateKeybindingNormally()
+		private void UpdateTextToLoca()
 		{
 			string localizedText = GetLocalizedText();
-			targetText.text = localizedText;
-		}
-
-		private void UpdateKeybindingWithInput()
-		{
-			string localizedText = GetLocalizedText();
-			string formatContent = "";
-
-			switch (lastKnownInputDevice)
-			{
-				case ControlType.GamePad:
-				{
-					formatContent = gamepadKeyBinding.ToString();
-					break;
-				}
-
-				case ControlType.None:
-				case ControlType.KeyBoardMouse:
-				{
-					formatContent = keyboardBinding.ToString();
-					break;
-				}
-
-				default:
-				{
-					Debug.Assert(false, $"No keybinding defined for ({lastKnownInputDevice})");
-					break;
-				}
-			}
-
-			localizedText = string.Format(localizedText, formatContent);
 			targetText.text = localizedText;
 		}
 

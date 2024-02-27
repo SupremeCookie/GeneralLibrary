@@ -4,13 +4,13 @@ public static class CardinalDirectionExtensions
 {
 	private static CardinalDirectionalVector[] _octagonalDirectionArray = new CardinalDirectionalVector[]
 	{
-		new CardinalDirectionalVector{Vector = new Vector2(-1, 0), Direction = CARDINAL_DIRECTION.Left },
-		new CardinalDirectionalVector{Vector = new Vector2(0, 1), Direction = CARDINAL_DIRECTION.Up},
-		new CardinalDirectionalVector{Vector = new Vector2(1, 0), Direction = CARDINAL_DIRECTION.Right},
-		new CardinalDirectionalVector{Vector = new Vector2(0, -1), Direction = CARDINAL_DIRECTION.Down},
+		new CardinalDirectionalVector{Vector = new Vector2(-1, 0), Direction = CardinalDirection.Left },
+		new CardinalDirectionalVector{Vector = new Vector2(0, 1), Direction = CardinalDirection.Up},
+		new CardinalDirectionalVector{Vector = new Vector2(1, 0), Direction = CardinalDirection.Right},
+		new CardinalDirectionalVector{Vector = new Vector2(0, -1), Direction = CardinalDirection.Down},
 	};
 
-	public static Vector2 ToVector2(this CARDINAL_DIRECTION direction)
+	public static Vector2 ToVector2(this CardinalDirection direction)
 	{
 		Vector2 result = Vector2.zero;
 
@@ -26,7 +26,7 @@ public static class CardinalDirectionExtensions
 		return result;
 	}
 
-	public static CARDINAL_DIRECTION ToCardinalDirection(this Vector2 dir)
+	public static CardinalDirection ToCardinalDirection(this Vector2 dir)
 	{
 		float highestDot = 0f;
 		int index = -1;
@@ -46,12 +46,12 @@ public static class CardinalDirectionExtensions
 		return _octagonalDirectionArray[index].Direction;
 	}
 
-	public static bool IsLeft(this CARDINAL_DIRECTION dir)
+	public static bool IsLeft(this CardinalDirection dir)
 	{
-		return dir == CARDINAL_DIRECTION.Left;
+		return dir == CardinalDirection.Left;
 	}
 
-	public static CARDINAL_DIRECTION Flip(this CARDINAL_DIRECTION dir)
+	public static CardinalDirection Flip(this CardinalDirection dir)
 	{
 		var vector = dir.ToVector2();
 		vector *= -1f;
@@ -60,31 +60,31 @@ public static class CardinalDirectionExtensions
 		return newDir;
 	}
 
-	public static CARDINAL_DIRECTION[] GetPerpendiculars(this CARDINAL_DIRECTION dir)
+	public static CardinalDirection[] GetPerpendiculars(this CardinalDirection dir)
 	{
-		var result = new CARDINAL_DIRECTION[2];
+		var result = new CardinalDirection[2];
 
 		switch (dir)
 		{
-			case CARDINAL_DIRECTION.Down:
-			case CARDINAL_DIRECTION.Up:
+			case CardinalDirection.Down:
+			case CardinalDirection.Up:
 			{
-				result[0] = CARDINAL_DIRECTION.Left;
-				result[1] = CARDINAL_DIRECTION.Right;
+				result[0] = CardinalDirection.Left;
+				result[1] = CardinalDirection.Right;
 				break;
 			}
 
-			case CARDINAL_DIRECTION.Left:
-			case CARDINAL_DIRECTION.Right:
+			case CardinalDirection.Left:
+			case CardinalDirection.Right:
 			{
-				result[0] = CARDINAL_DIRECTION.Up;
-				result[1] = CARDINAL_DIRECTION.Down;
+				result[0] = CardinalDirection.Up;
+				result[1] = CardinalDirection.Down;
 				break;
 			}
 
-			case CARDINAL_DIRECTION.None:
+			case CardinalDirection.None:
 			{
-				Debug.LogError($"No perpendicular direction can be made for direction: {CARDINAL_DIRECTION.None}");
+				Debug.LogError($"No perpendicular direction can be made for direction: {CardinalDirection.None}");
 				break;
 			}
 		}

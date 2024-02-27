@@ -15,7 +15,7 @@ public class LocaEditorUtility
 		{
 			for (int i = 0; i < allLocalizedTexts.Length; ++i)
 			{
-				allLocalizedTexts[i].DebugUpdate();
+				allLocalizedTexts[i].UpdateManually();
 			}
 
 			SceneView.RepaintAll();

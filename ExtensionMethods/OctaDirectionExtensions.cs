@@ -5,17 +5,17 @@ public static class OctaDirectionExtensions
 {
 	private static DirectionalVector[] _octagonalDirectionArray = new DirectionalVector[]
 	{
-		new DirectionalVector{Vector = new Vector2(-1, 0), Direction = OCTA_DIRECTION.Left },
-		new DirectionalVector{Vector = new Vector2(0, 1), Direction = OCTA_DIRECTION.Up},
-		new DirectionalVector{Vector = new Vector2(1, 0), Direction = OCTA_DIRECTION.Right},
-		new DirectionalVector{Vector = new Vector2(0, -1), Direction = OCTA_DIRECTION.Down},
-		new DirectionalVector{Vector = new Vector2(-0.5f, 0.5f).normalized, Direction = OCTA_DIRECTION.UpLeft},
-		new DirectionalVector{Vector = new Vector2(-0.5f, -0.5f).normalized, Direction = OCTA_DIRECTION.DownLeft},
-		new DirectionalVector{Vector = new Vector2(0.5f, 0.5f).normalized, Direction = OCTA_DIRECTION.UpRight},
-		new DirectionalVector{Vector = new Vector2(0.5f, -0.5f).normalized, Direction = OCTA_DIRECTION.DownRight},
+		new DirectionalVector{Vector = new Vector2(-1, 0), Direction = OctaDirection.Left },
+		new DirectionalVector{Vector = new Vector2(0, 1), Direction = OctaDirection.Up},
+		new DirectionalVector{Vector = new Vector2(1, 0), Direction = OctaDirection.Right},
+		new DirectionalVector{Vector = new Vector2(0, -1), Direction = OctaDirection.Down},
+		new DirectionalVector{Vector = new Vector2(-0.5f, 0.5f).normalized, Direction = OctaDirection.UpLeft},
+		new DirectionalVector{Vector = new Vector2(-0.5f, -0.5f).normalized, Direction = OctaDirection.DownLeft},
+		new DirectionalVector{Vector = new Vector2(0.5f, 0.5f).normalized, Direction = OctaDirection.UpRight},
+		new DirectionalVector{Vector = new Vector2(0.5f, -0.5f).normalized, Direction = OctaDirection.DownRight},
 	};
 
-	public static Vector2 ToVector2(this OCTA_DIRECTION direction)
+	public static Vector2 ToVector2(this OctaDirection direction)
 	{
 		Vector2 result = Vector2.zero;
 
@@ -31,7 +31,7 @@ public static class OctaDirectionExtensions
 		return result;
 	}
 
-	public static OCTA_DIRECTION ToOctaDirection(this Vector2 dir)
+	public static OctaDirection ToOctaDirection(this Vector2 dir)
 	{
 		float highestDot = 0f;
 		int index = 0;
@@ -51,12 +51,12 @@ public static class OctaDirectionExtensions
 		return _octagonalDirectionArray[index].Direction;
 	}
 
-	public static bool IsLeft(this OCTA_DIRECTION dir)
+	public static bool IsLeft(this OctaDirection dir)
 	{
-		return dir == OCTA_DIRECTION.DownLeft || dir == OCTA_DIRECTION.Left || dir == OCTA_DIRECTION.UpLeft;
+		return dir == OctaDirection.DownLeft || dir == OctaDirection.Left || dir == OctaDirection.UpLeft;
 	}
 
-	public static OCTA_DIRECTION Flip(this OCTA_DIRECTION dir)
+	public static OctaDirection Flip(this OctaDirection dir)
 	{
 		var vector = dir.ToVector2();
 		vector *= -1f;
@@ -65,7 +65,7 @@ public static class OctaDirectionExtensions
 		return newDir;
 	}
 
-	public static OCTA_DIRECTION Inverse(this OCTA_DIRECTION dir)
+	public static OctaDirection Inverse(this OctaDirection dir)
 	{
 		return dir.Flip();
 	}

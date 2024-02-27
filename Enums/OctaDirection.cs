@@ -1,4 +1,4 @@
-﻿public enum OCTA_DIRECTION
+﻿public enum OctaDirection
 {
 	None,
 	Free,
