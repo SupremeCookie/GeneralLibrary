@@ -1,6 +1,6 @@
 ﻿public interface IInitialisable
 {
-	bool IsInitialised { get; set; }
+	bool IsInitialised { get; }
 
 	void Init();
 }

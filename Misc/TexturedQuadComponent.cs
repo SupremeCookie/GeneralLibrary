@@ -4,34 +4,30 @@ public class TexturedQuadComponent : MonoBehaviour
 {
 	private const float DEFAULT_QUAD_SIZE = 5.0f;
 
-#pragma warning disable 0649
-#if !RogueLike
-	[SerializeField] private Material _defaultMaterial;
-#endif
-#pragma warning restore 0649
+	[SerializeField] private Material quadMaterial;
 
-	private float _quadSize;
-	private MeshFilter _meshFilter;
-	private MeshRenderer _meshRenderer;
+	private float quadSize;
+	private MeshFilter meshFilter;
+	private MeshRenderer meshRenderer;
 
 	public void Init(float quadSize = DEFAULT_QUAD_SIZE)
 	{
-		_quadSize = quadSize;
+		this.quadSize = quadSize;
 
-		_meshFilter = gameObject.GetOrAddComponent<MeshFilter>();
-		_meshRenderer = gameObject.GetOrAddComponent<MeshRenderer>();
+		meshFilter = gameObject.GetOrAddComponent<MeshFilter>();
+		meshRenderer = gameObject.GetOrAddComponent<MeshRenderer>();
 
-		TryAddQuad();
+		TryCreateQuad();
 	}
 
-	public void Draw(Texture2D texture)
+	public void DrawTexture(Texture2D texture)
 	{
 		ApplyTextureMap(texture);
 	}
 
-	private void TryAddQuad()
+	private void TryCreateQuad()
 	{
-		var sharedMesh = _meshFilter.sharedMesh;
+		var sharedMesh = meshFilter.sharedMesh;
 
 		bool shouldMakeQuad = sharedMesh == null || sharedMesh.vertexCount == 0;
 		if (shouldMakeQuad)
@@ -42,11 +38,10 @@ public class TexturedQuadComponent : MonoBehaviour
 			Vector3[] quadVertices = new Vector3[4]
 			{
 					new Vector3(0,0,0),
-					new Vector3(_quadSize,0,0),
-					new Vector3(0,_quadSize,0),
-					new Vector3(_quadSize,_quadSize,0),
+					new Vector3(quadSize,0,0),
+					new Vector3(0,quadSize,0),
+					new Vector3(quadSize,quadSize,0),
 			};
-
 			mesh.vertices = quadVertices;
 
 			int[] quadTris = new int[6]
@@ -54,7 +49,6 @@ public class TexturedQuadComponent : MonoBehaviour
 					0,2,1,
 					2,3,1,
 			};
-
 			mesh.triangles = quadTris;
 
 			Vector3[] quadNormals = new Vector3[4]
@@ -64,7 +58,6 @@ public class TexturedQuadComponent : MonoBehaviour
 					Vector3.back,
 					Vector3.back,
 			};
-
 			mesh.normals = quadNormals;
 
 			Vector2[] quadUVs = new Vector2[4]
@@ -74,28 +67,27 @@ public class TexturedQuadComponent : MonoBehaviour
 					new Vector2(0,1),
 					new Vector2(1,1),
 			};
-
 			mesh.uv = quadUVs;
 
-			_meshFilter.mesh = mesh;
+			meshFilter.mesh = mesh;
 		}
 	}
 
 	private void ApplyTextureMap(Texture2D texture)
 	{
-		var sharedMat = _meshRenderer.sharedMaterial;
+		var sharedMat = meshRenderer.sharedMaterial;
 		if (sharedMat == null)
 		{
-#if RogueLike
-			sharedMat = new Material(IniControl.GlobalData.DefaultObjectMaterial);
-#else
-			Debug.Assert(_defaultMaterial != null, "No Default Material assigned, please do");
-			sharedMat = new Material(_defaultMaterial);
-#endif
+			Debug.Assert(quadMaterial != null, "No Material assigned, please do");
+			sharedMat = new Material(quadMaterial);
 
-			_meshRenderer.material = sharedMat;
+			meshRenderer.material = sharedMat;
 		}
 
-		_meshRenderer.sharedMaterial.mainTexture = texture;
+		meshRenderer.sharedMaterial.mainTexture = texture;
+
+#if UNITY_EDITOR
+		UnityEditor.EditorUtility.SetDirty(sharedMat);
+#endif
 	}
 }

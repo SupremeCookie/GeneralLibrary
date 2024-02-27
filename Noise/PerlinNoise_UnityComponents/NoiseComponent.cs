@@ -5,7 +5,7 @@ namespace Noise.PerlinNoise
 	[ExecuteInEditMode]
 	public class NoiseComponent : MonoBehaviour
 	{
-		[Range(0, 512)] [Delayed] public int NoiseMapResolution = 256;
+		[Range(0, 512)][Delayed] public int NoiseMapResolution = 256;
 		[Range(0.1f, 64f)] public float Frequency = 1.0f;
 		[Range(1, 8)] public int Octaves = 1;   // Note DK: This is how many times we 'repeat' the algorithm in order to noisify/grainify the result again. Its basically multisampling.
 		[Range(0.01f, 10f)] public float Strength = 1;
@@ -106,7 +106,7 @@ namespace Noise.PerlinNoise
 
 			_perlinNoiseGen.GenerateNoiseMap(NoiseMapResolution, Octaves, Frequency, Strength);
 			_noiseToTexture.RegenerateTexture(_perlinNoiseGen.NoiseMap);
-			_texturedQuad.Draw(_noiseToTexture.GetTexture());
+			_texturedQuad.DrawTexture(_noiseToTexture.GetTexture());
 		}
 
 	}
@@ -168,7 +168,7 @@ namespace Noise.PerlinNoise
 
 				if (currentDeterminationType != castedTarget.DeterminationType)
 				{
-					Debug.Log("Change Value Determination Type");
+					Debug.Log($"Change Value Determination Type, new: ({castedTarget.DeterminationType})");
 					castedTarget.ChangeDeterminationType();
 					castedTarget.GenerateNoiseMap();
 				}
@@ -187,6 +187,15 @@ namespace Noise.PerlinNoise
 			}
 
 			UnityEditor.EditorGUI.EndDisabledGroup();
+
+			if (!allowEditing)
+			{
+				GUILayout.Space(15);
+				if (GUILayout.Button($"Re allow editing"))
+				{
+					castedTarget.AllowEditing = true;
+				}
+			}
 		}
 	}
 #endif

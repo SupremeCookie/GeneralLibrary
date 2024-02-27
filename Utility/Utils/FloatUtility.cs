@@ -66,4 +66,14 @@ public partial class Utility
 
 		return volumeBase * reLogged;
 	}
+
+	public static float Dot(Vector2 g, float x, float y)
+	{
+		return g.x * x + g.y * y;
+	}
+
+	public static float Dot(Vector3 g, float x, float y, float z)
+	{
+		return g.x * x + g.y * y + g.z * z;
+	}
 }

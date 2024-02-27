@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 
-public class SimpleAudioManager : MonoBehaviour, IInitialisable, IUpdatable
+public class SimpleBGMPlayer : MonoBehaviour, IInitialisable, IUpdatable
 {
+	[SerializeField] private bool shouldStartAutomatically = true;
 	[SerializeField] private AudioSource audioSource;
 	[SerializeField] private AudioClip[] audioClips;
 
 	private int currentAudio;
 
-	public bool IsInitialised { get; set; }
+	public bool IsInitialised { get; private set; }
 
 	private void Start()
 	{
+		if (!shouldStartAutomatically)
+		{
+			return;
+		}
+
 		Init();
 	}
 

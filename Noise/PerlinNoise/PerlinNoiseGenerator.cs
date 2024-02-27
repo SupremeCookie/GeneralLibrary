@@ -350,10 +350,10 @@ namespace Noise.PerlinNoise
 					Vector2 g01 = gradients2D[GetHashedValue(h0 + iy1) & gradientsMask2D];
 					Vector2 g11 = gradients2D[GetHashedValue(h1 + iy1) & gradientsMask2D];
 
-					float v00 = Dot(g00, tx0, ty0);
-					float v10 = Dot(g10, tx1, ty0);
-					float v01 = Dot(g01, tx0, ty1);
-					float v11 = Dot(g11, tx1, ty1);
+					float v00 = Utility.Dot(g00, tx0, ty0);
+					float v10 = Utility.Dot(g10, tx1, ty0);
+					float v01 = Utility.Dot(g01, tx0, ty1);
+					float v11 = Utility.Dot(g11, tx1, ty1);
 
 					float tx = NoiseUtility.Smooth(tx0);
 					float ty = NoiseUtility.Smooth(ty0);
@@ -404,14 +404,14 @@ namespace Noise.PerlinNoise
 					Vector3 g011 = gradients3D[GetHashedValue(h01 + iz1) & gradientsMask3D];
 					Vector3 g111 = gradients3D[GetHashedValue(h11 + iz1) & gradientsMask3D];
 
-					float v000 = Dot(g000, tx0, ty0, tz0);
-					float v100 = Dot(g100, tx1, ty0, tz0);
-					float v010 = Dot(g010, tx0, ty1, tz0);
-					float v110 = Dot(g110, tx1, ty1, tz0);
-					float v001 = Dot(g001, tx0, ty0, tz1);
-					float v101 = Dot(g101, tx1, ty0, tz1);
-					float v011 = Dot(g011, tx0, ty1, tz1);
-					float v111 = Dot(g111, tx1, ty1, tz1);
+					float v000 = Utility.Dot(g000, tx0, ty0, tz0);
+					float v100 = Utility.Dot(g100, tx1, ty0, tz0);
+					float v010 = Utility.Dot(g010, tx0, ty1, tz0);
+					float v110 = Utility.Dot(g110, tx1, ty1, tz0);
+					float v001 = Utility.Dot(g001, tx0, ty0, tz1);
+					float v101 = Utility.Dot(g101, tx1, ty0, tz1);
+					float v011 = Utility.Dot(g011, tx0, ty1, tz1);
+					float v111 = Utility.Dot(g111, tx1, ty1, tz1);
 
 					float tx = NoiseUtility.Smooth(tx0);
 					float ty = NoiseUtility.Smooth(ty0);
@@ -451,17 +451,6 @@ namespace Noise.PerlinNoise
 
 				_hashedIntegers.Shuffle(Random);
 			}
-		}
-
-
-		private static float Dot(Vector2 g, float x, float y)
-		{
-			return g.x * x + g.y * y;
-		}
-
-		private static float Dot(Vector3 g, float x, float y, float z)
-		{
-			return g.x * x + g.y * y + g.z * z;
 		}
 	}
 }

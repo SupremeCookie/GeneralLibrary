@@ -3,7 +3,6 @@ using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-
 public class BuildWindowHandler
 {
 	[InitializeOnLoadMethod]
