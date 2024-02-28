@@ -3,22 +3,21 @@ using UnityEngine;
 
 public static class VectorExtensions
 {
-	private static CustomRandom _rand;
-	private static CustomRandom _random
+	private static CustomRandom rand;
+	private static CustomRandom random
 	{
 		get
 		{
-			if (_rand == null)
+			if (rand == null)
 			{
-				_rand = CustomRandomContainer.GetRandomInstance("Vector_Extensions");
+				rand = CustomRandomContainer.GetRandomInstance("Vector_Extensions");
 			}
 
-			return _rand;
+			return rand;
 		}
 	}
 
 
-	#region Converters
 	public static Vector2 ToVector2(this Vector3 input)
 	{
 		return (Vector2)input;
@@ -38,26 +37,19 @@ public static class VectorExtensions
 	{
 		return (Vector3)input;
 	}
-	#endregion
 
 
-	#region VEC 3
 	public static Vector3 MultiplyByVec3(this Vector3 vec, Vector3 mult)
 	{
-		Vector3 newVec = new Vector3(vec.x, vec.y, vec.z);
-		newVec.x *= mult.x;
-		newVec.y *= mult.y;
-		newVec.z *= mult.z;
-		return newVec;
+		mult.x *= vec.x;
+		mult.y *= vec.y;
+		mult.z *= vec.z;
+		return mult;
 	}
 
 	public static Vector3 MultiplyByVec3(this Vector3 vec, float x, float y, float z)
 	{
-		Vector3 newVec = new Vector3(vec.x, vec.y, vec.z);
-		newVec.x *= x;
-		newVec.y *= y;
-		newVec.z *= z;
-		return newVec;
+		return vec.MultiplyByVec3(new Vector3(x, y, z));
 	}
 
 	public static Vector2 DivideByVec3(this Vector3 vec, Vector3 div)
@@ -72,94 +64,15 @@ public static class VectorExtensions
 	public static Vector3 Abs(this Vector3 vec)
 	{
 		Vector3 newVec = new Vector3(vec.x, vec.y, vec.z);
-		if (newVec.x < 0)
-		{
-			newVec.x = Mathf.Abs(newVec.x);
-		}
 
-		if (newVec.y < 0)
-		{
-			newVec.y = Mathf.Abs(newVec.y);
-		}
-
-		if (newVec.z < 0)
-		{
-			newVec.z = Mathf.Abs(newVec.z);
-		}
+		newVec.x = Mathf.Abs(newVec.x);
+		newVec.y = Mathf.Abs(newVec.y);
+		newVec.z = Mathf.Abs(newVec.z);
 
 		return newVec;
 	}
 
-	public static Vector3 Random(this Vector3 vec)
-	{
-		vec.x = _random.Range(0f, 1f);
-		vec.y = _random.Range(0f, 1f);
-		vec.z = _random.Range(0f, 1f);
 
-		vec.Normalize();
-
-		return vec;
-	}
-
-	public static bool IsValid(this Vector3 vec)
-	{
-		bool isPositiveInfi = vec.x == float.PositiveInfinity || vec.y == float.PositiveInfinity || vec.z == float.PositiveInfinity;
-		bool isNegativeInfi = vec.x == float.NegativeInfinity || vec.y == float.NegativeInfinity || vec.z == float.NegativeInfinity;
-		bool isNan = vec.x == float.NaN || vec.y == float.NaN || vec.z == float.NaN;
-
-		return !isPositiveInfi && !isNegativeInfi && !isNan;
-	}
-
-	public static Vector3 Average(this IList<Vector3> input)
-	{
-		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty list");
-
-		float averageWeight = 1.0f / input.Count;
-		Vector3 averageValue = Vector3.zero;
-
-		for (int i = 0; i < input.Count; ++i)
-		{
-			averageValue += input[i] * averageWeight;
-		}
-
-		return averageValue;
-	}
-
-	public static Vector3 Average(this Vector3[] input)
-	{
-		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty array");
-
-		float averageWeight = 1.0f / input.Length;
-		Vector3 averageValue = Vector3.zero;
-
-		for (int i = 0; i < input.Length; ++i)
-		{
-			averageValue += input[i] * averageWeight;
-		}
-
-		return averageValue;
-	}
-
-	public static bool ContainsCloseEnough(this List<Vector3> input, in Vector3 containingPoint)
-	{
-		if (input.IsNullOrEmpty())
-		{
-			return false;
-		}
-
-		for (int i = 0; i < input.Count; ++i)
-		{
-			if (input[i].IsCloseTo(containingPoint, 0.001f))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-	#endregion
-
-	#region CONVERTERS
 	public static Vector3 XYVectorToXZ(this Vector2 vec)
 	{
 		return new Vector3(vec.x, 0, vec.y);
@@ -169,9 +82,8 @@ public static class VectorExtensions
 	{
 		return new Vector2(vec.x, vec.z);
 	}
-	#endregion
 
-	#region OPERATORS
+
 	public static bool EqualTo(this Vector3 first, Vector3 second)
 	{
 		return (first.x.IsCloseTo(second.x))
@@ -210,28 +122,23 @@ public static class VectorExtensions
 		return (first.x.IsCloseTo(second.x, maxDistance))
 			&& (first.y.IsCloseTo(second.y, maxDistance));
 	}
-	#endregion
 
-	#region VEC 2
+
 	public static Vector2Int ToVector2Int(this Vector2 input)
 	{
-		return new Vector2Int(Mathf.RoundToInt(input.x), Mathf.RoundToInt(input.y));
+		return new Vector2Int((int)input.x.RoundToNearest(1), (int)input.y.RoundToNearest(1));
 	}
 
 	public static Vector2 MultiplyByVec2(this Vector2 vec, Vector2 mult)
 	{
-		Vector2 newVec = new Vector2(vec.x, vec.y);
-		newVec.x *= mult.x;
-		newVec.y *= mult.y;
-		return newVec;
+		mult.x *= vec.x;
+		mult.y *= vec.y;
+		return mult;
 	}
 
 	public static Vector2 MultiplyByVec2(this Vector2 vec, float x, float y)
 	{
-		Vector2 newVec = new Vector2(vec.x, vec.y);
-		newVec.x *= x;
-		newVec.y *= y;
-		return newVec;
+		return vec.MultiplyByVec2(new Vector2(x, y));
 	}
 
 	public static Vector2 DivideByVec2(this Vector2 vec, Vector2 div)
@@ -258,26 +165,11 @@ public static class VectorExtensions
 		return newVec;
 	}
 
-	public static Vector2 ScaleRandomly(this Vector2 vec, Vector2 range)
-	{
-		Vector2 newVec = new Vector2(vec.x, vec.y);
-		newVec.x *= _random.Range(range.x, range.y);
-		newVec.y *= _random.Range(range.x, range.y);
-		return newVec;
-	}
-
-	public static Vector2 ScaleUniformly(this Vector2 vec, Vector2 range)
-	{
-		Vector2 newVec = new Vector2(vec.x, vec.y);
-		newVec *= _random.Range(range.x, range.y);
-		return newVec;
-	}
-
 	public static Vector2 RoundToInt(this Vector2 vec)
 	{
 		var newVec = new Vector2();
-		newVec.x = Mathf.RoundToInt(vec.x);
-		newVec.y = Mathf.RoundToInt(vec.y);
+		newVec.x = vec.x.RoundToNearest(1);
+		newVec.y = vec.y.RoundToNearest(1);
 		return newVec;
 	}
 
@@ -303,100 +195,11 @@ public static class VectorExtensions
 		return resultVector;
 	}
 
-	public static Vector2 Random(this Vector2 vec)
-	{
-		vec = _random.NextVector();
-		return vec;
-	}
-
-	public static bool IsBiggerThan(this Vector2 first, Vector2 second)
-	{
-		return first.x > second.x
-			&& first.y > second.y;
-	}
-
-	public static bool IsSmallerThan(this Vector2 first, Vector2 second)
-	{
-		return first.x < second.x
-			&& first.y < second.y;
-	}
-
-	public static bool CardinallyAlligns(this Vector2 first, Vector2 second)
+	public static bool IsCardinallyAlligned(this Vector2 first, Vector2 second)
 	{
 		bool xAlligns = first.x.IsCloseTo(second.x);
 		bool yAlligns = first.y.IsCloseTo(second.y);
 
 		return xAlligns ^ yAlligns;
 	}
-
-	public static bool IsValid(this Vector2 vec)
-	{
-		bool isPositiveInfi = vec.x == float.PositiveInfinity || vec.y == float.PositiveInfinity;
-		bool isNegativeInfi = vec.x == float.NegativeInfinity || vec.y == float.NegativeInfinity;
-		bool isNan = vec.x == float.NaN || vec.y == float.NaN;
-
-		return !isPositiveInfi && !isNegativeInfi && !isNan;
-	}
-
-	public static List<Vector2> Copy(this List<Vector2> input)
-	{
-		var result = new List<Vector2>(input.Count);
-
-		for (int i = 0; i < input.Count; ++i)
-		{
-			result.Add(input[i]);
-		}
-
-		return result;
-	}
-
-	public static Vector2 Average(this IList<Vector2> input)
-	{
-		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty list");
-
-		float averageWeight = 1.0f / input.Count;
-		Vector2 averageValue = Vector2.zero;
-
-		for (int i = 0; i < input.Count; ++i)
-		{
-			averageValue += input[i] * averageWeight;
-		}
-
-		return averageValue;
-	}
-
-	public static Vector2 Average(this Vector2[] input)
-	{
-		Debug.Assert(!input.IsNullOrEmpty(), $"Can't get the average of a null or empty array");
-
-		float averageWeight = 1.0f / input.Length;
-		Vector2 averageValue = Vector2.zero;
-
-		for (int i = 0; i < input.Length; ++i)
-		{
-			averageValue += input[i] * averageWeight;
-		}
-
-		return averageValue;
-	}
-
-
-	public static bool ContainsCloseEnough(this List<Vector2> input, in Vector2 containingPoint)
-	{
-		if (input.IsNullOrEmpty())
-		{
-			return false;
-		}
-
-		for (int i = 0; i < input.Count; ++i)
-		{
-			if (input[i].IsCloseTo(containingPoint, 0.001f))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-	#endregion
 }

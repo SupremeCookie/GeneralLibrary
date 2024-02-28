@@ -2,7 +2,7 @@
 
 public static class DictionaryExtensions
 {
-	public static void Register<T, U>(this Dictionary<T, List<U>> dict, T key, U value)
+	public static void SetValue<T, U>(this Dictionary<T, List<U>> dict, T key, U value)
 	{
 		if (dict.ContainsKey(key))
 		{
@@ -14,7 +14,7 @@ public static class DictionaryExtensions
 		}
 	}
 
-	public static void RegisterAndPrealloc<T, U>(this Dictionary<T, List<U>> dict, T key, U value, int size = 500)
+	public static void SetValueAndPreAllocSize<T, U>(this Dictionary<T, List<U>> dict, T key, U value, int size = 500)
 	{
 		if (dict.ContainsKey(key))
 		{
@@ -28,7 +28,7 @@ public static class DictionaryExtensions
 		}
 	}
 
-	public static void Register<T, U>(this Dictionary<T, U> dict, T key, U value)
+	public static void SetValue<T, U>(this Dictionary<T, U> dict, T key, U value)
 	{
 		if (dict.ContainsKey(key))
 		{

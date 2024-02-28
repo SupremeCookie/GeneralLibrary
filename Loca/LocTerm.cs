@@ -1,5 +1,4 @@
-﻿// Note DK: The locterms can be used to automatically grab the right back-end to then get the right translated values
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LocTerm
 {

@@ -2,9 +2,11 @@
 
 public static class ArrayExtensions
 {
+	private static CustomRandom _shuffleRandom = CustomRandomContainer.GetRandomInstance("ShuffleRandom");
+
 	public static bool Contains<T>(this T[] array, T containItem)
 	{
-		if (array == null)
+		if (array.IsNullOrEmpty())
 		{
 			return false;
 		}
@@ -26,21 +28,11 @@ public static class ArrayExtensions
 		return false;
 	}
 
-	private static CustomRandom _shuffleRandom = CustomRandomContainer.GetRandomInstance("ShuffleRandom");
 	public static void Shuffle<T>(this T[] array)
 	{
-		int n = array.Length;
-		for (int i = 0; i < (n - 1); i++)
-		{
-			// Use Next on random instance with an argument.
-			// ... The argument is an exclusive bound.
-			//     So we will not go past the end of the array.
-			int r = i + _shuffleRandom.Next(n - i);
-			T t = array[r];
-			array[r] = array[i];
-			array[i] = t;
-		}
+		Shuffle(array, _shuffleRandom);
 	}
+
 	public static void Shuffle<T>(this T[] array, CustomRandom rand)
 	{
 		int n = array.Length;
@@ -74,15 +66,17 @@ public static class ArrayExtensions
 
 	public static void ForEach(this Array array, System.Action<Array, int[]> action)
 	{
-		if (array.LongLength == 0) return;
+		if (array.LongLength == 0)
+			return;
+
 		ArrayTraverse walker = new ArrayTraverse(array);
-		do action(array, walker.Position);
+		do action(array, walker.position);
 		while (walker.Step());
 	}
 
 	internal class ArrayTraverse
 	{
-		public int[] Position;
+		public int[] position;
 		private int[] maxLengths;
 
 		public ArrayTraverse(Array array)
@@ -92,23 +86,26 @@ public static class ArrayExtensions
 			{
 				maxLengths[i] = array.GetLength(i) - 1;
 			}
-			Position = new int[array.Rank];
+
+			position = new int[array.Rank];
 		}
 
 		public bool Step()
 		{
-			for (int i = 0; i < Position.Length; ++i)
+			for (int i = 0; i < position.Length; ++i)
 			{
-				if (Position[i] < maxLengths[i])
+				if (position[i] < maxLengths[i])
 				{
-					Position[i]++;
+					position[i]++;
 					for (int j = 0; j < i; j++)
 					{
-						Position[j] = 0;
+						position[j] = 0;
 					}
+
 					return true;
 				}
 			}
+
 			return false;
 		}
 	}

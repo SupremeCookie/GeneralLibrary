@@ -5,10 +5,10 @@
 #endif
 public class DisplayChildBoundingBox : MonoBehaviour
 {
-#if UNITY_EDITOR
 	[SerializeField] private MinMax _boundingBox;
 	[SerializeField] private MinMax _size;
 
+#if UNITY_EDITOR
 	public void OnValidate()
 	{
 		ReloadChildren();

@@ -2,23 +2,23 @@
 
 public static class CardinalDirectionExtensions
 {
-	private static CardinalDirectionalVector[] _octagonalDirectionArray = new CardinalDirectionalVector[]
+	private static CardinalDirectionalVector[] cardinalDirectionArray = new CardinalDirectionalVector[]
 	{
-		new CardinalDirectionalVector{Vector = new Vector2(-1, 0), Direction = CardinalDirection.Left },
-		new CardinalDirectionalVector{Vector = new Vector2(0, 1), Direction = CardinalDirection.Up},
-		new CardinalDirectionalVector{Vector = new Vector2(1, 0), Direction = CardinalDirection.Right},
-		new CardinalDirectionalVector{Vector = new Vector2(0, -1), Direction = CardinalDirection.Down},
+		new CardinalDirectionalVector { vector = new Vector2(-1, 0), direction = CardinalDirection.Left },
+		new CardinalDirectionalVector { vector = new Vector2(0, 1), direction = CardinalDirection.Up },
+		new CardinalDirectionalVector { vector = new Vector2(1, 0), direction = CardinalDirection.Right },
+		new CardinalDirectionalVector { vector = new Vector2(0, -1), direction = CardinalDirection.Down },
 	};
 
 	public static Vector2 ToVector2(this CardinalDirection direction)
 	{
 		Vector2 result = Vector2.zero;
 
-		for (int i = 0; i < _octagonalDirectionArray.Length; ++i)
+		for (int i = 0; i < cardinalDirectionArray.Length; ++i)
 		{
-			if (_octagonalDirectionArray[i].Direction == direction)
+			if (cardinalDirectionArray[i].direction == direction)
 			{
-				result = _octagonalDirectionArray[i].Vector;
+				result = cardinalDirectionArray[i].vector;
 				break;
 			}
 		}
@@ -32,9 +32,9 @@ public static class CardinalDirectionExtensions
 		int index = -1;
 		Vector2 inputNormalized = dir.normalized;
 
-		for (int i = 0; i < _octagonalDirectionArray.Length; ++i)
+		for (int i = 0; i < cardinalDirectionArray.Length; ++i)
 		{
-			var dotProd = DotProduct.CalculateDotProduct(inputNormalized, _octagonalDirectionArray[i].Vector);
+			var dotProd = DotProduct.CalculateDotProduct(inputNormalized, cardinalDirectionArray[i].vector);
 
 			if (dotProd > highestDot)
 			{
@@ -43,7 +43,8 @@ public static class CardinalDirectionExtensions
 			}
 		}
 
-		return _octagonalDirectionArray[index].Direction;
+		Debug.Assert(index >= 0, "Index is not equal or greater than 0, this shouldn't happen");
+		return cardinalDirectionArray[index].direction;
 	}
 
 	public static bool IsLeft(this CardinalDirection dir)
@@ -53,9 +54,14 @@ public static class CardinalDirectionExtensions
 
 	public static CardinalDirection Flip(this CardinalDirection dir)
 	{
-		var vector = dir.ToVector2();
-		vector *= -1f;
-		var newDir = vector.ToCardinalDirection();
+		CardinalDirection newDir = dir;
+		switch (dir)
+		{
+			case CardinalDirection.Left: { newDir = CardinalDirection.Right; break; }
+			case CardinalDirection.Right: { newDir = CardinalDirection.Left; break; }
+			case CardinalDirection.Up: { newDir = CardinalDirection.Down; break; }
+			case CardinalDirection.Down: { newDir = CardinalDirection.Up; break; }
+		}
 
 		return newDir;
 	}

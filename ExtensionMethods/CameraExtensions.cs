@@ -13,7 +13,6 @@ public static class CameraExtensions
 			/* size   */ new Vector3(cameraHeight * screenAspect, cameraHeight, 0)
 		);
 
-
 		return bounds;
 	}
 }

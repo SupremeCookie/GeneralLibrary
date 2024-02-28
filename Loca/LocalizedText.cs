@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace RogueLike
 {
-	// Note DK: This is more or less fully related to a configurable game component. For in-code we now use LocTerm
 	public class LocalizedText : MonoBehaviour
 	{
 		[SerializeField] private TMP_Text targetText;

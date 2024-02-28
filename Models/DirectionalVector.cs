@@ -4,13 +4,13 @@ using UnityEngine;
 [Serializable]
 public struct DirectionalVector
 {
-	public Vector2 Vector;
-	public OctaDirection Direction;
+	public Vector2 vector;
+	public OctaDirection direction;
 }
 
 [Serializable]
 public struct CardinalDirectionalVector
 {
-	public Vector2 Vector;
-	public CardinalDirection Direction;
+	public Vector2 vector;
+	public CardinalDirection direction;
 }

@@ -2,14 +2,14 @@
 
 public class GizmosDrawRect : MonoBehaviour
 {
-#if UNITY_EDITOR
-	public Vector3 GizmosSize;
-	public Color GizmosColor;
+	public Vector3 gizmosSize;
+	public Color gizmosColor;
 
+#if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{
-		Gizmos.color = GizmosColor;
-		Gizmos.DrawCube(transform.position, GizmosSize);
+		Gizmos.color = gizmosColor;
+		Gizmos.DrawCube(transform.position, gizmosSize);
 	}
 #endif
 }

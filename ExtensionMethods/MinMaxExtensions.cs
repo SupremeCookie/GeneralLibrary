@@ -18,16 +18,12 @@ public static class MinMaxExtensions
 		float totalWidth = (current.Width + other.Width) * 0.5f;            // Note DK: We only take half, because we test between centers, so we only test halfwidth/height
 		float totalHeight = (current.Height + other.Height) * 0.5f;         // Note DK: We only take half, because we test between centers, so we only test halfwidth/height
 
-
-		// Note DK: Early out to fix totalwidths and heights of zero. 
 		bool totalWidthBiggerThanZero = totalWidth > 0;
 		bool totalHeightBiggerThanZero = totalHeight > 0;
 		if (!totalWidthBiggerThanZero || !totalHeightBiggerThanZero)
 		{
 			return false;
 		}
-
-
 
 		Vector2 delta = other.GetCenter() - current.GetCenter();
 
@@ -36,8 +32,6 @@ public static class MinMaxExtensions
 
 		bool widthOnEdge = Mathf.Abs(delta.x).IsCloseTo(totalWidth, 0.0001f);
 		bool heightOnEdge = Mathf.Abs(delta.y).IsCloseTo(totalHeight, 0.0001f);
-
-		//SubGenerator.SubGeneratorMessages.Add(current.Width + " :  " + other.Width + "   ---   " + current.Height + " : " + other.Height + "   --- " + delta + "   _---  " + totalWidth + "   : " + totalHeight);
 
 		return (widthCloseEnough && heightCloseEnough) && (!widthOnEdge && !heightOnEdge);
 	}

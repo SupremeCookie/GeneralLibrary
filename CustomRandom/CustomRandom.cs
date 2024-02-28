@@ -3,44 +3,44 @@ using UnityEngine;
 
 public class CustomRandom
 {
-	private System.Random _rand;
-	[JsonProperty(PropertyName = "Seed")] private int _seed;
+	private System.Random rand;
+	[JsonProperty(PropertyName = "Seed")] private int seed;
 
-	[JsonIgnore] public int Seed { get { return _seed; } }
+	[JsonIgnore] public int Seed { get { return seed; } }
 
 	public CustomRandom()
 	{
-		_seed = SeedGenerator.MathSeed;
-		_rand = new System.Random(_seed);
+		seed = SeedGenerator.MathSeed;
+		rand = new System.Random(seed);
 	}
 
 	public CustomRandom(int seed)
 	{
-		_seed = seed;
-		_rand = new System.Random(_seed);
+		this.seed = seed;
+		rand = new System.Random(this.seed);
 	}
 
 	public void OverwriteSeed(int seed)
 	{
-		_seed = seed;
-		_rand = new System.Random(_seed);
+		this.seed = seed;
+		rand = new System.Random(this.seed);
 	}
 
 
 	public int Next()
 	{
-		return _rand.Next();
+		return rand.Next();
 	}
 
 	// Exlusive upper bound.
 	public int Next(int maxValue)
 	{
-		return _rand.Next(maxValue);
+		return rand.Next(maxValue);
 	}
 
 	public double NextDouble()
 	{
-		return _rand.NextDouble();              // System.Random.NextDouble() always returns greater than or 0.0f, or below 1.0f
+		return rand.NextDouble();              // System.Random.NextDouble() always returns greater than or 0.0f, or below 1.0f
 	}
 
 	/// <summary>
@@ -49,13 +49,13 @@ public class CustomRandom
 	/// </summary>
 	public float NextFloat()
 	{
-		return (float)_rand.NextDouble();       // System.Random.NextDouble() always returns greater than or 0.0f, or below 1.0f
+		return (float)rand.NextDouble();       // System.Random.NextDouble() always returns greater than or 0.0f, or below 1.0f
 	}
 
 	public void NextBytes(out byte[] byteBuffer)
 	{
 		byte[] buffer = new byte[] { };
-		_rand.NextBytes(buffer);
+		rand.NextBytes(buffer);
 
 		byteBuffer = buffer;
 	}
@@ -75,7 +75,7 @@ public class CustomRandom
 	/// <param name="max">Exclusive</param>
 	public int Range(int min, int max)
 	{
-		return _rand.Next(min, max);
+		return rand.Next(min, max);
 	}
 
 	/// <summary>
@@ -84,7 +84,7 @@ public class CustomRandom
 	/// <param name="max">Exclusive</param>
 	public float Range(float min, float max)
 	{
-		return ((float)_rand.NextDouble() * (max - min)) + min;         // System.Random.NextDouble() always returns greater than or 0.0f, or below 1.0f
+		return ((float)rand.NextDouble() * (max - min)) + min;         // System.Random.NextDouble() always returns greater than or 0.0f, or below 1.0f
 	}
 
 	/// <summary>
@@ -97,7 +97,7 @@ public class CustomRandom
 
 	public bool RandBool()
 	{
-		return _rand.Next(0, 2) == 0;           //Test the disparity in a console app.
+		return rand.Next(0, 2) == 0;
 	}
 
 	public bool NextBool()

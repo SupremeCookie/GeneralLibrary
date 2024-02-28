@@ -5,14 +5,14 @@ public static class OctaDirectionExtensions
 {
 	private static DirectionalVector[] _octagonalDirectionArray = new DirectionalVector[]
 	{
-		new DirectionalVector{Vector = new Vector2(-1, 0), Direction = OctaDirection.Left },
-		new DirectionalVector{Vector = new Vector2(0, 1), Direction = OctaDirection.Up},
-		new DirectionalVector{Vector = new Vector2(1, 0), Direction = OctaDirection.Right},
-		new DirectionalVector{Vector = new Vector2(0, -1), Direction = OctaDirection.Down},
-		new DirectionalVector{Vector = new Vector2(-0.5f, 0.5f).normalized, Direction = OctaDirection.UpLeft},
-		new DirectionalVector{Vector = new Vector2(-0.5f, -0.5f).normalized, Direction = OctaDirection.DownLeft},
-		new DirectionalVector{Vector = new Vector2(0.5f, 0.5f).normalized, Direction = OctaDirection.UpRight},
-		new DirectionalVector{Vector = new Vector2(0.5f, -0.5f).normalized, Direction = OctaDirection.DownRight},
+		new DirectionalVector { vector = new Vector2(-1, 0), direction = OctaDirection.Left },
+		new DirectionalVector { vector = new Vector2(0, 1), direction = OctaDirection.Up },
+		new DirectionalVector { vector = new Vector2(1, 0), direction = OctaDirection.Right },
+		new DirectionalVector { vector = new Vector2(0, -1), direction = OctaDirection.Down },
+		new DirectionalVector { vector = new Vector2(-0.5f, 0.5f).normalized, direction = OctaDirection.UpLeft },
+		new DirectionalVector { vector = new Vector2(-0.5f, -0.5f).normalized, direction = OctaDirection.DownLeft },
+		new DirectionalVector { vector = new Vector2(0.5f, 0.5f).normalized, direction = OctaDirection.UpRight },
+		new DirectionalVector { vector = new Vector2(0.5f, -0.5f).normalized, direction = OctaDirection.DownRight },
 	};
 
 	public static Vector2 ToVector2(this OctaDirection direction)
@@ -21,9 +21,9 @@ public static class OctaDirectionExtensions
 
 		for (int i = 0; i < _octagonalDirectionArray.Length; ++i)
 		{
-			if (_octagonalDirectionArray[i].Direction == direction)
+			if (_octagonalDirectionArray[i].direction == direction)
 			{
-				result = _octagonalDirectionArray[i].Vector;
+				result = _octagonalDirectionArray[i].vector;
 				break;
 			}
 		}
@@ -34,12 +34,12 @@ public static class OctaDirectionExtensions
 	public static OctaDirection ToOctaDirection(this Vector2 dir)
 	{
 		float highestDot = 0f;
-		int index = 0;
+		int index = -1;
 		Vector2 inputNormalized = dir.normalized;
 
 		for (int i = 0; i < _octagonalDirectionArray.Length; ++i)
 		{
-			var dotProd = DotProduct.CalculateDotProduct(inputNormalized, _octagonalDirectionArray[i].Vector);
+			var dotProd = DotProduct.CalculateDotProduct(inputNormalized, _octagonalDirectionArray[i].vector);
 
 			if (dotProd > highestDot)
 			{
@@ -48,7 +48,9 @@ public static class OctaDirectionExtensions
 			}
 		}
 
-		return _octagonalDirectionArray[index].Direction;
+		Debug.Assert(index >= 0, $"Calculated index is invalid, please fix");
+
+		return _octagonalDirectionArray[index].direction;
 	}
 
 	public static bool IsLeft(this OctaDirection dir)
@@ -58,9 +60,18 @@ public static class OctaDirectionExtensions
 
 	public static OctaDirection Flip(this OctaDirection dir)
 	{
-		var vector = dir.ToVector2();
-		vector *= -1f;
-		var newDir = vector.ToOctaDirection();
+		var newDir = dir;
+		switch (dir)
+		{
+			case OctaDirection.Left: { newDir = OctaDirection.Right; break; }
+			case OctaDirection.Right: { newDir = OctaDirection.Left; break; }
+			case OctaDirection.UpLeft: { newDir = OctaDirection.DownRight; break; }
+			case OctaDirection.UpRight: { newDir = OctaDirection.DownLeft; break; }
+			case OctaDirection.Up: { newDir = OctaDirection.Down; break; }
+			case OctaDirection.DownLeft: { newDir = OctaDirection.UpRight; break; }
+			case OctaDirection.DownRight: { newDir = OctaDirection.UpLeft; break; }
+			case OctaDirection.Down: { newDir = OctaDirection.Up; break; }
+		}
 
 		return newDir;
 	}

@@ -76,9 +76,9 @@ public class BoundingBoxTest : MonoBehaviour
 
 #if UNITY_EDITOR
 			var drawGizmo = newGO.AddComponent<GizmosDrawPoint>();
-			drawGizmo.GizmosColor = Color.green;
-			drawGizmo.GizmosSize = 0.25f;
-			drawGizmo.GizmoType = GizmoType.Cube;
+			drawGizmo.gizmosColor = Color.green;
+			drawGizmo.gizmosSize = 0.25f;
+			drawGizmo.gizmoType = GizmoType.Cube;
 #endif
 
 			BBoxCenters.Add(newGO);

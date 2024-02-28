@@ -2,7 +2,7 @@
 
 public static class FloatExtensions
 {
-	private const float FLOATS_CLOSE_TOGETHER = 0.01f;
+	private const float FLOATS_CLOSE_TOGETHER = 0.0001f;
 	private const float TRUNC_MULT = 100f;
 
 	public static float Truncate(this float val)
@@ -17,7 +17,7 @@ public static class FloatExtensions
 
 	public static bool IsCloseTo(this float val, float closeTo)
 	{
-		return (Mathf.Abs(val - closeTo) < FLOATS_CLOSE_TOGETHER);
+		return IsCloseTo(val, closeTo, FLOATS_CLOSE_TOGETHER);
 	}
 
 	public static bool IsCloseTo(this float val, float closeTo, float maxDistance)
@@ -32,13 +32,7 @@ public static class FloatExtensions
 
 	public static float Normalized(this float input)
 	{
-		if (input == 0)
-		{
-			return 0;
-		}
-
-		float copy = input;
-		return copy / Mathf.Abs(copy);
+		return Mathf.Sign(input) * 1f;
 	}
 
 	public static int ToMilliSeconds(this float input)

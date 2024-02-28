@@ -9,8 +9,7 @@ public static class SeedGenerator
 	public static int DeterministicSeed { get; private set; }
 
 	private static uint randomSeed;
-	private static MersenneTwister _seedGen;
-	private static System.Random _deterministicSeedGen;
+	private static System.Random deterministicSeedGen;
 
 	static SeedGenerator()
 	{
@@ -25,19 +24,19 @@ public static class SeedGenerator
 
 		SeedGenerator.randomSeed = randomSeedUInt;
 
-		_seedGen = new MersenneTwister(randomSeedUInt);
+		var seedGen = new MersenneTwister(randomSeedUInt);
 
-		DeterministicSeed = _seedGen.NextInt();
-		_deterministicSeedGen = new System.Random(DeterministicSeed);
+		DeterministicSeed = seedGen.NextInt();
+		deterministicSeedGen = new System.Random(DeterministicSeed);
 
-		GameSeed = _deterministicSeedGen.Next();
-		MathSeed = _deterministicSeedGen.Next();
-		UtilitySeed = _deterministicSeedGen.Next();
+		GameSeed = deterministicSeedGen.Next();
+		MathSeed = deterministicSeedGen.Next();
+		UtilitySeed = deterministicSeedGen.Next();
 	}
 
 	public static int GetRandomSeed()
 	{
-		return _deterministicSeedGen.Next();
+		return deterministicSeedGen.Next();
 	}
 
 	// Note DK: When we deserialize/overwrite the seeds, we don't restore the mersennetwister seed. This due to limitations in serialization right now
@@ -49,9 +48,7 @@ public static class SeedGenerator
 			if (seed.Key.Equals(Constants.GameSeedName)) { GameSeed = seed.Value; }
 			else if (seed.Key.Equals(Constants.MathSeedName)) { MathSeed = seed.Value; }
 			else if (seed.Key.Equals(Constants.UtilitySeedName)) { UtilitySeed = seed.Value; }
-			else if (seed.Key.Equals(Constants.MainSeedName)) { _deterministicSeedGen = new System.Random(seed.Value); }
+			else if (seed.Key.Equals(Constants.MainSeedName)) { deterministicSeedGen = new System.Random(seed.Value); }
 		}
-
-		_seedGen = null;
 	}
 }

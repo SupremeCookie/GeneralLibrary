@@ -2,7 +2,9 @@
 {
 	public static float ConvertToFloat_ClampedToMaxValues(this double input)
 	{
-		float result = (float)input;
+		float result = 0;
+
+		result = (float)input;
 
 		if (float.IsPositiveInfinity(result))
 		{

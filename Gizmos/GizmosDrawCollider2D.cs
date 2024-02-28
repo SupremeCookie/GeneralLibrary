@@ -2,22 +2,20 @@
 
 public class GizmosDrawCollider2D : MonoBehaviour
 {
+	public float gizmosSize;
+	public bool drawCross;
+
 #if UNITY_EDITOR
-	private void Start() { }
-
-	public float GizmosSize;
-	public bool DrawCross;
-
 	private Collider2D _collider;
 
 	private BoxCollider2D _boxCollider;
 	private CircleCollider2D _circleCollider;
-	//private CapsuleCollider2D _capsuleCollider;
 	private PolygonCollider2D _polyGonCollider;
 	private CompositeCollider2D _compositeCollider;
 
 	private Color _circleColor;
-	//private Color _capsuleColor;
+
+	private void Start() { }
 
 	private void OnDrawGizmos()
 	{
@@ -67,7 +65,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 					new Vector2(),
 				};
 
-				if (DrawCross)
+				if (drawCross)
 				{
 					maxIndex = 7;
 					positions[4] = positions[1];
@@ -84,7 +82,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 				for (int i = 0; i < maxIndex; ++i)
 				{
 					Gizmos.color = colors[i % colors.Length];
-					Gizmos.DrawSphere(positions[i], GizmosSize);
+					Gizmos.DrawSphere(positions[i], gizmosSize);
 				}
 			}
 		}
@@ -118,7 +116,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 
 					for (int k = 0; k < path.Length; ++k)
 					{
-						Gizmos.DrawSphere(path[k] + pos, GizmosSize);
+						Gizmos.DrawSphere(path[k] + pos, gizmosSize);
 					}
 				}
 			}
@@ -155,7 +153,7 @@ public class GizmosDrawCollider2D : MonoBehaviour
 
 					for (int k = 0; k < path.Length; ++k)
 					{
-						Gizmos.DrawSphere(path[k] + pos, GizmosSize);
+						Gizmos.DrawSphere(path[k] + pos, gizmosSize);
 					}
 				}
 			}
@@ -176,22 +174,6 @@ public class GizmosDrawCollider2D : MonoBehaviour
 				Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
 			}
 		}
-
-		//if (_collider is CapsuleCollider2D)
-		//{
-		//	if (_capsuleCollider == null)
-		//	{
-		//		_capsuleCollider = _collider as CapsuleCollider2D;
-		//		MakeRandomColor(UnityEngine.Random.Range(0, int.MaxValue));
-		//		_capsuleColor = Gizmos.color;
-		//	}
-		//	else
-		//	{
-		//		Gizmos.color = _capsuleColor;
-
-		//		Gizmos.DrawWireSphere(transform.position + (Vector3)_circleCollider.offset, _circleCollider.radius);
-		//	}
-		//}
 	}
 
 	// TODO DK: Use HLSL colouring here, it makes for nicer gradients. Then convert it back to RGB

@@ -10,31 +10,31 @@ public enum GizmoType
 
 public class GizmosDrawPoint : MonoBehaviour
 {
-#if UNITY_EDITOR
-	public float GizmosSize;
-	public Color GizmosColor;
-	public GizmoType GizmoType;
+	public float gizmosSize;
+	public Color gizmosColor;
+	public GizmoType gizmoType;
 
+#if UNITY_EDITOR
 	protected virtual void OnDrawGizmos()
 	{
-		Gizmos.color = GizmosColor;
+		Gizmos.color = gizmosColor;
 
-		switch (GizmoType)
+		switch (gizmoType)
 		{
 			case GizmoType.WireSphere:
-				Gizmos.DrawWireSphere(transform.position, GizmosSize);
+				Gizmos.DrawWireSphere(transform.position, gizmosSize);
 				break;
 
 			case GizmoType.Sphere:
-				Gizmos.DrawSphere(transform.position, GizmosSize);
+				Gizmos.DrawSphere(transform.position, gizmosSize);
 				break;
 
 			case GizmoType.Cube:
-				Gizmos.DrawCube(transform.position, Vector3.one * GizmosSize);
+				Gizmos.DrawCube(transform.position, Vector3.one * gizmosSize);
 				break;
 
 			case GizmoType.WireCube:
-				Gizmos.DrawWireCube(transform.position, Vector3.one * GizmosSize);
+				Gizmos.DrawWireCube(transform.position, Vector3.one * gizmosSize);
 				break;
 		}
 	}
