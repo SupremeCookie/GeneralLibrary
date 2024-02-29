@@ -1,10 +1,11 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class ScriptingDefineSymbolsSection
 {
-	public static bool HasLoaded => !string.IsNullOrEmpty(scriptingDefines);
+	public static bool HasLoaded { get; private set; } = false;
 
 	private static BuildPlayerOptions buildOptions => GeneralPreBuildWindow.buildOptions;
 	private static ScriptingDefineSymbolsScriptableObject symbolsData => ScriptingDefineSymbolsScriptableObject.Instance;
@@ -24,6 +25,8 @@ public class ScriptingDefineSymbolsSection
 		LoadBuildOptions();
 		LoadScriptingDefines();
 		LoadStyles();
+
+		HasLoaded = true;
 	}
 
 	private static void LoadBuildOptions()
@@ -64,11 +67,6 @@ public class ScriptingDefineSymbolsSection
 			LoadStyles();
 		}
 
-		if (string.IsNullOrEmpty(scriptingDefines))
-		{
-			return;
-		}
-
 		GUILayout.BeginHorizontal();
 		float width = Screen.width * 0.8f;
 		width = Mathf.Max(width, 300);
@@ -86,15 +84,9 @@ public class ScriptingDefineSymbolsSection
 
 	private static void DrawDefineSymbols(float width)
 	{
-		if (scriptingDefines == null)
-		{
-			return;
-		}
-
 		GUILayout.BeginVertical(GUI.skin.box, GUILayout.MaxWidth(width));
 		GUILayout.Label("Scripting Define Symbols", mainHeader);
 		GUILayout.Space(5);
-
 
 		if (!originalScriptingDefines.Equals(scriptingDefines))
 		{
@@ -144,7 +136,7 @@ public class ScriptingDefineSymbolsSection
 			else
 			{
 				string prefix = "";
-				if (scriptingDefines[scriptingDefines.Length - 1] != ';')
+				if (scriptingDefines.Length > 0 && scriptingDefines[scriptingDefines.Length - 1] != ';')
 				{
 					prefix = ";";
 				}

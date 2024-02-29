@@ -87,8 +87,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 
 		GUILayout.Label($"Current Game Version: {Application.version}");
 
-		bool emptyBool = false;
-		GUILayout.Toggle(emptyBool, $"Is ShouldResetFavors targeting the right version?");
+		// Maybe load some kind of checklist structure from general scriptable?
 	}
 }
 #endif
