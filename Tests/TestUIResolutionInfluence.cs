@@ -10,8 +10,8 @@ public class TestUIResolutionInfluence : MonoBehaviour
 	[SerializeField] [Readonly] private Vector2 position;
 	[SerializeField] [Readonly] private Vector2 positionScaled;
 
-	[SerializeField] [Readonly] private MinMax bbox;
-	[SerializeField] [Readonly] private MinMax bboxScaled;
+	[SerializeField] [Readonly] private MinMaxRectangle bbox;
+	[SerializeField] [Readonly] private MinMaxRectangle bboxScaled;
 
 
 	private void Awake()
@@ -28,7 +28,7 @@ public class TestUIResolutionInfluence : MonoBehaviour
 		sizeDeltaScaled = rect.sizeDelta * canvasScalar;
 		position = rect.position;
 		positionScaled = rect.position * canvasScalar;
-		bbox = new MinMax(position + (sizeDelta * -0.5f), position + (sizeDelta * 0.5f));
-		bboxScaled = new MinMax(position + (sizeDelta * -0.5f) * canvasScalar, position + (sizeDelta * 0.5f) * canvasScalar);
+		bbox = new MinMaxRectangle(position + (sizeDelta * -0.5f), position + (sizeDelta * 0.5f));
+		bboxScaled = new MinMaxRectangle(position + (sizeDelta * -0.5f) * canvasScalar, position + (sizeDelta * 0.5f) * canvasScalar);
 	}
 }

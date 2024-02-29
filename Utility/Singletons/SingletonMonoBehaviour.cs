@@ -16,19 +16,6 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBe
 		{
 			if (_instance == null)
 			{
-				//#if UNITY_EDITOR
-				//				if (!Application.isPlaying)
-				//				{
-				//					var existingInstances = GameObject.FindObjectsOfType<T>();
-				//					if (existingInstances != null && existingInstances.Length > 0)
-				//					{
-				//						Debug.Log($"<b><color=#25a0ff>SingletonMonoBehaviour</color></b> -- Found an existing instance ({typeof(T).ToString()}) whilst in EDIT mode.");
-				//						_instance = existingInstances[0];
-				//						return _instance;
-				//					}
-				//				}
-				//#endif
-
 				string instanceName = typeof(T) + "_instanced";
 				GameObject newInstance = new GameObject(instanceName);
 				newInstance.AddComponent<T>();

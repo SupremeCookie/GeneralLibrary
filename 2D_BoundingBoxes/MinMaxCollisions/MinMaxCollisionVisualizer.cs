@@ -18,7 +18,7 @@ namespace MinMaxCollisions
 		};
 
 
-		public IntVector2 GridSize;
+		public Vector2Int GridSize;
 		public Vector2 BoundingBoxSize;
 		[Range(0, 25)] public int CellsToRemove = 0;
 
@@ -28,12 +28,12 @@ namespace MinMaxCollisions
 		private GameObject gridCenter;
 		private GameObject boundingBoxCenter;
 
-		private MinMax bbox;
+		private MinMaxRectangle bbox;
 
 		private List<Vector2> gridPoints;
 
-		private List<MinMax> cellBBoxes;
-		private List<MinMax> overlapBBoxes;
+		private List<MinMaxRectangle> cellBBoxes;
+		private List<MinMaxRectangle> overlapBBoxes;
 
 		private bool isFullyOverlapping;
 
@@ -128,11 +128,11 @@ namespace MinMaxCollisions
 			}
 
 			if (overlapBBoxes != null) { overlapBBoxes.Clear(); }
-			else { overlapBBoxes = new List<MinMax>(); }
+			else { overlapBBoxes = new List<MinMaxRectangle>(); }
 
-			var testBBox = new MinMax();
-			testBBox.Min = bbox.Min;
-			testBBox.Max = bbox.Max;
+			var testBBox = new MinMaxRectangle();
+			testBBox.min = bbox.min;
+			testBBox.max = bbox.max;
 			testBBox.AddOffset(boundingBoxCenter.transform.position);
 
 			for (int i = 0; i < cellBBoxes.Count; ++i)
@@ -179,11 +179,11 @@ namespace MinMaxCollisions
 			bool drawBBox = BoundingBoxSize.sqrMagnitude > 0.1f;
 			if (drawBBox)
 			{
-				if (bbox == null || !bbox.Width.IsCloseTo(BoundingBoxSize.x, 0.001f) || !bbox.Height.IsCloseTo(BoundingBoxSize.y, 0.001f))
+				if (bbox == null || !bbox.width.IsCloseTo(BoundingBoxSize.x, 0.001f) || !bbox.height.IsCloseTo(BoundingBoxSize.y, 0.001f))
 				{
-					bbox = new MinMax();
-					bbox.Min = new Vector2(BoundingBoxSize.x, BoundingBoxSize.y) * -0.5f;
-					bbox.Max = new Vector2(BoundingBoxSize.x, BoundingBoxSize.y) * 0.5f;
+					bbox = new MinMaxRectangle();
+					bbox.min = new Vector2(BoundingBoxSize.x, BoundingBoxSize.y) * -0.5f;
+					bbox.max = new Vector2(BoundingBoxSize.x, BoundingBoxSize.y) * 0.5f;
 				}
 
 				var bboxPos = boundingBoxCenter.transform.position;

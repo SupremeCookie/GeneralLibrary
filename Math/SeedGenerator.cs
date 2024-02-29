@@ -1,7 +1,4 @@
-﻿using RandomSerialization;
-using System.Collections.Generic;
-
-public static class SeedGenerator
+﻿public static class SeedGenerator
 {
 	public static int GameSeed { get; private set; }
 	public static int MathSeed { get; private set; }
@@ -37,18 +34,5 @@ public static class SeedGenerator
 	public static int GetRandomSeed()
 	{
 		return deterministicSeedGen.Next();
-	}
-
-	// Note DK: When we deserialize/overwrite the seeds, we don't restore the mersennetwister seed. This due to limitations in serialization right now
-	// The good thing is, we don't need to restore the mersennetwister either, as its not needed anymore. So it will be nullified.
-	public static void OverwriteSeeds(Dictionary<string, int> seeds)
-	{
-		foreach (var seed in seeds)
-		{
-			if (seed.Key.Equals(Constants.GameSeedName)) { GameSeed = seed.Value; }
-			else if (seed.Key.Equals(Constants.MathSeedName)) { MathSeed = seed.Value; }
-			else if (seed.Key.Equals(Constants.UtilitySeedName)) { UtilitySeed = seed.Value; }
-			else if (seed.Key.Equals(Constants.MainSeedName)) { deterministicSeedGen = new System.Random(seed.Value); }
-		}
 	}
 }

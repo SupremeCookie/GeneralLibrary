@@ -22,19 +22,6 @@ public partial class Utility
 		return gradient;
 	}
 
-	public static bool HasAnyColor(in Color[] colors)
-	{
-		for (int i = 0; i < colors.Length; ++i)
-		{
-			if (colors[i].a > 0f)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public static void KeepBiggestColor(Color first, Color second, ref Color result)
 	{
 		result.r = Mathf.Max(first.r, second.r);

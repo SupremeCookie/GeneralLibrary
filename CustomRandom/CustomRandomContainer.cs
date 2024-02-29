@@ -10,6 +10,7 @@ public static class CustomRandomContainer
 	public static ConcurrentDictionary<string, CustomRandom> CustomRandoms { get { return _customRandoms; } }
 
 	// Note DK: The problem is though that in Wrath it has been found to be non-deterministic
+	// It is non-deterministic in multi threaded environments. Gotta do more extensive testing to determine why that is and how to remedy it.
 	//// TODO: test if this is deterministic. Test this by changing dependencies to a CustomRand using a seed.
 	//// Note DK: Above test results in being deterministic, as the given seed is constantly returning the same results. It "restarts" basically
 	//public static CustomRandom GetRandom(string key)

@@ -2,21 +2,21 @@
 
 public static class MinMaxExtensions
 {
-	public static float GetSurfaceArea(this MinMax current)
+	public static float GetSurfaceArea(this MinMaxRectangle current)
 	{
 		Debug.Assert(current != null, "Can't grab teh surface area of a MinMax that's null");
-		return current.Width * current.Height;
+		return current.width * current.height;
 	}
 
-	public static bool IsOverlapping(this MinMax current, MinMax other)
+	public static bool IsOverlapping(this MinMaxRectangle current, MinMaxRectangle other)
 	{
 		if (current == null || other == null)
 		{
 			return false;
 		}
 
-		float totalWidth = (current.Width + other.Width) * 0.5f;            // Note DK: We only take half, because we test between centers, so we only test halfwidth/height
-		float totalHeight = (current.Height + other.Height) * 0.5f;         // Note DK: We only take half, because we test between centers, so we only test halfwidth/height
+		float totalWidth = (current.width + other.width) * 0.5f;            // Note DK: We only take half, because we test between centers, so we only test halfwidth/height
+		float totalHeight = (current.height + other.height) * 0.5f;         // Note DK: We only take half, because we test between centers, so we only test halfwidth/height
 
 		bool totalWidthBiggerThanZero = totalWidth > 0;
 		bool totalHeightBiggerThanZero = totalHeight > 0;
@@ -36,45 +36,45 @@ public static class MinMaxExtensions
 		return (widthCloseEnough && heightCloseEnough) && (!widthOnEdge && !heightOnEdge);
 	}
 
-	public static MinMax GetOverlappingArea(this MinMax current, MinMax other)
+	public static MinMaxRectangle GetOverlappingArea(this MinMaxRectangle current, MinMaxRectangle other)
 	{
 		// Note DK: We assume that IsOverlapping has been checked, but for debug reasons we will be asserting anyway.
 		Debug.Assert(current.IsOverlapping(other), "We are trying to get the overlapping area between two minMaxes, but there is no overlap");
 
-		var result = new MinMax();
+		var result = new MinMaxRectangle();
 
 		// The idea is that you find the most relatable value on the min and max variables
 		// This means the biggest of the 2 mins, and the smallest of the 2 maxes.
 		// Then you have the inner most area of the 2 overlapping squares.
 		// Doing it the other way around gives you the total bounding box.
-		result.Min = new Vector2(Mathf.Max(current.Min.x, other.Min.x), Mathf.Max(current.Min.y, other.Min.y));
-		result.Max = new Vector2(Mathf.Min(current.Max.x, other.Max.x), Mathf.Min(current.Max.y, other.Max.y));
+		result.min = new Vector2(Mathf.Max(current.min.x, other.min.x), Mathf.Max(current.min.y, other.min.y));
+		result.max = new Vector2(Mathf.Min(current.max.x, other.max.x), Mathf.Min(current.max.y, other.max.y));
 
 		return result;
 	}
 
-	public static bool ContainsPoint(this MinMax minMax, Vector2 point)
+	public static bool ContainsPoint(this MinMaxRectangle minMax, Vector2 point)
 	{
 		return
-			minMax.Min.x < point.x &&
-			minMax.Min.y < point.y &&
-			minMax.Max.x > point.x &&
-			minMax.Max.y > point.y;
+			minMax.min.x < point.x &&
+			minMax.min.y < point.y &&
+			minMax.max.x > point.x &&
+			minMax.max.y > point.y;
 	}
 
-	public static void AddOffset(this MinMax minMax, Vector2 offset)
+	public static void AddOffset(this MinMaxRectangle minMax, Vector2 offset)
 	{
-		minMax.Min += offset;
-		minMax.Max += offset;
+		minMax.min += offset;
+		minMax.max += offset;
 	}
 
-	public static void Multiply(this MinMax minMax, float multiplier)
+	public static void Multiply(this MinMaxRectangle minMax, float multiplier)
 	{
-		minMax.Min *= multiplier;
-		minMax.Max *= multiplier;
+		minMax.min *= multiplier;
+		minMax.max *= multiplier;
 	}
 
-	public static void MultiplyAroundCenter(this MinMax minMax, float multiplier)
+	public static void MultiplyAroundCenter(this MinMaxRectangle minMax, float multiplier)
 	{
 		// Note DK: we only multiply the size, we don't relocate the object.
 		// That means we don't simply multiply the min and maxes, we grab the center
@@ -82,27 +82,27 @@ public static class MinMaxExtensions
 		// We multiply around the center.
 
 		var center = minMax.GetCenter();
-		var deltaToMax = minMax.Max - center;
+		var deltaToMax = minMax.max - center;
 
 		var newDeltaToMax = deltaToMax * multiplier;
 		var deltaToMin = -newDeltaToMax;
 
-		minMax.Min = center + deltaToMin;
-		minMax.Max = center + newDeltaToMax;
+		minMax.min = center + deltaToMin;
+		minMax.max = center + newDeltaToMax;
 	}
 
-	public static MinMax Copy(this MinMax original)
+	public static MinMaxRectangle Copy(this MinMaxRectangle original)
 	{
-		return new MinMax
+		return new MinMaxRectangle
 		{
-			Min = new Vector2(original.Min.x, original.Min.y),
-			Max = new Vector2(original.Max.x, original.Max.y),
+			min = new Vector2(original.min.x, original.min.y),
+			max = new Vector2(original.max.x, original.max.y),
 		};
 	}
 
 
 	private static readonly Color whiteColor = new Color(1, 1, 1, 1);
-	public static void DrawGizmos(this MinMax target, Vector3 positionOffset = default(Vector3), bool drawCross = false, bool drawFill = false, Color? color = null)
+	public static void DrawGizmos(this MinMaxRectangle target, Vector3 positionOffset = default(Vector3), bool drawCross = false, bool drawFill = false, Color? color = null)
 	{
 		if (color == null)
 		{
@@ -111,10 +111,10 @@ public static class MinMaxExtensions
 
 		var bboxPositions = new Vector3[]
 		{
-			new Vector3(target.Min.x, target.Min.y) + positionOffset,	// Bottom left
-			new Vector3(target.Min.x, target.Max.y) + positionOffset,
-			new Vector3(target.Max.x, target.Max.y) + positionOffset,	// Bottom right
-			new Vector3(target.Max.x, target.Min.y) + positionOffset,
+			new Vector3(target.min.x, target.min.y) + positionOffset,	// Bottom left
+			new Vector3(target.min.x, target.max.y) + positionOffset,
+			new Vector3(target.max.x, target.max.y) + positionOffset,	// Bottom right
+			new Vector3(target.max.x, target.min.y) + positionOffset,
 		};
 
 		if (drawFill)
@@ -124,7 +124,7 @@ public static class MinMaxExtensions
 			Gizmos.color = colorCopy;
 
 			var centerPos = Vector3.Lerp(bboxPositions[0], bboxPositions[2], 0.5f); // Note DK: Super cheap check, the middle point between bottom left and top right is center
-			Gizmos.DrawCube(centerPos, new Vector3(target.Width, target.Height));
+			Gizmos.DrawCube(centerPos, new Vector3(target.width, target.height));
 		}
 
 		Gizmos.color = color.Value;

@@ -21,7 +21,7 @@ public class BuildWindowHandler
 
 public class GeneralPreBuildWindow : BuildPlayerWindow
 {
-	public static BuildPlayerOptions buildOptions { get { return IniControl.GeneralScriptableData.BuildOptions; } set { IniControl.GeneralScriptableData.BuildOptions = value; } }
+	public static BuildPlayerOptions buildOptions { get { return GlobalConfig.GeneralScriptableData.BuildOptions; } set { GlobalConfig.GeneralScriptableData.BuildOptions = value; } }
 
 	private GUIStyle header { get { if (headerInternal == null) { LoadStyles(); } return headerInternal; } }
 	private GUIStyle headerInternal;

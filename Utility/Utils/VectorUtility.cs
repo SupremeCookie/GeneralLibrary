@@ -6,7 +6,7 @@ public partial class Utility
 {
 	private const float PiRadToDegrees = 180f / Mathf.PI;
 
-	private static CustomRandom random => _rand;
+	private static CustomRandom random => utilityRandom;
 
 	/// <summary>
 	/// Steps:
@@ -57,8 +57,7 @@ public partial class Utility
 	{
 		//If distance between is smaller than twice the radius.
 		float sqrd = circleRadius * circleRadius;
-		//TODO: Performance test
-		if (FastSqrMagnitude(first, second)/*(first - second).sqrMagnitude */<= ((sqrd + sqrd) * 2f))
+		if (FastSqrMagnitude(first, second) <= ((sqrd + sqrd) * 2f))
 		{
 			return true;
 		}
@@ -68,9 +67,8 @@ public partial class Utility
 
 	public static bool AreCloseToEachother(Vector2 first, Vector2 second, float distance)
 	{
-		//TODO: Performance test.
 		float sqrd = distance * distance;
-		if (FastSqrMagnitude(first, second)/*(first - second).sqrMagnitude */<= sqrd)
+		if (FastSqrMagnitude(first, second) <= sqrd)
 		{
 			return true;
 		}
@@ -80,8 +78,7 @@ public partial class Utility
 
 	public static float SqrMagnitude(Vector2 first, Vector2 second)
 	{
-		//TODO: Performance test.
-		return FastSqrMagnitude(first, second);// (second - first).sqrMagnitude;
+		return FastSqrMagnitude(first, second);
 	}
 
 	public static float FastSqrMagnitude(Vector2 first, Vector2 second)
@@ -183,10 +180,10 @@ public partial class Utility
 
 		Debug.Assert(input != default, $"Given Input is default Vector2, can't use this: {input}");
 
-		float randomDot = _rand.Range(minDot, maxDot);
+		float randomDot = utilityRandom.Range(minDot, maxDot);
 		chosenDot = randomDot;
 
-		bool takePositiveDegrees = _rand.RandBool();
+		bool takePositiveDegrees = utilityRandom.RandBool();
 		if (dir == DotProductDirection.Clockwise)
 		{
 			takePositiveDegrees = false;
@@ -195,9 +192,6 @@ public partial class Utility
 		{
 			takePositiveDegrees = true;
 		}
-
-		//Debug.Log($"RandomDot ({randomDot})   take counter-clock turn ({takePositiveDegrees})");
-
 
 		bool isNormalised = input.sqrMagnitude.IsCloseTo(1.0f);
 		if (!isNormalised)
@@ -215,15 +209,13 @@ public partial class Utility
 
 	public static Vector2 GetRandomVector()
 	{
-		return _rand.NextVector();
+		return utilityRandom.NextVector();
 	}
 
 	public static Vector2 Abs(Vector2 input)
 	{
 		return new Vector2(Mathf.Abs(input.x), Mathf.Abs(input.y));
 	}
-
-
 
 	// Angle in Radians
 	// Unfortunately this takes the shortest angle, always.

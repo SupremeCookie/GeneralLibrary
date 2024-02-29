@@ -4,10 +4,6 @@ using UnityEngine;
 
 namespace Noise.PerlinNoise
 {
-	// TODO DK: Make some functionality to shift all values by a certain amount
-	// TODO DK: Maybe make some functionality to multiply certain values against a certain amount. Like a gradiant vs gradiant multiplication.
-
-
 	public enum ValueDeterminationType
 	{
 		None,
@@ -22,9 +18,10 @@ namespace Noise.PerlinNoise
 		Perlin_3D,
 	};
 
+	// TODO DK: Make some functionality to shift all values by a certain amount
+	// TODO DK: Maybe make some functionality to multiply certain values against a certain amount. Like a gradiant vs gradiant multiplication.
 	public class PerlinNoiseGenerator
 	{
-		#region CONSTANT VARIABLES
 		private const int gradientsMask1D = 1;
 		private float[] gradients1D =
 		{
@@ -66,9 +63,6 @@ namespace Noise.PerlinNoise
 			new Vector3( 0f,-1f, 1f),
 			new Vector3( 0f,-1f,-1f)
 		};
-		#endregion
-
-
 
 
 		public const ValueDeterminationType CURRENT_DETERM_TYPE = ValueDeterminationType.Random;
@@ -109,13 +103,6 @@ namespace Noise.PerlinNoise
 				}
 			}
 
-			//Debug.Log($"---------------------");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"---------------------");
-
 #if REMAP_OCTAVES
 			// So we take the minMaxValue
 			// We need to know how much we need to expand downwards and upwards
@@ -151,16 +138,6 @@ namespace Noise.PerlinNoise
 					if (currentNoise > minMaxValue.y) { minMaxValue.y = currentNoise; }
 				}
 			}
-
-
-			//Debug.Log($"minMaxRange: {minMaxRange},  multiplicationFactor: {multiplicationFactor},  lowerThresh/valuesReduct: {lowerThreshold}/{valuesReduction}");
-
-			//Debug.Log($"---------------------");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"{minMaxValue.ToString("N4")}");
-			//Debug.Log($"---------------------");
 #endif
 		}
 

@@ -7,7 +7,7 @@ public static class MinMaxCollisionUtility
 	/// Checks if a MinMax object is entirely contained by cell points, and has no holes inside.
 	/// </summary>
 	/// <param name="cellPointSize"> cellPoint size is needed in order to form a volumetric grid, without volume, we can't check for holes </param>
-	public static bool IsContainedByPoints(this MinMax boundingBox, ref List<Vector2> cellPoints, float cellPointSize)
+	public static bool IsContainedByPoints(this MinMaxRectangle boundingBox, ref List<Vector2> cellPoints, float cellPointSize)
 	{
 		// Note DK: We first convert the cellpoints into a list of greedy meshes.
 		// The Greedy Meshes are rectangles where no holes are present in the rectangle. We can easily test for inclusion using existing minmax logic there.
@@ -16,9 +16,9 @@ public static class MinMaxCollisionUtility
 		return IsContainedByBoxes(boundingBox, in greedyMeshes);
 	}
 
-	public static bool IsContainedByBoxes(MinMax originalBBox, in List<MinMax> containmentBoxes)
+	public static bool IsContainedByBoxes(MinMaxRectangle originalBBox, in List<MinMaxRectangle> containmentBoxes)
 	{
-		List<MinMax> overlappingBBoxes = new List<MinMax>();
+		List<MinMaxRectangle> overlappingBBoxes = new List<MinMaxRectangle>();
 		for (int i = 0; i < containmentBoxes.Count; ++i)
 		{
 			var cellBBox = containmentBoxes[i];
@@ -34,7 +34,7 @@ public static class MinMaxCollisionUtility
 		return AreSurfaceAreasTheSame(originalBBox, in overlappingBBoxes);
 	}
 
-	public static bool AreSurfaceAreasTheSame(MinMax originalBBox, in List<MinMax> overlaps)
+	public static bool AreSurfaceAreasTheSame(MinMaxRectangle originalBBox, in List<MinMaxRectangle> overlaps)
 	{
 		float mainBoxArea = originalBBox.GetSurfaceArea();
 

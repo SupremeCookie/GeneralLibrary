@@ -20,7 +20,7 @@ public class StaticSingletonMonoBehaviour<T> : MonoBehaviour where T : StaticSin
 				var existingInstances = GameObject.FindObjectsOfType<T>();
 				if (existingInstances != null && existingInstances.Length > 0)
 				{
-					//Debug.Log("<b>StaticSingletonMonoBehaviour</b> -- Found an existing instance whilst in EDIT mode.");
+					Debug.Log("<b>StaticSingletonMonoBehaviour</b> -- Found an existing instance whilst in EDIT mode.");
 					return existingInstances[0];
 				}
 			}

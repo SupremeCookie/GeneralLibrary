@@ -5,10 +5,6 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 {
 	private const int BASE_SIZE = 10;
 
-	// Gotta test properly with multiple different test cases/types, and also monobehaviours
-
-	// Add a wrapper class around U, not just IList, but one where we can keep track of which items are taken and not.
-
 	public enum GetObjectReturnValue
 	{
 		PoolDoesNotExist,

@@ -5,12 +5,12 @@ using UnityEngine;
 public static class BoundingBoxConverter
 {
 	// Note DK: We use an algorithm called Greedy-Meshing.
-	public static List<MinMax> Convert(List<Vector2> cells, float cellSize)
+	public static List<MinMaxRectangle> Convert(List<Vector2> cells, float cellSize)
 	{
 		var copyOfCells = new List<Vector2>(cells);
 		copyOfCells.Sort(CompareVector2OnXThenY());  // Note DK: This sorts the array on the x axis, then the y axis. So we start at bottom left most item.
 
-		var result = new List<MinMax>();
+		var result = new List<MinMaxRectangle>();
 
 		bool isChecking = false;
 		bool isFillingRow = false;
@@ -126,7 +126,7 @@ public static class BoundingBoxConverter
 		return result;
 	}
 
-	public static List<MinMax> Convert(Vector2[] cells, float cellSize)
+	public static List<MinMaxRectangle> Convert(Vector2[] cells, float cellSize)
 	{
 		return Convert(cells.ToList(), cellSize);
 	}
@@ -151,12 +151,12 @@ public static class BoundingBoxConverter
 		return -1;
 	}
 
-	private static MinMax ConvertToMinMax(List<Vector2> cellPoints, float cellSize)
+	private static MinMaxRectangle ConvertToMinMax(List<Vector2> cellPoints, float cellSize)
 	{
 		// Note DK: The cell points are only concerned about the central points.
 		// So for the min and max values, we need to take into account the cell sizes.
 
-		MinMax result = new MinMax();
+		MinMaxRectangle result = new MinMaxRectangle();
 		if (cellPoints.Count == 0)
 		{
 			return result;
@@ -167,8 +167,8 @@ public static class BoundingBoxConverter
 			result.TryStoreNewMinOrMax(cellPoints[i]);
 		}
 
-		result.Min -= Vector2.one * cellSize * 0.5f;    // Note DK: Half a cell to the bottom left.
-		result.Max += Vector2.one * cellSize * 0.5f;    // Note DK: Half a cell to the top right.
+		result.min -= Vector2.one * cellSize * 0.5f;    // Note DK: Half a cell to the bottom left.
+		result.max += Vector2.one * cellSize * 0.5f;    // Note DK: Half a cell to the top right.
 
 		return result;
 	}

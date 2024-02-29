@@ -3,16 +3,16 @@ using UnityEngine;
 
 public static class OctaDirectionExtensions
 {
-	private static DirectionalVector[] _octagonalDirectionArray = new DirectionalVector[]
+	private static DirectionVector[] _octagonalDirectionArray = new DirectionVector[]
 	{
-		new DirectionalVector { vector = new Vector2(-1, 0), direction = OctaDirection.Left },
-		new DirectionalVector { vector = new Vector2(0, 1), direction = OctaDirection.Up },
-		new DirectionalVector { vector = new Vector2(1, 0), direction = OctaDirection.Right },
-		new DirectionalVector { vector = new Vector2(0, -1), direction = OctaDirection.Down },
-		new DirectionalVector { vector = new Vector2(-0.5f, 0.5f).normalized, direction = OctaDirection.UpLeft },
-		new DirectionalVector { vector = new Vector2(-0.5f, -0.5f).normalized, direction = OctaDirection.DownLeft },
-		new DirectionalVector { vector = new Vector2(0.5f, 0.5f).normalized, direction = OctaDirection.UpRight },
-		new DirectionalVector { vector = new Vector2(0.5f, -0.5f).normalized, direction = OctaDirection.DownRight },
+		new DirectionVector { vector = new Vector2(-1, 0), direction = OctaDirection.Left },
+		new DirectionVector { vector = new Vector2(0, 1), direction = OctaDirection.Up },
+		new DirectionVector { vector = new Vector2(1, 0), direction = OctaDirection.Right },
+		new DirectionVector { vector = new Vector2(0, -1), direction = OctaDirection.Down },
+		new DirectionVector { vector = new Vector2(-0.5f, 0.5f).normalized, direction = OctaDirection.UpLeft },
+		new DirectionVector { vector = new Vector2(-0.5f, -0.5f).normalized, direction = OctaDirection.DownLeft },
+		new DirectionVector { vector = new Vector2(0.5f, 0.5f).normalized, direction = OctaDirection.UpRight },
+		new DirectionVector { vector = new Vector2(0.5f, -0.5f).normalized, direction = OctaDirection.DownRight },
 	};
 
 	public static Vector2 ToVector2(this OctaDirection direction)

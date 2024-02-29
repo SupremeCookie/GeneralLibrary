@@ -21,20 +21,9 @@ public class GeneralScriptableData : ScriptableObject
 		}
 	}
 
-
-
-
-
-
 #if UNITY_EDITOR
 	public SerializableBuildPlayerOptions BuildOptions;
 #endif
-
-
-
-
-
-
 
 	private static GeneralScriptableData LoadScriptableObject()
 	{
@@ -48,9 +37,8 @@ public class GeneralScriptableData : ScriptableObject
 #endif
 	public static void OpenScriptable()
 	{
-		var scriptableObject = Instance;
 #if UNITY_EDITOR
-
+		var scriptableObject = Instance;
 		UnityEditor.Selection.activeObject = scriptableObject;
 #endif
 	}

@@ -2,37 +2,12 @@
 using System.Linq;
 
 #if UNITY_EDITOR
-using System.Reflection;
 using UnityEditor;
 #endif
 
 public class EditorUtils
 {
 #if UNITY_EDITOR
-	public static System.Type GetType(string TypeName)
-	{
-		// Try Type.GetType() first. This will work with types defined by the Mono runtime, etc.
-		var type = System.Type.GetType(TypeName);
-
-		// If it worked, then we're done here
-		if (type != null)
-		{
-			return type;
-		}
-
-		// Get the name of the assembly (Assumption is that we are using fully-qualified type names)
-		var assemblyName = TypeName.Substring(0, TypeName.IndexOf('.'));
-
-		// Attempt to load the indicated Assembly
-		var assembly = Assembly.Load(assemblyName); // LoadWithPartialName(		<< TODO: Gotta test if this still works.
-		Debug.Assert(assembly != null, $"Can't find ({assemblyName}) using Assembly.LoadWithPartialName");
-
-		Debug.Log($"<b>AnimationEditorWindow</b> -- Found assembly: ({assembly.FullName})");
-
-		// Ask that assembly to return the proper Type
-		return assembly.GetType(TypeName);
-	}
-
 	public static T[] GetAllScriptableObjectInstances<T>() where T : ScriptableObject
 	{
 		return GetAssetInstances<T>();
@@ -41,16 +16,6 @@ public class EditorUtils
 	public static ScriptableObject[] GetAllScriptableObjects()
 	{
 		return GetAssetInstances<ScriptableObject>();
-	}
-
-	public static AnimationClip[] GetAllAnimationClipInstances()
-	{
-		return GetAssetInstances<AnimationClip>();
-	}
-
-	public static Animator[] GetAllAnimatorInstances()
-	{
-		return GetAssetInstances<Animator>();
 	}
 
 	public static SceneAsset[] GetAllSceneInstances()

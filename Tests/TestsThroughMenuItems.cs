@@ -17,19 +17,11 @@ public class TestsThroughMenuItems
 	{
 		var firstVec = new Vector2(0, 1);
 		var secondVec = new Vector2(0, 15);
-		//var thirdVec = new Vector2(0, -1);
-		//var fourthVec = new Vector2(-3, 0);
-		//var fifthVec = new Vector2(5, 15);
-		//var sixthVec = new Vector2(-5, 7);
 
 		var firstOrigin = new Vector2(0, 0);
-		//var secondOrigin = new Vector2(1, 3);
-		//var thirdOrigin = new Vector2(-4, 6);
 
 		var firstAngle = 15f;
 		var secondAngle = 90f;
-		//var thirdAngle = 150f;
-		//var fourthAngle = -40f;
 
 		var resultOne = RotateAround(firstVec, firstOrigin, firstAngle);
 		var resultTwo = RotateAround(secondVec, firstOrigin, firstAngle);
@@ -45,27 +37,6 @@ public class TestsThroughMenuItems
 			"Second evaluation should be a differring dotproduct." +
 			"Third evaluation should be a differing dotproduct." +
 			"Fourth evaluation should be the same.");
-
-		//Debug.LogFormat("Rotate {0}, around {1}, result: {2}", firstVec, firstOrigin, firstVec.RotateVectorAroundVector(firstOrigin, firstAngle).ToString("N3"));
-		//Debug.LogFormat("Rotate {0}, around {1}, result: {2}", secondVec, firstOrigin, secondVec.RotateVectorAroundVector(firstOrigin, firstAngle).ToString("N3"));
-		//Debug.LogFormat("Rotate {0}, around {1}, result: {2}", firstVec, firstOrigin, firstVec.RotateVectorAroundVector(firstOrigin, firstAngle).ToString("N3"));
-		//Debug.LogFormat("Rotate {0}, around {1}, result: {2}", secondVec, firstOrigin, secondVec.RotateVectorAroundVector(firstOrigin, firstAngle).ToString("N3"));
-		//Debug.Log(firstVec.RotateVectorAroundVector(secondOrigin, secondAngle).ToString("N3"));
-
-		//Debug.Log(secondVec.RotateVectorAroundVector(thirdOrigin, thirdAngle).ToString("N3"));
-		//Debug.Log(secondVec.RotateVectorAroundVector(firstOrigin, fourthAngle).ToString("N3"));
-
-		//Debug.Log(thirdVec.RotateVectorAroundVector(secondOrigin, firstAngle).ToString("N3"));
-		//Debug.Log(thirdVec.RotateVectorAroundVector(thirdOrigin, secondAngle).ToString("N3"));
-
-		//Debug.Log(fourthVec.RotateVectorAroundVector(firstOrigin, thirdAngle).ToString("N3"));
-		//Debug.Log(fourthVec.RotateVectorAroundVector(secondOrigin, fourthAngle).ToString("N3"));
-
-		//Debug.Log(fifthVec.RotateVectorAroundVector(thirdOrigin, firstAngle).ToString("N3"));
-		//Debug.Log(fifthVec.RotateVectorAroundVector(firstOrigin, secondAngle).ToString("N3"));
-
-		//Debug.Log(sixthVec.RotateVectorAroundVector(secondOrigin, thirdAngle).ToString("N3"));
-		//Debug.Log(sixthVec.RotateVectorAroundVector(thirdOrigin, fourthAngle).ToString("N3"));
 	}
 
 	private static Vector2 RotateAround(Vector2 rotation, Vector2 origin, float angle)
@@ -331,7 +302,133 @@ public class TestsThroughMenuItems
 	[MenuItem(TestDirName + UtilityDirName + "Test Line Intersection")]
 	private static void TestLineIntersection()
 	{
-		Utility.RunLineUtilUnitTests();
+		RunLineUtilUnitTests();
+	}
+
+
+
+
+	public static void RunLineUtilUnitTests()
+	{
+		Test_A();
+		Test_B();
+		Test_C();
+		Test_D();
+		Test_E();
+		Test_F();
+		Test_G();
+		Test_H();
+		Test_I();
+
+		Debug.Log("If no errors showed up, everything went well");
+	}
+
+	private static void Test_A()
+	{
+		Line first = new Line(new Vector2(0, 0), new Vector2(1, 0));
+		Line second = new Line(new Vector2(1, 0), new Vector2(2, 0));
+
+		// Shouldn't intersect as the second line starts where the first ends
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(!intersect, $"A) The lines {first} and {second} should not intersect, yet they do");
+		Debug.Log("Ran test (A)");
+	}
+
+	private static void Test_B()
+	{
+		Line first = new Line(new Vector2(0, 0), new Vector2(2, 0));
+		Line second = new Line(new Vector2(1, -1), new Vector2(1, 1));
+
+		// Should intersect at  1,0
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"B) The lines {first} and {second} should intersect, yet they do not");
+		Debug.Log("Ran test (B)");
+	}
+
+	private static void Test_C()
+	{
+		Line first = new Line(new Vector2(0, 1), new Vector2(10, 0));
+		Line second = new Line(new Vector2(0, 0), new Vector2(10, 1));
+
+		// Should intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"C) The lines {first} and {second} should intersect, yet they do not");
+		Debug.Log("Ran test (C)");
+	}
+
+	private static void Test_D()
+	{
+		Line first = new Line(new Vector2(0, 0), new Vector2(1000, 1));
+		Line second = new Line(new Vector2(0, 1), new Vector2(1000, 0));
+
+		// Should intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"D) The lines {first} and {second} should intersect, yet they do not");
+		Debug.Log("Ran test (D)");
+	}
+
+	private static void Test_E()
+	{
+		Line first = new Line(new Vector2(0, 0.01f), new Vector2(100, 0.01f));
+		Line second = new Line(new Vector2(0, 0), new Vector2(100, 0));
+
+		// Should not intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(!intersect, $"E) The lines {first} and {second} should not intersect, yet they do");
+		Debug.Log("Ran test (E)");
+	}
+
+	private static void Test_F()
+	{
+		Line first = new Line(new Vector2(0, 1000), new Vector2(1, 0));
+		Line second = new Line(new Vector2(0, 0), new Vector2(1, 1000));
+
+		// Should intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"F) The lines {first} and {second} should intersect, yet they do not");
+		Debug.Log("Ran test (F)");
+	}
+
+	private static void Test_G()
+	{
+		Line first = new Line(new Vector2(0.01f, 0), new Vector2(0.01f, 10000));
+		Line second = new Line(new Vector2(0, 0), new Vector2(0, 10000));
+
+		// Shouldn't intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(!intersect, $"G) The lines {first} and {second} should not intersect, yet they do");
+		Debug.Log("Ran test (G)");
+	}
+
+	private static void Test_H()
+	{
+		Line first = new Line(new Vector2(0, -1), new Vector2(0, 1));
+		Line second = new Line(new Vector2(4, 0), new Vector2(6, 0));
+
+		// Should intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"H) The lines {first} and {second} shouldn't intersect, and they don't, this proves that Line-Intersections are only on the line segments");
+		Debug.Log("Ran test (H)");
+	}
+
+	private static void Test_I()
+	{
+		Line first = new Line(new Vector2(-10, -1), new Vector2(-1, 1));
+		Line second = new Line(new Vector2(0, -5), new Vector2(1, -6));
+
+		// Should intersect
+		var intersect = Utility.DoLinesIntersect(first, second);
+
+		Debug.Assert(intersect, $"I) The lines {first} and {second} shouldn't intersect, and they don't, this proves that Line-Intersections are only on the line segments");
+		Debug.Log("Ran test (I)");
 	}
 
 
@@ -375,76 +472,6 @@ public class TestsThroughMenuItems
 		Thread.Sleep(10);
 
 		threadIsRunning = false;
-	}
-
-
-	private static PerformanceMeasurer pm;
-	private static float timeToWait;
-	private static float timeSinceStart;
-	private static System.Action onFinishedDelay;
-
-	[MenuItem(TestDirName + MultithreadDirName + "Test PerformanceMeasurer")]
-	private static void TestPerformanceMeasurer()
-	{
-		void Finalize()
-		{
-			var metrics = pm.GetMetrics();
-			Debug.Assert(metrics[1].durationSincePrevious > 0, $"Duration of the last metric is not more than 0, this is wrong, returned value: {metrics[1].durationSincePrevious}");
-			Debug.Assert(metrics[1].timeTicks > 0, $"There's no positive time ticks for the last metric, this is wrong, returned value: {metrics[1].timeTicks}");
-			Debug.Log($"If no errors popped up, the tests were completed properly");
-
-			PerformanceMeasurer.ShowEditorMetrics(pm.GetMetrics());
-		}
-
-
-
-		Debug.Log($"Start Performance Measurer");
-		pm = new PerformanceMeasurer();
-		pm.StoreEntry("First");
-
-		timeToWait = 0.5f;
-		timeSinceStart = Time.realtimeSinceStartup;
-
-		onFinishedDelay = () =>
-		{
-			pm.StoreEntry("Second");
-			EditorApplication.update -= UpdateDelay;
-
-
-			timeToWait = 1.35f;
-			timeSinceStart = Time.realtimeSinceStartup;
-			onFinishedDelay = () =>
-			{
-				pm.StoreEntry("Third");
-				EditorApplication.update -= UpdateDelay;
-
-				timeToWait = 6f;
-				timeSinceStart = Time.realtimeSinceStartup;
-				onFinishedDelay = () =>
-				{
-					pm.StoreEntry("Fourth");
-					EditorApplication.update -= UpdateDelay;
-
-					Finalize();
-				};
-
-				EditorApplication.update += UpdateDelay;
-			};
-
-			EditorApplication.update += UpdateDelay;
-		};
-
-		EditorApplication.update -= UpdateDelay;
-		EditorApplication.update += UpdateDelay;
-	}
-
-	private static void UpdateDelay()
-	{
-		if (Time.realtimeSinceStartup - timeSinceStart > timeToWait)
-		{
-			Debug.Log($"Duration: {Time.realtimeSinceStartup - timeSinceStart}");
-			onFinishedDelay();
-		}
 	}
 }
 #endif

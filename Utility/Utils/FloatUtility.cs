@@ -2,11 +2,6 @@
 
 public partial class Utility
 {
-	public static bool FloatsOppositeSigns(float first, float second)
-	{
-		return ((first * second) >= 0.0f);
-	}
-
 	public static float InverseLerp(float value, float min, float max)
 	{
 		if (max < min)

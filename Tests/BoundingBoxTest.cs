@@ -15,7 +15,7 @@ public class BoundingBoxTest : MonoBehaviour
 
 	private List<GameObject> BBoxCenters;
 	private List<int> bboxIndexOverlapping = new List<int>();
-	private List<MinMax> bboxOverlappingAreas = new List<MinMax>();
+	private List<MinMaxRectangle> bboxOverlappingAreas = new List<MinMaxRectangle>();
 
 	private void OnDrawGizmos()
 	{
@@ -95,7 +95,7 @@ public class BoundingBoxTest : MonoBehaviour
 	}
 
 
-	private List<MinMax> actualBBoxes;
+	private List<MinMaxRectangle> actualBBoxes;
 	private void ConstructBBoxes()
 	{
 		if (BBoxCenters.Count == 0)
@@ -103,7 +103,7 @@ public class BoundingBoxTest : MonoBehaviour
 			return;
 		}
 
-		actualBBoxes = new List<MinMax>();
+		actualBBoxes = new List<MinMaxRectangle>();
 		for (int i = 0; i < BBoxes.Count; ++i)
 		{
 			var current = BBoxes[i];
@@ -112,10 +112,10 @@ public class BoundingBoxTest : MonoBehaviour
 
 			var pos = BBoxCenters[i].transform.position;
 
-			actualBBoxes.Add(new MinMax
+			actualBBoxes.Add(new MinMaxRectangle
 			{
-				Max = pos + new Vector3(halfWidth, halfHeight),
-				Min = pos + new Vector3(-halfWidth, -halfHeight),
+				max = pos + new Vector3(halfWidth, halfHeight),
+				min = pos + new Vector3(-halfWidth, -halfHeight),
 			});
 		}
 	}
@@ -175,14 +175,14 @@ public class BoundingBoxTest : MonoBehaviour
 		}
 	}
 
-	private void DrawBBox(MinMax bbox)
+	private void DrawBBox(MinMaxRectangle bbox)
 	{
 		var positions = new Vector2[]
 		{
-				bbox.Max,
-				new Vector2(bbox.Max.x, bbox.Min.y),
-				bbox.Min,
-				new Vector2(bbox.Min.x, bbox.Max.y),
+				bbox.max,
+				new Vector2(bbox.max.x, bbox.min.y),
+				bbox.min,
+				new Vector2(bbox.min.x, bbox.max.y),
 		};
 
 		for (int k = 0; k < positions.Length; ++k)
