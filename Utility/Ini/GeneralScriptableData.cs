@@ -4,6 +4,8 @@
 [CreateAssetMenu(fileName = GENERAL_SCRIPTABLE_NAME, menuName = "_scriptables/" + GENERAL_SCRIPTABLE_NAME, order = 0)]
 public class GeneralScriptableData : CustomSO
 {
+	protected static GeneralScriptableData pInstance;
+
 	public const string GENERAL_SCRIPTABLE_NAME = "GeneralData";
 
 	public static GeneralScriptableData Instance
@@ -28,7 +30,7 @@ public class GeneralScriptableData : CustomSO
 	[UnityEditor.MenuItem("Data/" + GENERAL_SCRIPTABLE_NAME + " %#g")]
 	public static void OpenScriptable()
 	{
-		OpenScriptableObject();
+		OpenScriptableObject(pInstance);
 	}
 #endif
 }

@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class CustomSO : ScriptableObject
 {
-	protected static CustomSO pInstance;
-
 	protected static T LoadScriptableObject<T>(string name) where T : CustomSO
 	{
 		var scriptableObject = Resources.Load(name) as T;
@@ -17,9 +15,9 @@ public class CustomSO : ScriptableObject
 	}
 
 #if UNITY_EDITOR
-	public static void OpenScriptableObject()
+	public static void OpenScriptableObject(CustomSO instance)
 	{
-		var scriptableObject = pInstance;
+		var scriptableObject = instance;
 		UnityEditor.Selection.activeObject = scriptableObject;
 #endif
 	}
