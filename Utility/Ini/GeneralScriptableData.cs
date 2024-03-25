@@ -26,11 +26,15 @@ public class GeneralScriptableData : CustomSO
 	public SerializableBuildPlayerOptions BuildOptions;
 #endif
 
+	[Header("GameObjects")]
+	public Material debugBaseMaterial;
+
+
 #if UNITY_EDITOR
-	[UnityEditor.MenuItem("Data/" + GENERAL_SCRIPTABLE_NAME + " %#g")]
+	[UnityEditor.MenuItem("Data/" + GENERAL_SCRIPTABLE_NAME)]
 	public static void OpenScriptable()
 	{
-		OpenScriptableObject(pInstance);
+		OpenScriptableObject(Instance);
 	}
 #endif
 }
