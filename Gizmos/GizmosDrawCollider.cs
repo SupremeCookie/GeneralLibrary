@@ -32,7 +32,7 @@ public class GizmosDrawCollider : MonoBehaviour
 			else
 			{
 				Gizmos.color = gizmosColor;
-				Gizmos.DrawMesh(meshCollider.sharedMesh);
+				Gizmos.DrawMesh(meshCollider.sharedMesh, 0, transform.position);
 			}
 		}
 	}
