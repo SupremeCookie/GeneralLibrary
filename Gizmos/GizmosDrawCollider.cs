@@ -23,6 +23,9 @@ public class GizmosDrawCollider : MonoBehaviour
 			return;
 		}
 
+		Matrix4x4 currentMatrix = Gizmos.matrix;
+		Gizmos.matrix = transform.localToWorldMatrix;
+
 		if (gizmoCollider is MeshCollider)
 		{
 			if (meshCollider == null)
@@ -32,9 +35,11 @@ public class GizmosDrawCollider : MonoBehaviour
 			else
 			{
 				Gizmos.color = gizmosColor;
-				Gizmos.DrawMesh(meshCollider.sharedMesh, 0, transform.position);
+				Gizmos.DrawMesh(meshCollider.sharedMesh);
 			}
 		}
+
+		Gizmos.matrix = currentMatrix;
 	}
 #endif
 }
