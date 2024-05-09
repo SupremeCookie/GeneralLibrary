@@ -19,8 +19,8 @@ public class CustomSO : ScriptableObject
 	{
 		var scriptableObject = instance;
 		UnityEditor.Selection.activeObject = scriptableObject;
-#endif
 	}
+#endif
 }
 
 #if UNITY_EDITOR
