@@ -28,6 +28,7 @@ public class GeneralScriptableData : CustomSO
 
 	[Header("GameObjects")]
 	public Material debugBaseMaterial;
+	public Material fieldTypeMaterial;
 
 
 #if UNITY_EDITOR
