@@ -1,0 +1,34 @@
+{
+  "name": "DKatGames_Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:be305ae2ef531ef4ca8a0cd2d5739c7b",
+    "GUID:478a2357cc57436488a56e564b08d223"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [
+    "Android",
+    "CloudRendering",
+    "Editor",
+    "iOS",
+    "LinuxStandalone64",
+    "Lumin",
+    "macOSStandalone",
+    "PS4",
+    "Stadia",
+    "Switch",
+    "tvOS",
+    "WebGL",
+    "WindowsStandalone32",
+    "WindowsStandalone64",
+    "WSA",
+    "XboxOne"
+  ],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
