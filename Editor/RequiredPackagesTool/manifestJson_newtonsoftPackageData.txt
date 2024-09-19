@@ -1,2 +1,2 @@
-dependencyLine "jillejr.newtonsoft.json-for-unity": "13.0.102",
-scopedRegistries "scopedRegistries":[{"name":"jilleJr","url":"https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity","scopes":["jillejr.newtonsoft.json-for-unity"]}]
+"jillejr.newtonsoft.json-for-unity":"13.0.102",
+"scopedRegistries":[{"name":"jilleJr","url":"https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity","scopes":["jillejr.newtonsoft.json-for-unity"]}]

@@ -1,12 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿//using Newtonsoft.Json;
 using UnityEngine;
 
 public class CustomRandom
 {
 	private System.Random rand;
-	[JsonProperty(PropertyName = "Seed")] private int seed;
+	//[JsonProperty(PropertyName = "Seed")]
+	private int seed;
 
-	[JsonIgnore] public int Seed { get { return seed; } }
+	//[JsonIgnore]
+	public int Seed { get { return seed; } }
 
 	public CustomRandom()
 	{
