@@ -6,6 +6,10 @@ public class NoiseToTextureComponent : MonoBehaviour
 
 	public void InitTexture(int resolution, bool fullyReinitialise = false)
 	{
+#if UNITY_2019
+		fullyReinitialise = true;
+#endif
+
 		if (_texture == null || fullyReinitialise)
 		{
 			_texture = new Texture2D(resolution, resolution, TextureFormat.RGB24, mipChain: true);
@@ -15,7 +19,9 @@ public class NoiseToTextureComponent : MonoBehaviour
 		}
 		else
 		{
+#if !UNITY_2019
 			_texture.Reinitialize(resolution, resolution);
+#endif
 		}
 	}
 
