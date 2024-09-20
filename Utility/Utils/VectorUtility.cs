@@ -5,6 +5,7 @@ using UnityEngine;
 public partial class Utility
 {
 	private const float PiRadToDegrees = 180f / Mathf.PI;
+	private const float PiDegreesToRad = Mathf.PI / 180f;
 
 	private static CustomRandom random => utilityRandom;
 
@@ -121,6 +122,18 @@ public partial class Utility
 			Mathf.Sin(radials)
 		);
 	}
+
+	public static Vector2 Rotate(Vector2 vec, float degrees)
+	{
+		float radians = AngleToRadian(degrees);
+
+		return new Vector2
+		{
+			x = vec.x * Mathf.Cos(radians) - vec.y * Mathf.Sin(radians),
+			y = vec.x * Mathf.Sin(radians) + vec.y * Mathf.Cos(radians)
+		};
+	}
+
 
 	public enum DotProductDirection
 	{
@@ -272,6 +285,10 @@ public partial class Utility
 		return radians * PiRadToDegrees;
 	}
 
+	public static float AngleToRadian(in float degrees)
+	{
+		return degrees * PiDegreesToRad;
+	}
 
 
 	public static Vector3 Cross(in Vector2 inputFirst, in Vector2 inputSecond)
@@ -288,7 +305,6 @@ public partial class Utility
 
 		return result;
 	}
-
 
 
 	/// <summary> Only works for eclipses alligned on the x/y axis; rotated eclipses aren't supported </summary>

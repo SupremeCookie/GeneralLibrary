@@ -12,14 +12,8 @@ public class Coordinates3D
 	public Coordinates3D(float x, float y, float z) { this.x = Utility.RoundToNearestIntOrCeil(x); this.y = Utility.RoundToNearestIntOrCeil(y); this.z = Utility.RoundToNearestIntOrCeil(z); }
 	public Coordinates3D(Vector3 xyz)
 	{
-#if MM
-		float cubeHeight = DebugData.Instance.cubeHeight;
-#else
-		float cubeHeight = 1.0f;
-#endif
-
 		this.x = Utility.RoundToNearestIntOrCeil(xyz.x);
-		this.y = Utility.RoundToNearestIntOrCeil(xyz.y / cubeHeight);
+		this.y = Utility.RoundToNearestIntOrCeil(xyz.y);
 		this.z = Utility.RoundToNearestIntOrCeil(xyz.z);
 	}
 

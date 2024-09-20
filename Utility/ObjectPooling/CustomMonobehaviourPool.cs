@@ -166,7 +166,7 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 
 	private void CreateParent()
 	{
-		GameObject newGO = new GameObject("CMP-ParentObject");
+		GameObject newGO = new GameObject($"CMP-ParentObject-({typeof(U)})");
 		Object.DontDestroyOnLoad(newGO);
 
 		_parentObject = newGO.transform;

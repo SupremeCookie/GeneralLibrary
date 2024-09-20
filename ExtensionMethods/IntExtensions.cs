@@ -15,7 +15,7 @@ public static class IntExtensions
 
 	public static int Modulo(this int val, int max)
 	{
-		return val % max;
+		return Utility.Modulo(val, max);
 	}
 
 	public static int ToMilliSeconds(this int input)

@@ -35,6 +35,16 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 
 	private void Awake()
 	{
+		InitSymbols();
+	}
+
+	private void Reset()
+	{
+		InitSymbols();
+	}
+
+	private void InitSymbols()
+	{
 		if (symbols.IsNullOrEmpty())
 		{
 			symbols = new ScriptingSymbol[2];
@@ -51,6 +61,11 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 				label = "Is this a Demo Build",
 			};
 		}
+
+#if UNITY_EDITOR
+		UnityEditor.EditorUtility.SetDirty(this);
+#endif
+
 	}
 
 	public ScriptingSymbol[] GetSymbols()

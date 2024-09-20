@@ -15,6 +15,13 @@ public partial class Utility
 
 	public static int Modulo(int val, int max)
 	{
-		return val % max;
+		int addition = 0;
+		if (val < 0)
+		{
+			int multiplication = Mathf.CeilToInt(Mathf.Abs(val) / (float)max);
+			addition = multiplication * max;
+		}
+
+		return (val + addition) % max;
 	}
 }

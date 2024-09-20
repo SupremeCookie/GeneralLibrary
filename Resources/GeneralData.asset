@@ -19,3 +19,5 @@ MonoBehaviour:
     targetGroup: 0
     target: 0
     options: 0
+  debugBaseMaterial: {fileID: 2100000, guid: 339cab1abf1cdf343932519c34a03d55, type: 2}
+  fieldTypeMaterial: {fileID: 2100000, guid: 4be65b44b1d0d3c49989c76a909ccb26, type: 2}

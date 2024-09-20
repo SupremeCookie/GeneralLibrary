@@ -1,7 +1,12 @@
-﻿using UnityEngine;
+﻿using ImGuiNET;
+using UnityEngine;
 
 public class SimpleBGMPlayer : MonoBehaviour, IInitialisable, IUpdatable
 {
+#if DEBUG_MENU
+	public const string DrawGuiLabel = "SimpleBGMPlayer";
+#endif
+
 	[SerializeField] private bool shouldStartAutomatically = true;
 	[SerializeField] private AudioSource audioSource;
 	[SerializeField] private AudioClip[] audioClips;
@@ -32,7 +37,7 @@ public class SimpleBGMPlayer : MonoBehaviour, IInitialisable, IUpdatable
 		StartAudio(currentAudio);
 
 #if DEBUG_MENU
-		DrawGUI.Instance.OnDrawGUI += OnDrawGUI;
+		DKatGamesImgui.Subscribe(DrawGuiLabel, OnDrawGUI);
 #endif
 
 		IsInitialised = true;
@@ -63,13 +68,10 @@ public class SimpleBGMPlayer : MonoBehaviour, IInitialisable, IUpdatable
 #if DEBUG_MENU
 	private void OnDrawGUI()
 	{
-		if (DrawGUI.CreateGroup("Audio", out var group))
-		{
-			group.DrawLabel($"Current audio clip: ({currentAudio})");
+		ImGui.Text($"Current audio clip: ({currentAudio})");
 
-			float currentTime = audioSource.time;
-			group.DrawLabel($"Current time: ({currentTime})");
-		}
+		float currentTime = audioSource.time;
+		ImGui.Text($"Current time: ({currentTime})");
 	}
 #endif
 }

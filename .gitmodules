@@ -1,3 +1,6 @@
 [submodule "localPersistency"]
 	path = c-_LocalPersistency
 	url = https://github.com/SupremeCookie/c-_LocalPersistency.git
+[submodule "uimgui"]
+	path = uimgui
+	url = https://github.com/SupremeCookie/DKatGames-uimgui.git
