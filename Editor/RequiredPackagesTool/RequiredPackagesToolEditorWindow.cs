@@ -7,7 +7,7 @@ using System;
 
 public class RequiredPackagesToolEditorWindow : EditorWindow
 {
-	[MenuItem("DKatGames/Required Packages Window")]
+	[MenuItem("DKat/Required Packages Window", priority = -10)]
 	public static void ShowWindow()
 	{
 		RequiredPackagesToolEditorWindow window = GetWindow<RequiredPackagesToolEditorWindow>();
