@@ -84,7 +84,7 @@ public class RequiredPackagesToolEditorWindow : EditorWindow
 						packageDependencyWasPresent = true;
 					}
 
-					fileContent[i] = string.Join(':', splitLine);
+					fileContent[i] = string.Join(":", splitLine);
 
 					lastCheckedIndex = i;
 				}
@@ -105,7 +105,7 @@ public class RequiredPackagesToolEditorWindow : EditorWindow
 		}
 
 		// scopedRegistries dependency
-		string scopedRegistriesName = manifestJsonContent[1].Split(":")[0];
+		string scopedRegistriesName = manifestJsonContent[1].Split(':')[0];
 		string scopedRegistriesValueName = manifestJsonContent[3];
 		bool foundScopedRegistries = false;
 		bool foundOurEntry = false;
