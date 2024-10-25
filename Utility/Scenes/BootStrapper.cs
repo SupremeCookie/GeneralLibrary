@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BootStrapper : MonoBehaviour
@@ -10,9 +11,16 @@ public class BootStrapper : MonoBehaviour
 
 	public void Awake()
 	{
+		List<string> openScenes = new List<string>(SceneManager.sceneCount);
+		for (int i = 0; i < SceneManager.sceneCount; i++)
+		{
+			openScenes.Add(SceneManager.GetSceneAt(i).name);
+		}
+
 		for (int i = 0; i < ScenesToLoad.Length; ++i)
 		{
-			SceneManager.LoadScene(ScenesToLoad[i], LoadSceneMode.Additive);
+			if (!openScenes.Contains(ScenesToLoad[i]))
+				SceneManager.LoadScene(ScenesToLoad[i], LoadSceneMode.Additive);
 		}
 	}
 }
