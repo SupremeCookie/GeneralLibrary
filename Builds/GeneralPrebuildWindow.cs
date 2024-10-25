@@ -51,7 +51,7 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		GUILayout.BeginVertical();
 
 		GUILayout.BeginVertical(GUI.skin.box, GUILayout.MaxWidth(width));
-		DrawChecklist();
+		DrawChecklist(width);
 		GUILayout.EndVertical();
 
 		GUILayout.Space(50);
@@ -81,9 +81,14 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 		GUILayout.EndHorizontal();
 	}
 
-	private void DrawChecklist()
+	private void DrawChecklist(float maxWidth)
 	{
 		GUILayout.Label("General Checklist", header);
+
+		EditorWindowUtility.DrawButton("Open PlayerSettings", maxWidth, () =>
+		{
+			Selection.activeObject = Unsupported.GetSerializedAssetInterfaceSingleton("PlayerSettings");
+		});
 
 		GUILayout.Label($"Current Game Version: {Application.version}");
 
