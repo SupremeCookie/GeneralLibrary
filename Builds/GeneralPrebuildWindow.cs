@@ -69,16 +69,23 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 			GUILayout.Label($"Cannot build whilst Unity is compiling");
 		}
 
+		bool shouldbuild = false;
 		EditorWindowUtility.DrawButton(label, width, () =>
 		{
-			BuildPipeline.BuildPlayer(buildOptions);
-			Close();
+			shouldbuild = true;
 		});
 
 		EditorGUI.EndDisabledGroup();
 
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
+
+
+		if (shouldbuild)
+		{
+			BuildPipeline.BuildPlayer(buildOptions);
+			Close();
+		}
 	}
 
 	private void DrawChecklist(float maxWidth)
