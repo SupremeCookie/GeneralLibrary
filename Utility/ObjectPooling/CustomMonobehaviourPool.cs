@@ -91,6 +91,7 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 		{
 			GameObject newGO = GameObject.Instantiate(prefab);
 			newGO.transform.SetParent(parentObject, worldPositionStays: false);
+			newGO.transform.position = prefab.transform.position;
 
 			P comp = newGO.GetComponent<P>();
 			Debug.Assert(comp != null, $"No component of type: {typeof(P)} could be found on gameObject", newGO);
@@ -146,6 +147,7 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 
 
 		value.transform.SetParent(parentObject, false);
+		value.transform.position = prefabs[key].transform.position;
 
 		var poolItems = pool[key];
 		for (int i = 0; i < poolItems.Count; ++i)
