@@ -44,7 +44,15 @@ public class DKatGamesImgui : SingletonMonoBehaviour<DKatGamesImgui>
 #endif
 	}
 
-#if DEBUG_MENU
+#if !DEBUG_MENU
+	private void Update()
+	{
+		if (IsOpenCloseInputPressed())
+		{
+			Debug.LogError($"Trying to open or close ImGui, the scripting define symbol DEBUG_MENU has not been set");
+		}
+	}
+#else
 	private static void ReorderCallbacks()
 	{
 		Instance.callbacks.OrderBy(s => s.Key);
@@ -55,6 +63,9 @@ public class DKatGamesImgui : SingletonMonoBehaviour<DKatGamesImgui>
 		if (IsOpenCloseInputPressed())
 		{
 			isActive = !isActive;
+
+			if (isActive)
+				WindowGetsOpened();
 		}
 
 		if (isActive)
@@ -96,9 +107,16 @@ public class DKatGamesImgui : SingletonMonoBehaviour<DKatGamesImgui>
 		ImGui.End();
 	}
 
+
+	private void WindowGetsOpened()
+	{
+		var io = ImGui.GetIO();
+		io.FontGlobalScale = 1.8f;
+	}
+#endif
+
 	private bool IsOpenCloseInputPressed()
 	{
 		return Input.GetKeyDown(KeyCode.F2);
 	}
-#endif
 }
