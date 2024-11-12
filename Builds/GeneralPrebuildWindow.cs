@@ -14,6 +14,9 @@ public class BuildWindowHandler
 	public static void BuildPlayer(BuildPlayerOptions options)
 	{
 		var prebuildWindow = (GeneralPreBuildWindow)EditorWindow.GetWindow(typeof(GeneralPreBuildWindow));
+
+		ScriptingDefineSymbolsSection.ResetHasLoaded();
+
 		GeneralPreBuildWindow.buildOptions = options;
 		prebuildWindow.Show();
 	}

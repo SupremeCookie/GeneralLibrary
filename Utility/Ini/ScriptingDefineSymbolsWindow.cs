@@ -7,6 +7,9 @@ public class ScriptingDefineSymbolsWindow : EditorWindow
 	private static void OpenWindow()
 	{
 		ScriptingDefineSymbolsWindow window = (ScriptingDefineSymbolsWindow)EditorWindow.GetWindow(typeof(ScriptingDefineSymbolsWindow));
+
+		ScriptingDefineSymbolsSection.ResetHasLoaded();
+
 		window.Show();
 		window.minSize = new UnityEngine.Vector2(300, 100);
 	}

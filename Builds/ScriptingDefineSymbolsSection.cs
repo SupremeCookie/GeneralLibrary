@@ -6,6 +6,7 @@ using System.Linq;
 public class ScriptingDefineSymbolsSection
 {
 	public static bool HasLoaded { get; private set; } = false;
+	public static void ResetHasLoaded() { HasLoaded = false; }
 
 	private static BuildPlayerOptions buildOptions => GeneralPreBuildWindow.buildOptions;
 	private static ScriptingDefineSymbolsScriptableObject symbolsData => ScriptingDefineSymbolsScriptableObject.Instance;
@@ -31,12 +32,9 @@ public class ScriptingDefineSymbolsSection
 
 	private static void LoadBuildOptions()
 	{
-		if (buildOptions.targetGroup == BuildTargetGroup.Unknown)
-		{
-			var copyBuildOptions = buildOptions;
-			copyBuildOptions.targetGroup = BuildTargetGroup.Standalone;
-			GeneralPreBuildWindow.buildOptions = copyBuildOptions;
-		}
+		var copyBuildOptions = buildOptions;
+		copyBuildOptions.targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+		GeneralPreBuildWindow.buildOptions = copyBuildOptions;
 	}
 
 	private static void LoadScriptingDefines()
