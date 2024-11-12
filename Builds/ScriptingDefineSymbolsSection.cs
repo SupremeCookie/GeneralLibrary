@@ -72,15 +72,23 @@ public class ScriptingDefineSymbolsSection
 		GUILayout.Space(width * 0.12f);
 		GUILayout.BeginVertical();
 
-		DrawDefineSymbols(width);
+		DrawDefineSymbols(width, out bool applySymbolSettings);
 		GUILayout.Space(15);
 		DrawHelp(width);
 
 		GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
+
+
+		// Note DK: moving the application of data outside of the begin/end layouts so the editor doesn't throw ArgumentExceptions about getting control 0's position. 
+		if (applySymbolSettings)
+		{
+			PlayerSettings.SetScriptingDefineSymbolsForGroup(buildOptions.targetGroup, scriptingDefines);
+			originalScriptingDefines = scriptingDefines;
+		}
 	}
 
-	private static void DrawDefineSymbols(float width)
+	private static void DrawDefineSymbols(float width, out bool shouldApplySettings)
 	{
 		GUILayout.BeginVertical(GUI.skin.box, GUILayout.MaxWidth(width));
 		GUILayout.Label("Scripting Define Symbols", mainHeader);
@@ -91,11 +99,13 @@ public class ScriptingDefineSymbolsSection
 			GUILayout.Box("[!!!] You've changed the Scripting Define Symbols, Press Apply Settings to make these changes persistent. [!!!]", applyBox);
 		}
 
+		bool applyButtonPressed = false;
 		EditorWindowUtility.DrawButton("Apply Settings", width, () =>
 		{
-			PlayerSettings.SetScriptingDefineSymbolsForGroup(buildOptions.targetGroup, scriptingDefines);
-			originalScriptingDefines = scriptingDefines;
+			applyButtonPressed = true;
 		});
+
+		shouldApplySettings = applyButtonPressed;
 
 		for (int i = 0; i < scriptingSymbols.Length; ++i)
 		{
