@@ -1,4 +1,4 @@
 ﻿public interface IUpdatable
 {
-	void UpdateComponent(float deltaSeconds);
+	void UpdateComponent(float deltaSeconds, float unscaledDeltaSeconds);
 }

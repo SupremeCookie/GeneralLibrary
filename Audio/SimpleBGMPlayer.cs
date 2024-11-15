@@ -43,7 +43,7 @@ public class SimpleBGMPlayer : MonoBehaviour, IInitialisable, IUpdatable
 		IsInitialised = true;
 	}
 
-	public void UpdateComponent(float deltaSeconds)
+	public void UpdateComponent(float deltaSeconds, float unscaledDeltaSeconds)
 	{
 		if (!IsInitialised)
 		{
