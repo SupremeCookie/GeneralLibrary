@@ -135,6 +135,31 @@ public partial class Utility
 	}
 
 
+	// Note DK: These lerps can overextend, unity's regular lerp can only do 0-1
+	public static Vector2 Lerp(Vector2 min, Vector2 max, float t)
+	{
+		Vector2 range = max - min;
+		Vector2 valueOnRange = range * t;
+		Vector2 result = min + valueOnRange;
+
+		// shorthand:   min + ((max - min) * range);
+
+		return result;
+	}
+
+	// Note DK: These lerps can overextend, unity's regular lerp can only do 0-1
+	public static Vector3 Lerp(Vector3 min, Vector3 max, float t)
+	{
+		Vector3 range = max - min;
+		Vector3 valueOnRange = range * t;
+		Vector3 result = min + valueOnRange;
+
+		// shorthand:   min + ((max - min) * range);
+
+		return result;
+	}
+
+
 	public enum DotProductDirection
 	{
 		Clockwise,
