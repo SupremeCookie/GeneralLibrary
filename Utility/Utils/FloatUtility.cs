@@ -26,7 +26,7 @@ public partial class Utility
 		return Mathf.Clamp01(minToValue / minToMax);
 	}
 
-	public static float Lerp(float percentage, float min, float max)
+	public static float Lerp(float min, float max, float percentage)
 	{
 		Debug.Assert(percentage >= 0 && percentage <= 1.0f, $"Percentage given to Lerp is either below 0 or above 1;  percentage: ({percentage})");
 
