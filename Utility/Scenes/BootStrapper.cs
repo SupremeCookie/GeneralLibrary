@@ -32,7 +32,7 @@ public class BootStrapper : MonoBehaviour
 		}
 
 
-		if (ScenesToLoad.Length > 0)
+		if (!ScenesToLoad.IsNullOrEmpty())
 		{
 			for (int i = 0; i < ScenesToLoad.Length; ++i)
 			{
@@ -41,7 +41,7 @@ public class BootStrapper : MonoBehaviour
 			}
 		}
 
-		if (conditionalLoads.Length > 0)
+		if (!conditionalLoads.IsNullOrEmpty())
 		{
 			for (int i = 0; i < conditionalLoads.Length; ++i)
 			{
