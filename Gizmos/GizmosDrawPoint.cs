@@ -14,9 +14,17 @@ public class GizmosDrawPoint : MonoBehaviour
 	public Color gizmosColor;
 	public GizmoType gizmoType;
 
+	public bool onlyDisplayIfSelected = false;
+
 #if UNITY_EDITOR
 	protected virtual void OnDrawGizmos()
 	{
+		if (onlyDisplayIfSelected)
+		{
+			if (!UnityEditor.Selection.gameObjects.Contains(gameObject))
+				return;
+		}
+
 		Gizmos.color = gizmosColor;
 
 		switch (gizmoType)
