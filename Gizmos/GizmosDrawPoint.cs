@@ -11,7 +11,7 @@ public enum GizmoType
 public class GizmosDrawPoint : MonoBehaviour
 {
 	public float gizmosSize;
-	public Color gizmosColor;
+	public Color gizmosColor = new Color(1, 1, 1, 1);
 	public GizmoType gizmoType;
 
 	public bool onlyDisplayIfSelected = false;
