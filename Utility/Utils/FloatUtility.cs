@@ -28,8 +28,6 @@ public partial class Utility
 
 	public static float Lerp(float min, float max, float percentage)
 	{
-		Debug.Assert(percentage >= 0 && percentage <= 1.0f, $"Percentage given to Lerp is either below 0 or above 1;  percentage: ({percentage})");
-
 		float range = max - min;
 		float valueOnRange = range * percentage;
 		float result = min + valueOnRange;
