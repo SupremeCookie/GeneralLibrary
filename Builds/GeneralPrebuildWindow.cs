@@ -86,8 +86,8 @@ public class GeneralPreBuildWindow : BuildPlayerWindow
 
 		if (shouldbuild)
 		{
+			//Close();
 			BuildPipeline.BuildPlayer(buildOptions);
-			Close();
 		}
 	}
 
