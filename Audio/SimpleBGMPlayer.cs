@@ -1,5 +1,8 @@
-﻿using ImGuiNET;
-using UnityEngine;
+﻿using UnityEngine;
+
+#if DEBUG_MENU
+using ImGuiNET;
+#endif
 
 public class SimpleBGMPlayer : MonoBehaviour, IInitialisable, IUpdatable
 {

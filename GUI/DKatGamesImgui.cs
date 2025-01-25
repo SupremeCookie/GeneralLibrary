@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+
+#if DEBUG_MENU
 using ImGuiNET;
 using UImGui;
-using UnityEngine;
-using UnityEngine.UIElements;
+#endif
 
 public class DKatGamesImgui : SingletonMonoBehaviour<DKatGamesImgui>
 {
