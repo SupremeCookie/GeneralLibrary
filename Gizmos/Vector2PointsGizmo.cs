@@ -10,12 +10,12 @@ public class Vector2PointsGizmo : MonoBehaviour
 	public float size = .125f;
 	public GizmoType gizmoType = GizmoType.WireSphere;
 
-	[SerializeField] public List<List<Vector2>> Data = new List<List<Vector2>>();
+	public List<List<Vector2>> data = new List<List<Vector2>>();
 
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = color;
-		var splinePoints = Data;
+		var splinePoints = data;
 
 		Vector2 pos = transform.position;
 
