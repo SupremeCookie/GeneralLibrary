@@ -7,6 +7,11 @@ public class SpriteRandomiser : MonoBehaviour
 	[SerializeField] private SpriteRenderer spriteRenderer;
 	[Space(10)]
 	[SerializeField] private List<Sprite> randomSprites;
+	[Header("Settings")]
+	[SerializeField] private bool randomiseManually = false;
+
+	private int _randomSpriteIndex = -1;
+	public int randomSpriteIndex => _randomSpriteIndex;
 
 	private void Reset()
 	{
@@ -15,10 +20,11 @@ public class SpriteRandomiser : MonoBehaviour
 
 	private void Start()
 	{
-		RandomiseSprite();
+		if (!randomiseManually)
+			RandomiseSprite();
 	}
 
-	private void RandomiseSprite()
+	public void RandomiseSprite()
 	{
 		if (randomSprites.IsNullOrEmpty())
 		{
@@ -26,6 +32,7 @@ public class SpriteRandomiser : MonoBehaviour
 			return;
 		}
 
-		spriteRenderer.sprite = randomSprites[Random.Range(0, randomSprites.Count)];
+		_randomSpriteIndex = Random.Range(0, randomSprites.Count);
+		spriteRenderer.sprite = randomSprites[_randomSpriteIndex];
 	}
 }
