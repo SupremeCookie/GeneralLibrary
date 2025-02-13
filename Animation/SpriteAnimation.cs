@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [System.Serializable]
 public class SpriteForAnimation
 {
@@ -13,6 +17,7 @@ public class SpriteForAnimation
 
 public class SpriteAnimation : MonoBehaviour
 {
+	[SerializeField] private bool shouldResetToNullAfter = false;
 	[SerializeField] private SpriteRenderer spriteRenderer;
 
 	[Space(10)]
@@ -28,7 +33,14 @@ public class SpriteAnimation : MonoBehaviour
 	private void OnEnable()
 	{
 		currentDelayForNewAnimation = Random.Range(0, 2f);
-		spriteRenderer.sprite = null;
+
+		if (shouldResetToNullAfter)
+			spriteRenderer.sprite = null;
+	}
+
+	private void Reset()
+	{
+		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	private void Update()
@@ -58,7 +70,10 @@ public class SpriteAnimation : MonoBehaviour
 			currentDelayForNewAnimation = delayForNewAnimation.GetValue();
 			currentDelayForNewAnimation += Random.Range(0, 2f);
 			currentSpriteIndex = -1;
-			spriteRenderer.sprite = null;
+
+			if (shouldResetToNullAfter)
+				spriteRenderer.sprite = null;
+
 			return;
 		}
 
@@ -68,4 +83,45 @@ public class SpriteAnimation : MonoBehaviour
 		spriteRenderer.transform.localScale = animatedSprites[currentSpriteIndex].scale;
 		spriteRenderer.color = animatedSprites[currentSpriteIndex].color;
 	}
+
+	public void SetAnimatedSpritesToDefault()
+	{
+		if (animatedSprites.IsNullOrEmpty())
+			return;
+
+		for (int i = 0; i < animatedSprites.Count; ++i)
+		{
+			animatedSprites[i].durationMultiplier = 1.0f;
+			animatedSprites[i].color = Color.white;
+			animatedSprites[i].scale = Vector3.one;
+		}
+
+#if UNITY_EDITOR
+		EditorUtility.SetDirty(this);
+#endif
+	}
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(SpriteAnimation))]
+public class SpriteAnimationEditor : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		base.OnInspectorGUI();
+
+		GUILayout.Space(15);
+
+		if (GUILayout.Button($"Reset Animated Sprites To Default"))
+		{
+			(target as SpriteAnimation).SetAnimatedSpritesToDefault();
+		}
+
+		if (GUILayout.Button($"Set dirty"))
+		{
+			UnityEditor.EditorUtility.SetDirty(target);
+		}
+	}
+}
+#endif
