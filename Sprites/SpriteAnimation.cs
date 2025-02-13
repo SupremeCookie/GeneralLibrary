@@ -17,7 +17,6 @@ public class SpriteForAnimation
 
 public class SpriteAnimation : MonoBehaviour
 {
-	[SerializeField] private bool shouldResetToNullAfter = false;
 	[SerializeField] private SpriteRenderer spriteRenderer;
 
 	[Space(10)]
@@ -33,9 +32,7 @@ public class SpriteAnimation : MonoBehaviour
 	private void OnEnable()
 	{
 		currentDelayForNewAnimation = Random.Range(0, 2f);
-
-		if (shouldResetToNullAfter)
-			spriteRenderer.sprite = null;
+		spriteRenderer.sprite = animatedSprites?[animatedSprites.Count - 1].sprite ?? null;
 	}
 
 	private void Reset()
@@ -70,9 +67,6 @@ public class SpriteAnimation : MonoBehaviour
 			currentDelayForNewAnimation = delayForNewAnimation.GetValue();
 			currentDelayForNewAnimation += Random.Range(0, 2f);
 			currentSpriteIndex = -1;
-
-			if (shouldResetToNullAfter)
-				spriteRenderer.sprite = null;
 
 			return;
 		}
