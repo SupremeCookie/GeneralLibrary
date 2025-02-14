@@ -52,7 +52,7 @@ public static class VectorExtensions
 		return vec.MultiplyByVec3(new Vector3(x, y, z));
 	}
 
-	public static Vector2 DivideByVec3(this Vector3 vec, Vector3 div)
+	public static Vector3 DivideByVec3(this Vector3 vec, Vector3 div)
 	{
 		Vector3 newVec = new Vector3(vec.x, vec.y, vec.z);
 		newVec.x /= div.x;
