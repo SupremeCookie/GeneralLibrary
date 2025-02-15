@@ -20,19 +20,31 @@ public class SpriteAnimation : MonoBehaviour
 	[SerializeField] private SpriteRenderer spriteRenderer;
 
 	[Space(10)]
+	[SerializeField] private bool shouldHaveInitialAnimationDelay = true;
+	[Space(5)]
+	[SerializeField] private bool shouldRunOnce = false;
+	[SerializeField] private PersistentFloat delayForNewAnimation;
+	[Space(10)]
 	[SerializeField] private List<SpriteForAnimation> animatedSprites;
 	[SerializeField] private PersistentFloat durationPerSprite;
-	[SerializeField] private PersistentFloat delayForNewAnimation;
+
+	public bool doneWithLastSprite { get; private set; } = false;
+
+	public float duration => durationPerSprite?.GetValue() ?? 0f;
 
 	private float currentDuration = 0f;
 	private float durationCurrentSprite = 0f;
 	private int currentSpriteIndex = -1;
 	private float currentDelayForNewAnimation = 0f;
+	private Vector3 baseScale;
 
 	private void OnEnable()
 	{
-		currentDelayForNewAnimation = Random.Range(0, 2f);
+		if (shouldHaveInitialAnimationDelay)
+			currentDelayForNewAnimation = Random.Range(0, 2f);
+
 		spriteRenderer.sprite = animatedSprites?[animatedSprites.Count - 1].sprite ?? null;
+		baseScale = transform.localScale;
 	}
 
 	private void Reset()
@@ -57,6 +69,13 @@ public class SpriteAnimation : MonoBehaviour
 		}
 	}
 
+
+	public List<SpriteForAnimation> GetSprites()
+	{
+		return new List<SpriteForAnimation>(animatedSprites);
+	}
+
+
 	private void PickNewSprite()
 	{
 		Debug.Assert(!animatedSprites.IsNullOrEmpty(), $"There are no sprites to pick from and animate");
@@ -64,6 +83,14 @@ public class SpriteAnimation : MonoBehaviour
 		currentSpriteIndex++;
 		if (currentSpriteIndex >= animatedSprites.Count)
 		{
+			doneWithLastSprite = true;
+
+			if (shouldRunOnce)
+			{
+				currentSpriteIndex = animatedSprites.Count;     // To combat the integer increase
+				return;
+			}
+
 			currentDelayForNewAnimation = delayForNewAnimation.GetValue();
 			currentDelayForNewAnimation += Random.Range(0, 2f);
 			currentSpriteIndex = -1;
@@ -71,10 +98,12 @@ public class SpriteAnimation : MonoBehaviour
 			return;
 		}
 
+		doneWithLastSprite = false;
+
 		durationCurrentSprite = durationPerSprite.GetValue() * animatedSprites[currentSpriteIndex].durationMultiplier;
 
 		spriteRenderer.sprite = animatedSprites[currentSpriteIndex].sprite;
-		spriteRenderer.transform.localScale = animatedSprites[currentSpriteIndex].scale;
+		spriteRenderer.transform.localScale = animatedSprites[currentSpriteIndex].scale.MultiplyByVec3(baseScale);
 		spriteRenderer.color = animatedSprites[currentSpriteIndex].color;
 	}
 
