@@ -62,9 +62,12 @@ public class CustomRandom
 		byteBuffer = buffer;
 	}
 
-	public Vector2 NextVector(/*bool normalised = true*/) // Note DK: Current implementation automatically normalises.
+	/// <summary>
+	/// Is automatically normalised thanks to implementation
+	/// </summary>
+	public Vector2 NextVector()
 	{
-		float angle = Range(-1f, 1f) * Mathf.PI; // Note DK: -1 to 1, because we do PI-radials
+		float angle = Range(-1f, 1f) * Mathf.PI; // Note DK: -1 to 1, because we do PI-radials| This effectively rotates from the right to the left over the bottom, and from the right to the left over the top.
 
 		Vector2 randomVector = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
