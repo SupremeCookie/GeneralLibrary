@@ -18,6 +18,8 @@ public class GizmosDrawRect : MonoBehaviour
 #if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{
+		Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, Vector3.one);
+
 		if (shouldDrawCrosshairXZPlane || shouldDrawCrosshairXYPlane)
 			DrawCrosshair();
 
