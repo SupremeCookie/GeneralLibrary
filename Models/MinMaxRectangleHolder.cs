@@ -17,7 +17,13 @@ public class MinMaxRectangleHolder : MonoBehaviour
 
 	public MinMaxRectangle GetRectangleCopy()
 	{
-		return new MinMaxRectangle(rect);
+		Vector2 offset = transform.position;
+		if (rotationPlane == RotationType.XZ)
+			offset.y = transform.position.z;
+
+		var result = new MinMaxRectangle(rect);
+		result.AddOffset(offset);
+		return result;
 	}
 
 	private void OnDrawGizmos()
