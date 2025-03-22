@@ -209,8 +209,8 @@ public static class Easings
 			? 8f * input * input * input * input
 			: 1f - Mathf.Pow(-2f * input + 2f, 4f) / 2f;
 	}
-	// https://easings.net/#easeInOutEinputpo
-	public static float In_Out_Einputpo(float input)
+	// https://easings.net/#easeInOutExpo
+	public static float In_Out_Expo(float input)
 	{
 		return input == 0
 		  ? 0f
@@ -236,5 +236,49 @@ public static class Easings
 		return input < 0.5f
 			? (1f - Out_Bounce(1f - 2f * input)) / 2f
 			: (1f + Out_Bounce(2f * input - 1f)) / 2f;
+	}
+
+
+	public static float Ease(EaseType easeType, float input)
+	{
+		float result = input;
+
+		switch (easeType)
+		{
+			case EaseType.In_Sine: result = In_Sine(input); break;
+			case EaseType.In_Cubic: result = In_Cubic(input); break;
+			case EaseType.In_Quint: result = In_Quint(input); break;
+			case EaseType.In_Circ: result = In_Circ(input); break;
+			case EaseType.In_Elastic: result = In_Elastic(input); break;
+			case EaseType.In_Quad: result = In_Quad(input); break;
+			case EaseType.In_Quart: result = In_Quart(input); break;
+			case EaseType.In_Expo: result = In_Expo(input); break;
+			case EaseType.In_Back: result = In_Back(input); break;
+			case EaseType.In_Bounce: result = In_Bounce(input); break;
+
+			case EaseType.Out_Sine: result = Out_Sine(input); break;
+			case EaseType.Out_Cubic: result = Out_Cubic(input); break;
+			case EaseType.Out_Quint: result = Out_Quint(input); break;
+			case EaseType.Out_Circ: result = Out_Circ(input); break;
+			case EaseType.Out_Elastic: result = Out_Elastic(input); break;
+			case EaseType.Out_Quad: result = Out_Quad(input); break;
+			case EaseType.Out_Quart: result = Out_Quart(input); break;
+			case EaseType.Out_Expo: result = Out_Expo(input); break;
+			case EaseType.Out_Back: result = Out_Back(input); break;
+			case EaseType.Out_Bounce: result = Out_Bounce(input); break;
+
+			case EaseType.In_Out_Sine: result = In_Out_Sine(input); break;
+			case EaseType.In_Out_Cubic: result = In_Out_Cubic(input); break;
+			case EaseType.In_Out_Quint: result = In_Out_Quint(input); break;
+			case EaseType.In_Out_Circ: result = In_Out_Circ(input); break;
+			case EaseType.In_Out_Elastic: result = In_Out_Elastic(input); break;
+			case EaseType.In_Out_Quad: result = In_Out_Quad(input); break;
+			case EaseType.In_Out_Quart: result = In_Out_Quart(input); break;
+			case EaseType.In_Out_Expo: result = In_Out_Expo(input); break;
+			case EaseType.In_Out_Back: result = In_Out_Back(input); break;
+			case EaseType.In_Out_Bounce: result = In_Out_Bounce(input); break;
+		}
+
+		return result;
 	}
 }
