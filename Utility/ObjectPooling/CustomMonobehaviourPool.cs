@@ -89,7 +89,7 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 		List<P> newItems = new List<P>(size);
 		for (int i = 0; i < size; ++i)
 		{
-			GameObject newGO = GameObject.Instantiate(prefab);
+			GameObject newGO = Utility.CreateInstance(prefab);
 			newGO.transform.SetParent(parentObject, worldPositionStays: false);
 			newGO.transform.position = prefab.transform.position;
 
