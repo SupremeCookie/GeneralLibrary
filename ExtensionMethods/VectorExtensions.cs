@@ -78,6 +78,11 @@ public static class VectorExtensions
 		return new Vector3(vec.x, 0, vec.y);
 	}
 
+	public static Vector3 XYVectorToXZ(this Vector3 vec)
+	{
+		return new Vector3(vec.x, 0, vec.y);
+	}
+
 	public static Vector2 XZVectorToXY(this Vector3 vec)
 	{
 		return new Vector2(vec.x, vec.z);
