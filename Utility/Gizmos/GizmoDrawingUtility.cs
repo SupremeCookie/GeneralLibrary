@@ -7,7 +7,7 @@ using UnityEngine;
 
 public partial class GizmoUtility
 {
-	public static void DrawCircle(Vector3 position, float radius, int resolution = 16)
+	public static void DrawCircle(Vector3 position, float radius, int resolution = 16, int thickness = 1)
 	{
 		var oldMatrix = Gizmos.matrix;
 
@@ -28,6 +28,12 @@ public partial class GizmoUtility
 		for (int i = 0; i < outlineResolution; ++i)
 		{
 			Gizmos.DrawLine(circleOutlinePoints[i], circleOutlinePoints[(i + 1) % circleOutlinePoints.Length]);
+
+			for (int k = 1; k < thickness; ++k)
+			{
+				float thicknessMultiplier = 1.0f - (0.015f * k);
+				Gizmos.DrawLine(circleOutlinePoints[i] * thicknessMultiplier, circleOutlinePoints[(i + 1) % circleOutlinePoints.Length] * thicknessMultiplier);
+			}
 		}
 
 
