@@ -30,6 +30,30 @@ public partial class Utility
 		result.a = Mathf.Max(first.a, second.a);
 	}
 
+	public static Color Copy(this Color color)
+	{
+		return new Color(color.r, color.g, color.b, color.a);
+	}
+
+	// https://stackoverflow.com/a/20820649/6208164
+	// https://www.w3.org/WAI/GL/wiki/Relative_luminance
+	// Note DK: desaturation sits between 0 and 1, where 0 returns the original color
+	public static Color Desaturate(this Color color, float desaturation)
+	{
+		var r = color.r;
+		var g = color.g;
+		var b = color.b;
+
+		float f = desaturation;
+		float L = 0.3f * r + 0.6f * g + 0.1f * b;
+		color.r = r + f * (L - r);
+		color.g = g + f * (L - g);
+		color.b = b + f * (L - b);
+
+		return color;
+	}
+
+
 	private static Color[] randomColors = new Color[]
 	{
 		new Color(1.0f, 0.0f, 0.0f),
