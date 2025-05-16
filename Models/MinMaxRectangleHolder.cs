@@ -28,8 +28,22 @@ public class MinMaxRectangleHolder : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
+		var colorCopy = new Color(color.r, color.g, color.b);
+		colorCopy.a = 0.3f;
+		Gizmos.color = colorCopy;
+
+		DrawInternal();
+	}
+
+	private void OnDrawGizmosSelected()
+	{
 		Gizmos.color = color;
 
+		DrawInternal();
+	}
+
+	private void DrawInternal()
+	{
 		Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, Vector3.one);
 
 		Vector2[] points = new Vector2[4]
