@@ -20,7 +20,14 @@ public static partial class Utility
 
 #if UNITY_EDITOR
 		if (PrefabUtility.IsPartOfAnyPrefab(origin))
+		{
 			instance = PrefabUtility.InstantiatePrefab(origin) as GameObject;
+			if (instance == null)
+			{
+				Debug.Log($"Editor couldn't instantiate the prefab using PrefabUtility, doing a regular instantiate instead");
+				instance = GameObject.Instantiate(origin);
+			}
+		}
 		else
 #endif
 			instance = GameObject.Instantiate(origin);
