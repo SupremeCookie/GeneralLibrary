@@ -10,6 +10,8 @@ public class MinMaxRectangleHolder : MonoBehaviour
 		XZ,
 	}
 
+	[SerializeField] private string note;
+	[Space(10)]
 	[SerializeField] private MinMaxRectangle rect;
 	[Space(10)]
 	[SerializeField] private Color color;
