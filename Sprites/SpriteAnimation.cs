@@ -45,6 +45,7 @@ public class SpriteAnimation : MonoBehaviour
 
 		spriteRenderer.sprite = animatedSprites?[animatedSprites.Count - 1].sprite ?? null;
 		baseScale = transform.localScale;
+		doneWithLastSprite = false;
 	}
 
 	private void Reset()
