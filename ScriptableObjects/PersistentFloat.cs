@@ -9,4 +9,5 @@ public class PersistentFloat : ScriptableObject
 	[SerializeField] private float value;
 
 	public float GetValue() => value;
+	public float GetSquaredValue() => value * value;
 }
