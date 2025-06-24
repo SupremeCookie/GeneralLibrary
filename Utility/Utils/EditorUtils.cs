@@ -70,9 +70,7 @@ public class EditorUtils
 			EditorUtility.SetDirty(targetObj);
 		}
 
-		intFieldValue = EditorGUILayout.IntField(value, intFieldStyle);
-
-		GUILayout.Space(-(((width - 15) * 0.33f)) + 5); // Note DK: Custom eyeballing to make stuff look nice
+		intFieldValue = EditorGUILayout.IntField(value, intFieldStyle, GUILayout.MaxWidth(intFieldStyle.fixedWidth));   // Note DK: MaxWidth needs to be explicitly set
 
 		GUI.SetNextControlName("plusButton");
 		if (GUILayout.Button("+++"))
