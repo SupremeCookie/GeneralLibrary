@@ -8,6 +8,99 @@ using UnityEditor;
 public class EditorUtils
 {
 #if UNITY_EDITOR
+	private static GUIStyle _intFieldStyle;
+	private static GUIStyle intFieldStyle
+	{
+		get
+		{
+			if (_intFieldStyle == null)
+			{
+				_intFieldStyle = new GUIStyle(EditorStyles.numberField);
+				intFieldStyle.CalcMinMaxWidth(new GUIContent("100"), out float minWidth, out float maxWidth);
+				intFieldStyle.fixedWidth = minWidth;
+			}
+
+			return _intFieldStyle;
+		}
+	}
+
+	private static GUIStyle _labelFieldStyle;
+	private static GUIStyle labelFieldStyle
+	{
+		get
+		{
+			if (_labelFieldStyle == null)
+			{
+				_labelFieldStyle = new GUIStyle(EditorStyles.boldLabel);
+				labelFieldStyle.CalcMinMaxWidth(new GUIContent("Destination Node Target"), out float minWidth, out float maxWidth);
+				labelFieldStyle.fixedWidth = minWidth;
+			}
+
+			return _labelFieldStyle;
+		}
+	}
+
+
+	// min -- incl
+	// max -- excl
+	public static bool DrawPlusMinusControl(ref int value, int min, int max, string label, Object targetObj)
+	{
+		int oldValue = value;
+		int intFieldValue = value;
+
+		float width = Mathf.Clamp(Screen.width * 0.3f, 50, 100);
+		GUILayout.BeginHorizontal(GUILayout.ExpandWidth(false), GUILayout.MaxWidth(width));
+
+		GUILayout.Label(label, labelFieldStyle);
+		GUILayout.Space(15);
+
+		value = Mathf.Clamp(value, min, max);
+
+		GUI.SetNextControlName("minusButton");
+		if (GUILayout.Button("---"))
+		{
+			value--;
+			if (value < min)
+				value = max - 1;
+
+			GUI.FocusControl("minusButton");    // Note DK: Moves the focus away from the intField, in case it is selected
+			intFieldValue = value;  // Note DK: The 2 values change independently of each other, gotta keep them synced.
+
+			SceneView.RepaintAll();
+			EditorUtility.SetDirty(targetObj);
+		}
+
+		intFieldValue = EditorGUILayout.IntField(value, intFieldStyle);
+
+		GUILayout.Space(-(((width - 15) * 0.33f)) + 5); // Note DK: Custom eyeballing to make stuff look nice
+
+		GUI.SetNextControlName("plusButton");
+		if (GUILayout.Button("+++"))
+		{
+			value++;
+			if (value >= max)
+				value = min;
+
+			GUI.FocusControl("plusButton"); // Note DK: Moves the focus away from the intField, in case it is selected
+			intFieldValue = value;  // Note DK: The 2 values change independently of each other, gotta keep them synced.
+
+			SceneView.RepaintAll();
+			EditorUtility.SetDirty(targetObj);
+		}
+
+
+		GUILayout.EndHorizontal();
+
+		if (value != intFieldValue)
+			value = intFieldValue;
+
+		return oldValue != value;
+	}
+
+
+
+
+
 	public static T[] GetAllScriptableObjectInstances<T>() where T : ScriptableObject
 	{
 		return GetAssetInstances<T>();
