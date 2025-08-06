@@ -9,6 +9,7 @@ using UnityEditor;
 
 public class GeneralMeshBuilder : MonoBehaviour
 {
+#if UNITY_EDITOR
 	[Header("General")]
 	[SerializeField] private Transform meshContainer;
 
@@ -87,6 +88,7 @@ public class GeneralMeshBuilder : MonoBehaviour
 			Debug.Log($"Saved asset at path: {assetPath}   and prefab at path: {prefabPath}");
 		}
 	}
+#endif
 }
 
 #if UNITY_EDITOR
