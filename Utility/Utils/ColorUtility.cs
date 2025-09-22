@@ -30,6 +30,34 @@ public partial class Utility
 		result.a = Mathf.Max(first.a, second.a);
 	}
 
+	public static Color MoveTowards(this Color color, Color target, float deltaTime, float duration, out bool isFinished)
+	{
+		float additionTime = 1.0f / duration * deltaTime;
+		Color delta = new Color(target.r - color.r, target.g - color.g, target.b - color.b, target.a - color.a);
+
+		delta.r = Mathf.Abs(delta.r) > 0.01f ? delta.r : 0f;
+		delta.g = Mathf.Abs(delta.g) > 0.01f ? delta.g : 0f;
+		delta.b = Mathf.Abs(delta.b) > 0.01f ? delta.b : 0f;
+		delta.a = Mathf.Abs(delta.a) > 0.01f ? delta.a : 0f;
+
+		Color changedColor = color + delta.Multiply(additionTime);
+
+		isFinished = Mathf.Abs(delta.r) < 0.01f && Mathf.Abs(delta.g) < 0.01f && Mathf.Abs(delta.b) < 0.01f && Mathf.Abs(delta.a) < 0.01f;
+
+		//Debug.Log($"AdditionTime: {additionTime},  delta: {delta},  color: {color},  target: {target},   {changedColor},   duration: {duration}");
+		return changedColor;
+	}
+
+	public static Color Multiply(this Color target, float amount)
+	{
+		target.r *= amount;
+		target.g *= amount;
+		target.b *= amount;
+		target.a *= amount;
+
+		return target;
+	}
+
 	public static Color Copy(this Color color)
 	{
 		return new Color(color.r, color.g, color.b, color.a);
