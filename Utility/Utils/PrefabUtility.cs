@@ -24,7 +24,7 @@ public static partial class Utility
 			instance = PrefabUtility.InstantiatePrefab(origin) as GameObject;
 			if (instance == null)
 			{
-				Debug.Log($"Editor couldn't instantiate the prefab using PrefabUtility, doing a regular instantiate instead");
+				//Debug.Log($"Editor couldn't instantiate the prefab using PrefabUtility, doing a regular instantiate instead");
 				instance = GameObject.Instantiate(origin);
 			}
 		}
