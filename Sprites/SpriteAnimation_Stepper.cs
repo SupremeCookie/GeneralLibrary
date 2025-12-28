@@ -26,7 +26,7 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 	[SerializeField] private bool shouldUseGlobalStepper = false;
 	[Space(10)]
 	[SerializeField] private PersistentFloat animationSpeed;
-	[SerializeField] private List<SpriteForAnimation> animatedSprites;
+	[SerializeField] private List<SpriteForAnimation_Stepper> animatedSprites;
 
 	public bool doneWithLastSprite { get; private set; } = false;
 
@@ -68,9 +68,9 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 	}
 
 
-	public List<SpriteForAnimation> GetSprites()
+	public List<SpriteForAnimation_Stepper> GetSprites()
 	{
-		return new List<SpriteForAnimation>(animatedSprites);
+		return new List<SpriteForAnimation_Stepper>(animatedSprites);
 	}
 
 
@@ -110,7 +110,6 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 
 		for (int i = 0; i < animatedSprites.Count; ++i)
 		{
-			animatedSprites[i].durationMultiplier = 1.0f;
 			animatedSprites[i].color = Color.white;
 			animatedSprites[i].scale = Vector3.one;
 		}
