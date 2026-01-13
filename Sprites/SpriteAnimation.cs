@@ -34,7 +34,7 @@ public class SpriteAnimation : MonoBehaviour
 
 	public bool doneWithLastSprite { get; private set; } = false;
 
-	public float duration => durationPerSprite?.GetValue() ?? 0f;
+	public float baseSpriteDuration => durationPerSprite?.GetValue() ?? 0f;
 
 	private float currentDuration = 0f;
 	private float durationCurrentSprite = 0f;
