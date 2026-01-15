@@ -45,13 +45,17 @@ public class SpriteAnimation : MonoBehaviour
 	private SpriteRenderer spriteRenderer => _renderer as SpriteRenderer;
 
 
+	private void Awake()
+	{
+		baseScale = transform.localScale;
+	}
+
 	private void OnEnable()
 	{
 		if (shouldHaveInitialAnimationDelay)
 			currentDelayForNewAnimation = Random.Range(0, 2f);
 
 		SetSprite(animatedSprites?[animatedSprites.Count - 1].sprite ?? null);
-		baseScale = transform.localScale;
 		doneWithLastSprite = false;
 	}
 

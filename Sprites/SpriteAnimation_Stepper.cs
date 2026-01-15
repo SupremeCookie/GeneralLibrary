@@ -37,16 +37,20 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 	private SpriteRenderer spriteRenderer => _renderer as SpriteRenderer;
 
 
-	private void OnEnable()
+	private void Awake()
 	{
-		SetSprite(animatedSprites?[animatedSprites.Count - 1].sprite ?? null);
 		baseScale = transform.localScale;
-		doneWithLastSprite = false;
 
 		if (shouldUseGlobalStepper)
 			stepper = GlobalStepper.GetStepper(animatedSprites.Count);
 		else
 			stepper = new Stepper(animatedSprites.Count, animationSpeed != null ? animationSpeed.GetValue() : Stepper.DEFAULT_SPEED);
+	}
+
+	private void OnEnable()
+	{
+		SetSprite(animatedSprites?[animatedSprites.Count - 1].sprite ?? null);
+		doneWithLastSprite = false;
 	}
 
 	protected virtual void Reset()
