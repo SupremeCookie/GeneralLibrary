@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [UnityEngine.Scripting.Preserve]
-[CreateAssetMenu(fileName = VECTOR2_SO_NAME, menuName = "_scriptables/Utility/" + VECTOR2_SO_NAME, order = 0)]
+[CreateAssetMenu(fileName = VECTOR2_SO_NAME, menuName = "_scriptables/Utility/" + VECTOR2_SO_NAME, order = 14)]
 public class PersistentVector2 : ScriptableObject
 {
 	public const string VECTOR2_SO_NAME = "Persistent-Vector2";

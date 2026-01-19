@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [UnityEngine.Scripting.Preserve]
-[CreateAssetMenu(fileName = BOOL_SO_NAME, menuName = "_scriptables/Utility/" + BOOL_SO_NAME, order = 0)]
+[CreateAssetMenu(fileName = BOOL_SO_NAME, menuName = "_scriptables/Utility/" + BOOL_SO_NAME, order = 5)]
 public class PersistentBool : ScriptableObject
 {
 	public const string BOOL_SO_NAME = "Persistent-Bool";

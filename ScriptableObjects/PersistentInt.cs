@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [UnityEngine.Scripting.Preserve]
-[CreateAssetMenu(fileName = INT_SO_NAME, menuName = "_scriptables/Utility/" + INT_SO_NAME, order = 0)]
+[CreateAssetMenu(fileName = INT_SO_NAME, menuName = "_scriptables/Utility/" + INT_SO_NAME, order = 1)]
 public class PersistentInt : ScriptableObject
 {
 	public const string INT_SO_NAME = "Persistent-Int";

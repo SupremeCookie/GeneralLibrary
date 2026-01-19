@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [UnityEngine.Scripting.Preserve]
-[CreateAssetMenu(fileName = SO_NAME, menuName = "_scriptables/Utility/" + SO_NAME, order = 0)]
+[CreateAssetMenu(fileName = SO_NAME, menuName = "_scriptables/Utility/" + SO_NAME, order = 9)]
 public class PersistentColor : ScriptableObject
 {
 	public const string SO_NAME = "Persistent-Color";

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [UnityEngine.Scripting.Preserve]
-[CreateAssetMenu(fileName = SCALABLE_VECTOR2_SO_NAME, menuName = "_scriptables/Utility/" + SCALABLE_VECTOR2_SO_NAME, order = 0)]
+[CreateAssetMenu(fileName = SCALABLE_VECTOR2_SO_NAME, menuName = "_scriptables/Utility/" + SCALABLE_VECTOR2_SO_NAME, order = 200)]
 public class PersistentScalableVector2 : ScriptableObject
 {
 	public const string SCALABLE_VECTOR2_SO_NAME = "Persistent-Scalable-Vector2";
