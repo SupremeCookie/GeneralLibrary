@@ -5,6 +5,10 @@ public static class ListExtensions
 	public static void Shuffle<T>(this IList<T> list)
 	{
 		var rng = CustomRandomContainer.GetRandomInstance("ListShuffle");
+		list.Shuffle(rng);
+	}
+	public static void Shuffle<T>(this IList<T> list, CustomRandom rng)
+	{
 		int n = list.Count;
 		while (n > 0)
 		{
