@@ -20,16 +20,23 @@ public static class CustomRandomContainer
 	//}
 
 	// Note DK: This method, will return the actual instance of the custom random. The GetRandom method will return a fresh CustomRandom instead.
-	public static CustomRandom GetRandomInstance(string key)
+	public static CustomRandom GetRandomInstance(string key, bool includeTime = false)
 	{
-		return GetRandomInstanceInternal(key);
+		return GetRandomInstanceInternal(key, includeTime);
 	}
 
-	private static CustomRandom GetRandomInstanceInternal(string key)
+	private static CustomRandom GetRandomInstanceInternal(string key, bool includeTime = false)
 	{
 		if (!_customRandoms.ContainsKey(key))
 		{
 			int seedKey = SeedGenerator.GameSeed;
+
+			unchecked
+			{
+				if (includeTime)
+					seedKey += Environment.TickCount;
+			}
+
 			bool hasAdded = _customRandoms.TryAdd(key, new CustomRandom(seedKey));  // Note DK: hasAdded being false means the key is already present which could happen in a multi-threaded environment. (which is why they're concurrent dictionaries)
 		}
 
