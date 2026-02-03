@@ -1,10 +1,43 @@
-﻿
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
 
+[UnityEngine.Scripting.Preserve]
 [System.Serializable]
-public class SerializableBuildPlayerOptions
+[CreateAssetMenu(fileName = SCRIPTABLE_NAME, menuName = "_scriptables/" + SCRIPTABLE_NAME, order = 0)]
+public class SerializableBuildPlayerOptions : CustomSO
 {
+	protected static SerializableBuildPlayerOptions pInstance;
+
+	public const string SCRIPTABLE_NAME = "BuildOptions";
+
+	public static SerializableBuildPlayerOptions Instance
+	{
+		get
+		{
+			if (pInstance == null)
+			{
+				pInstance = CustomSO.LoadScriptableObject<SerializableBuildPlayerOptions>(SCRIPTABLE_NAME);
+				Debug.Assert(pInstance != null, "SerializableBuildPlayerOptions instance is null");
+			}
+
+			return pInstance as SerializableBuildPlayerOptions;
+		}
+
+		set
+		{
+			if (pInstance == null)
+			{
+				pInstance = CustomSO.LoadScriptableObject<SerializableBuildPlayerOptions>(SCRIPTABLE_NAME);
+				Debug.Assert(pInstance != null, "SerializableBuildPlayerOptions instance is null");
+			}
+
+			pInstance = value;
+		}
+	}
+
+
+
 	public string[] scenes;
 	public string locationPathName;
 	public string assetBundleManifestPath;

@@ -14,17 +14,19 @@ public class GeneralScriptableData : CustomSO
 		{
 			if (pInstance == null)
 			{
-				pInstance = CustomSO.LoadScriptableObject<GeneralScriptableData>(GENERAL_SCRIPTABLE_NAME);
-				Debug.Assert(pInstance != null, "GeneralScriptableData instance is null");
+				SetPInstance();
 			}
 
 			return pInstance as GeneralScriptableData;
 		}
 	}
 
-#if UNITY_EDITOR
-	public SerializableBuildPlayerOptions BuildOptions;
-#endif
+	protected static void SetPInstance()
+	{
+		Debug.Log($"[GeneralScriptableData] SetPInstance");
+		pInstance = CustomSO.LoadScriptableObject<GeneralScriptableData>(GENERAL_SCRIPTABLE_NAME);
+		Debug.Assert(pInstance != null, "GeneralScriptableData instance is null");
+	}
 
 	[Header("GameObjects")]
 	public Material debugBaseMaterial;

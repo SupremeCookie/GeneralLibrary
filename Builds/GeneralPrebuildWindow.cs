@@ -17,14 +17,14 @@ public class BuildWindowHandler
 
 		ScriptingDefineSymbolsSection.ResetHasLoaded();
 
-		GeneralPreBuildWindow.buildOptions = options;
+		GlobalConfig.BuildOptions = options;
 		prebuildWindow.Show();
 	}
 }
 
 public class GeneralPreBuildWindow : BuildPlayerWindow
 {
-	public static BuildPlayerOptions buildOptions { get { return GlobalConfig.GeneralScriptableData.BuildOptions; } set { GlobalConfig.GeneralScriptableData.BuildOptions = value; } }
+	public static BuildPlayerOptions buildOptions { get { return GlobalConfig.BuildOptions; } }
 
 	private GUIStyle header { get { if (headerInternal == null) { LoadStyles(); } return headerInternal; } }
 	private GUIStyle headerInternal;

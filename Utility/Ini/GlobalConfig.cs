@@ -17,4 +17,5 @@ public class GlobalConfig
 	// Research into this topic is wholly valid.
 
 	public static GeneralScriptableData GeneralScriptableData { get { return GeneralScriptableData.Instance; } }
+	public static SerializableBuildPlayerOptions BuildOptions { get { return SerializableBuildPlayerOptions.Instance; } set { SerializableBuildPlayerOptions.Instance = value; } }
 }
