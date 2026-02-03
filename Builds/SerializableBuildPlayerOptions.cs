@@ -1,6 +1,8 @@
-﻿#if UNITY_EDITOR
+﻿using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
+#endif
 
 [UnityEngine.Scripting.Preserve]
 [System.Serializable]
@@ -38,6 +40,14 @@ public class SerializableBuildPlayerOptions : CustomSO
 
 
 
+	public InternalBuildSettings options;
+}
+
+
+[System.Serializable]
+public class InternalBuildSettings
+{
+#if UNITY_EDITOR
 	public string[] scenes;
 	public string locationPathName;
 	public string assetBundleManifestPath;
@@ -45,7 +55,7 @@ public class SerializableBuildPlayerOptions : CustomSO
 	public BuildTarget target;
 	public BuildOptions options;
 
-	public static implicit operator BuildPlayerOptions(SerializableBuildPlayerOptions input)
+	public static implicit operator BuildPlayerOptions(InternalBuildSettings input)
 	{
 		return new BuildPlayerOptions
 		{
@@ -58,9 +68,9 @@ public class SerializableBuildPlayerOptions : CustomSO
 		};
 	}
 
-	public static implicit operator SerializableBuildPlayerOptions(BuildPlayerOptions input)
+	public static implicit operator InternalBuildSettings(BuildPlayerOptions input)
 	{
-		return new SerializableBuildPlayerOptions
+		return new InternalBuildSettings
 		{
 			assetBundleManifestPath = input.assetBundleManifestPath,
 			locationPathName = input.locationPathName,
@@ -70,5 +80,5 @@ public class SerializableBuildPlayerOptions : CustomSO
 			targetGroup = input.targetGroup,
 		};
 	}
-}
 #endif
+}

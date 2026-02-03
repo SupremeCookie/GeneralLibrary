@@ -34,7 +34,7 @@ public class ScriptingDefineSymbolsSection
 	{
 		var copyBuildOptions = buildOptions;
 		copyBuildOptions.targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-		GlobalConfig.BuildOptions = copyBuildOptions;
+		GlobalConfig.BuildOptions.options = copyBuildOptions;
 	}
 
 	private static void LoadScriptingDefines()
