@@ -15,19 +15,43 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 
 	public float GetActiveTimescale(TimescaleLevel level = TimescaleLevel.Gameplay)
 	{
+		float lowestScale = GetLowestScaleForHigherLevels(level);
+		float currentLevelTimescale = GetTimescaleForLevel(level);
+		return Mathf.Min(lowestScale, currentLevelTimescale);
+	}
+
+	private float GetLowestScaleForHigherLevels(TimescaleLevel level)
+	{
+		float lowestScale = DEFAULT;
+
+		int startPoint = (int)level;
+		if (startPoint == 0)
+			return lowestScale;
+
+		for (int i = startPoint - 1; i >= 0; --i)
+		{
+			lowestScale = Mathf.Min(lowestScale, GetTimescaleForLevel((TimescaleLevel)i));
+		}
+
+		return lowestScale;
+	}
+
+	private float GetTimescaleForLevel(TimescaleLevel level)
+	{
+		float lowestScale = DEFAULT;
+
 		// TODO DK: Make some kind of, once a frame we can cache this value type thing.
 		List<TimeScale> scales = GetLevelScales(level);
-
 		if (scales.IsNullOrEmpty())
 			return DEFAULT;
 
-		float lowestScale = DEFAULT;
 		for (int i = 0; i < scales.Count; ++i)
 			lowestScale = Mathf.Min(scales[i].timescale, lowestScale);
 
 		// We don't do negative timescales here.
 		return Mathf.Max(lowestScale, 0f);
 	}
+
 
 	public void RegisterTimescale(string name, float value, TimescaleLevel scaleLevel, out TimeScale resultScale)
 	{
