@@ -9,6 +9,7 @@ using UnityEditor;
 public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 {
 	private const float DEFAULT = 1.0f;
+	private const float INVALID = 9999.0f;
 
 	[SerializeField, Readonly] private List<TimeScale> global_ActiveTimeScales = new List<TimeScale>();
 	[SerializeField, Readonly] private List<TimeScale> gameplay_ActiveTimeScales = new List<TimeScale>();
@@ -17,12 +18,17 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 	{
 		float lowestScale = GetLowestScaleForHigherLevels(level);
 		float currentLevelTimescale = GetTimescaleForLevel(level);
-		return Mathf.Min(lowestScale, currentLevelTimescale);
+
+		float result = Mathf.Min(lowestScale, currentLevelTimescale);
+		if (result.IsCloseTo(INVALID, 1))
+			return DEFAULT;
+
+		return result;
 	}
 
 	private float GetLowestScaleForHigherLevels(TimescaleLevel level)
 	{
-		float lowestScale = DEFAULT;
+		float lowestScale = INVALID;
 
 		int startPoint = (int)level;
 		if (startPoint == 0)
@@ -38,12 +44,12 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 
 	private float GetTimescaleForLevel(TimescaleLevel level)
 	{
-		float lowestScale = DEFAULT;
+		float lowestScale = INVALID;
 
 		// TODO DK: Make some kind of, once a frame we can cache this value type thing.
 		List<TimeScale> scales = GetLevelScales(level);
 		if (scales.IsNullOrEmpty())
-			return DEFAULT;
+			return INVALID;
 
 		for (int i = 0; i < scales.Count; ++i)
 			lowestScale = Mathf.Min(scales[i].timescale, lowestScale);
@@ -100,6 +106,13 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 				break;
 			}
 		}
+	}
+
+
+	public bool HasTimescale(string name, TimescaleLevel level = TimescaleLevel.Gameplay)
+	{
+		int indexOfExisting = GetIndexOfTimescale(name, level);
+		return indexOfExisting >= 0;
 	}
 
 	private bool CheckRegistration(TimeScale scale, TimescaleLevel level, out TimeScale existingScale)
