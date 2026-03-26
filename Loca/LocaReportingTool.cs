@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -85,9 +87,56 @@ public class LocaReportingTool : CustomSO
 #if UNITY_EDITOR
 	public void DrawDebugControls()
 	{
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+
+		GUILayout.BeginVertical();
+
 		if (GUILayout.Button("Clear"))
 		{
 			registeredLocterms = new List<LocTermModel>();
+		}
+
+		GUILayout.Space(15);
+
+		if (GUILayout.Button("Sort ABC"))
+		{
+			var values = registeredLocterms
+				.OrderBy(s => s.keyInternal)
+				.ToList();
+
+			registeredLocterms = values;
+
+			EditorUtility.SetDirty(this);
+		}
+
+		GUILayout.EndVertical();
+
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+
+		GUILayout.Space(15);
+
+
+		{
+			GUILayout.BeginHorizontal();
+
+			var keys = registeredLocterms
+				.Select(s => s.keyInternal)
+				.ToList();
+			var keysString = string.Join(Environment.NewLine, keys);
+
+			GUILayout.TextArea(keysString);
+
+
+			var values = registeredLocterms
+				.Select(s => s.fallbackInternal)
+				.ToList();
+			var valuesString = string.Join(Environment.NewLine, values);
+
+			GUILayout.TextArea(valuesString);
+
+			GUILayout.EndHorizontal();
 		}
 	}
 #endif
