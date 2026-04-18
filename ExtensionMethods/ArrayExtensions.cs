@@ -53,6 +53,11 @@ public static class ArrayExtensions
 		return array == null || array.Length == 0;
 	}
 
+	public static bool HasContent<T>(this T[] array)
+	{
+		return !array.IsNullOrEmpty();
+	}
+
 	public static T[] Populate<T>(this T[] array) where T : new()
 	{
 		for (int i = 0; i < array.Length; i++)

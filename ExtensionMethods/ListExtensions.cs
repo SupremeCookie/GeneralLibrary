@@ -25,6 +25,11 @@ public static class ListExtensions
 		return list == null || list.Count == 0;
 	}
 
+	public static bool HasContent<T>(this IList<T> list)
+	{
+		return !list.IsNullOrEmpty();
+	}
+
 	public static void ClearIfNotNull<T>(this IList<T> list)
 	{
 		if (list != null)

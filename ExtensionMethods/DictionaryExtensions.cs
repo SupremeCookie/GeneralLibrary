@@ -50,4 +50,9 @@ public static class DictionaryExtensions
 
 		return false;
 	}
+
+	public static bool HasContent<T, U>(this Dictionary<T, U> dict)
+	{
+		return !dict.IsNullOrEmpty();
+	}
 }

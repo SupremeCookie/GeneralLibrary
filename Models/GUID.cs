@@ -19,12 +19,22 @@
 		_guid = System.Guid.NewGuid();
 	}
 
+	public GUID(string guid)
+	{
+		_guid = new System.Guid(guid);
+	}
+
 	public GUID(System.Guid guid)
 	{
 		_guid = guid;
 	}
 
 	public override string ToString()
+	{
+		return _guid.ToString();
+	}
+
+	public string ToShortString()
 	{
 		return _guid.ToString().Substring(0, 8);
 	}
