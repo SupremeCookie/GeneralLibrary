@@ -13,6 +13,7 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 
 	[SerializeField, Readonly] private List<TimeScale> global_ActiveTimeScales = new List<TimeScale>();
 	[SerializeField, Readonly] private List<TimeScale> gameplay_ActiveTimeScales = new List<TimeScale>();
+	[SerializeField, Readonly] private List<TimeScale> tutorial_ActiveTimeScales = new List<TimeScale>();
 
 	public float GetActiveTimescale(TimescaleLevel level = TimescaleLevel.Gameplay)
 	{
@@ -99,6 +100,11 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 				global_ActiveTimeScales.Add(scale);
 				break;
 			}
+			case TimescaleLevel.Tutorial:
+			{
+				tutorial_ActiveTimeScales.Add(scale);
+				break;
+			}
 
 			default:
 			{
@@ -157,6 +163,10 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 
 			case TimescaleLevel.Global:
 				result = global_ActiveTimeScales;
+				break;
+
+			case TimescaleLevel.Tutorial:
+				result = tutorial_ActiveTimeScales;
 				break;
 
 			default:
