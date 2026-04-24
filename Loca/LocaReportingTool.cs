@@ -53,7 +53,10 @@ public class LocaReportingTool : CustomSO
 	{
 		bool hasAlreadyRegistered = FindRegisteredModel(model, out var index);
 		if (hasAlreadyRegistered)
+		{
+			UpdateFallback(model);
 			return;
+		}
 
 		registeredLocterms.Add(model);
 
@@ -81,6 +84,15 @@ public class LocaReportingTool : CustomSO
 		}
 
 		return index >= 0;
+	}
+
+	private void UpdateFallback(LocTermModel model)
+	{
+		// We intrinsically demand the model to be registered
+		var foundModel = FindRegisteredModel(model, out int index);
+		Debug.Assert(foundModel, $"We expected the model to be present, it is not");
+
+		registeredLocterms[index].UpdateFallback(model.fallbackInternal);
 	}
 
 

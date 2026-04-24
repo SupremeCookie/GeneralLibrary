@@ -14,6 +14,11 @@ public class LocTermModel
 	public LocTermModel() { }
 	public LocTermModel(string key, string fallback) { this.key = key; this.fallback = fallback; }
 
+	public void UpdateFallback(string fallback)
+	{
+		this.fallback = fallback;
+	}
+
 	public override string ToString()
 	{
 		return LocTermUtility.GetLoca(key, fallback);
