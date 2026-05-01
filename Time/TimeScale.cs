@@ -13,4 +13,9 @@ public class TimeScale
 		this.id = id;
 		this.timescale = scale;
 	}
+
+	public void UpdateTimescale(float scale)
+	{
+		timescale = scale;
+	}
 }

@@ -67,6 +67,7 @@ public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 		bool hasBeenRegisteredAlready = CheckRegistration(resultScale, scaleLevel, out var existingScale);
 		if (hasBeenRegisteredAlready)
 		{
+			existingScale.UpdateTimescale(value);
 			resultScale = existingScale;
 			return;
 		}
