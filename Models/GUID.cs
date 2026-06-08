@@ -5,6 +5,7 @@ using UnityEngine;
 public class GUID : IEquatable<GUID>
 {
 	[SerializeField, Readonly] private string _guid;
+	[SerializeField, Readonly] public bool isDirty = false;
 
 	public System.Guid Guid
 	{
@@ -14,6 +15,7 @@ public class GUID : IEquatable<GUID>
 			if (string.IsNullOrEmpty(_guid))
 			{
 				_guid = System.Guid.NewGuid().ToString();
+				SetDirty();
 			}
 
 			return new System.Guid(_guid);
@@ -23,16 +25,19 @@ public class GUID : IEquatable<GUID>
 	public GUID()
 	{
 		_guid = System.Guid.NewGuid().ToString();
+		SetDirty();
 	}
 
 	public GUID(string guid)
 	{
 		_guid = guid;
+		SetDirty();
 	}
 
 	public GUID(System.Guid guid)
 	{
 		_guid = guid.ToString();
+		SetDirty();
 	}
 
 	public override string ToString()
@@ -90,5 +95,11 @@ public class GUID : IEquatable<GUID>
 	public override int GetHashCode()
 	{
 		return HashCode.Combine(_guid);
+	}
+
+
+	private void SetDirty()
+	{
+		isDirty = true;
 	}
 }
