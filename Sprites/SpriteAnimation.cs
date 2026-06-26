@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.Rendering;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -23,6 +25,7 @@ public class SpriteAnimation : MonoBehaviour
 	[SerializeField] private Renderer _renderer;
 
 	[Space(10)]
+	[SerializeField] private bool autoplay = true;
 	[SerializeField] private bool shouldHaveInitialAnimationDelay = true;
 	[SerializeField] private bool shouldAffectColor = true;
 	[Space(5)]
@@ -41,6 +44,7 @@ public class SpriteAnimation : MonoBehaviour
 	private int currentSpriteIndex = -1;
 	private float currentDelayForNewAnimation = 0f;
 	private Vector3 baseScale;
+	private bool isDoingManualAnimation = false;
 
 	private SpriteRenderer spriteRenderer => _renderer as SpriteRenderer;
 
@@ -52,12 +56,43 @@ public class SpriteAnimation : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (isDoingManualAnimation)
+		{
+			isDoingManualAnimation = false;
+			return;
+		}
+
 		if (shouldHaveInitialAnimationDelay)
 			currentDelayForNewAnimation = Random.Range(0, 2f);
 
-		SetSprite(animatedSprites?[animatedSprites.Count - 1].sprite ?? null);
-		doneWithLastSprite = false;
+		if (autoplay)
+		{
+			SetSprite(animatedSprites?[animatedSprites.Count - 1].sprite ?? null);
+			doneWithLastSprite = false;
+		}
+
+		if (!autoplay)
+		{
+			doneWithLastSprite = true;
+			shouldRunOnce = true;
+		}
+
 	}
+
+	public void DoAnimation()
+	{
+		isDoingManualAnimation = true;
+		doneWithLastSprite = false;
+		SetSprite(null);
+		currentDuration = 0f;
+		currentDelayForNewAnimation = 0f;
+		currentSpriteIndex = -1;
+		shouldRunOnce = false;
+
+		Debug.Assert(durationPerSprite != null, $"No {typeof(PersistentFloat)} setup to determine duration per sprite with, please apply.");
+		durationCurrentSprite = durationPerSprite.GetValue();
+	}
+
 
 	protected virtual void Reset()
 	{
@@ -66,6 +101,9 @@ public class SpriteAnimation : MonoBehaviour
 
 	private void Update()
 	{
+		if (doneWithLastSprite && shouldRunOnce)
+			return;
+
 		if (currentDelayForNewAnimation > 0f)
 		{
 			currentDelayForNewAnimation -= Time.deltaTime;
@@ -184,6 +222,13 @@ public class SpriteAnimationEditor : Editor
 		{
 			UnityEditor.EditorUtility.SetDirty(target);
 		}
+
+		EditorGUI.BeginDisabledGroup(!Application.isPlaying);
+		if (GUILayout.Button($"Do Animation"))
+		{
+			(target as SpriteAnimation).DoAnimation();
+		}
+		EditorGUI.EndDisabledGroup();
 	}
 }
 #endif
