@@ -7,6 +7,9 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 
 	private const string DEBUG_MENU = "DEBUG_MENU";
 	private const string DEMO_BUILD = "DEMO_BUILD";
+	private const string STEAM_SDK = "SteamSDK";
+	private const string STEAM_MODULES = "SteamModules";
+	private const string DKATGAMES_STEAM = "DKatGamesSteam";
 
 	private static ScriptingDefineSymbolsScriptableObject _instance;
 	public static ScriptingDefineSymbolsScriptableObject Instance

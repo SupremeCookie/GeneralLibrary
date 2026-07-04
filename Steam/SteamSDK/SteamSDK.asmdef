@@ -1,10 +1,8 @@
 {
-    "name": "DKatGames",
+    "name": "SteamSDK",
     "rootNamespace": "",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:9a87097604f806340b969a2d9261a322",
-        "GUID:e109ea4d8fc3f7641940b6214723a7b1"
+        "GUID:68bd7fdb68ef2684e982e8a9825b18a5"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -12,7 +10,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "SteamSDK"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
