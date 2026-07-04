@@ -10,6 +10,7 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 	private const string STEAM_SDK = "SteamSDK";
 	private const string STEAM_MODULES = "SteamModules";
 	private const string DKATGAMES_STEAM = "DKatGamesSteam";
+	private const string STEAMWORKS_NET = "STEAMWORKS_NET";
 
 	private static ScriptingDefineSymbolsScriptableObject _instance;
 	public static ScriptingDefineSymbolsScriptableObject Instance
@@ -50,7 +51,7 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 	{
 		if (symbols.IsNullOrEmpty())
 		{
-			symbols = new ScriptingSymbol[2];
+			symbols = new ScriptingSymbol[3];
 
 			symbols[0] = new ScriptingSymbol
 			{
@@ -62,6 +63,12 @@ public class ScriptingDefineSymbolsScriptableObject : ScriptableObject
 			{
 				symbol = DEMO_BUILD,
 				label = "Is this a Demo Build",
+			};
+
+			symbols[2] = new ScriptingSymbol
+			{
+				symbol = $"{DKATGAMES_STEAM};{STEAM_MODULES};{STEAM_SDK};{STEAMWORKS_NET}",
+				label = "-= STEAM Build =-",
 			};
 		}
 
