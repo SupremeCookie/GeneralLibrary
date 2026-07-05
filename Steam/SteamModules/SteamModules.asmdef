@@ -2,7 +2,8 @@
     "name": "SteamModules",
     "rootNamespace": "",
     "references": [
-        "GUID:37df71ab4c47cdf4ca5893e876c6b3e4"
+        "GUID:37df71ab4c47cdf4ca5893e876c6b3e4",
+        "GUID:68bd7fdb68ef2684e982e8a9825b18a5"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
