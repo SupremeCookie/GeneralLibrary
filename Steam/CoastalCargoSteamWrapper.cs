@@ -10,6 +10,13 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 {
 #if HAS_STEAM
 	public SteamManager steamManager { get; private set; }
+	public bool managerHasInitialized => SteamManager.Initialized;
+
+
+	private SteamCallbacksModule callbackModule;
+	public ISteamCallbacks callBacks => callbackModule;
+	public bool hasCallbackModule => callbackModule != null;
+
 
 	private void Awake()
 	{
@@ -19,9 +26,12 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 	private void Start()
 	{
-		var moduleTest = new SteamTestsModule();
+		//var moduleTest = new SteamTestsModule();
 
-		moduleTest.LogDisplayName();
+		//moduleTest.LogDisplayName();
+
+		callbackModule = new SteamCallbacksModule();
+		callbackModule.Init();
 	}
 #endif
 }
