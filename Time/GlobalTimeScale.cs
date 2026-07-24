@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class GlobalTimeScale : SingletonMonoBehaviour<GlobalTimeScale>
 {
-	public const float DEFAULT = 1.2f;
+	public const float DEFAULT = 1.0f;
 	public const float INVALID = 9999.0f;
 
 	[SerializeField, Readonly] private List<TimeScale> global_ActiveTimeScales = new List<TimeScale>();
