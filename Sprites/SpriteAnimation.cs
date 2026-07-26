@@ -49,6 +49,20 @@ public class SpriteAnimation : MonoBehaviour
 	private SpriteRenderer spriteRenderer => _renderer as SpriteRenderer;
 
 
+	public void SetSprite(int index, Sprite sprite)
+	{
+		if (animatedSprites.IsNullOrEmpty())
+			return;
+
+		if (index > animatedSprites.Count)
+			return;
+
+		if (index < 0)
+			return;
+
+		animatedSprites[index].sprite = sprite;
+	}
+
 	private void Awake()
 	{
 		baseScale = transform.localScale;
