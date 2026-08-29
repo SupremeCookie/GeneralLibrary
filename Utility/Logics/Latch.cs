@@ -13,7 +13,7 @@ public class Latch
 	public bool hasJustLatched = false;
 	public float currentLatchValue = 0f;
 
-	private bool hasFinished = false;
+	public bool hasFinished { get; private set; } = false;
 
 	public Latch() { }
 	public Latch(float latchValue)
