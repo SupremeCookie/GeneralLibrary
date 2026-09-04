@@ -102,12 +102,12 @@ public partial class Utility
 		return vec;
 	}
 
-	public static Vector2 AngleToVector(float angle)
+	public static Vector2 AngleToVector(float angleDegrees)
 	{
 		return new Vector2
 		(
-			Mathf.Cos(angle * Mathf.Deg2Rad).Truncate(),
-			Mathf.Sin(angle * Mathf.Deg2Rad).Truncate()
+			Mathf.Cos(angleDegrees * Mathf.Deg2Rad).Truncate(),
+			Mathf.Sin(angleDegrees * Mathf.Deg2Rad).Truncate()
 		);
 	}
 
