@@ -7,6 +7,9 @@ public class GizmosDrawRect : MonoBehaviour
 	[Space(5)]
 	public Vector3 offset;
 	[Space(10)]
+	public bool shouldBeAffectedByRotation;
+	public Vector3 rotationOffset;
+	[Space(10)]
 	public float hollowThickness = 0.5f;
 	[Header("Hollow XZ")]
 	public bool drawHollowXZPlane = false;
@@ -18,7 +21,11 @@ public class GizmosDrawRect : MonoBehaviour
 #if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{
-		Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.identity, Vector3.one);
+		Quaternion rot = Quaternion.identity;
+		if (shouldBeAffectedByRotation)
+			rot = transform.rotation * Quaternion.Euler(rotationOffset);
+
+		Gizmos.matrix = Matrix4x4.TRS(transform.position, rot, Vector3.one);
 
 		if (shouldDrawCrosshairXZPlane || shouldDrawCrosshairXYPlane)
 			DrawCrosshair();
@@ -50,7 +57,7 @@ public class GizmosDrawRect : MonoBehaviour
 
 	private void DrawOpague()
 	{
-		Gizmos.DrawCube(transform.position + offset, gizmosSize);
+		Gizmos.DrawCube(offset, gizmosSize);
 	}
 
 	private void DrawHollow()
