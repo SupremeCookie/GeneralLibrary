@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class CoastalCargoSteamWrapper : MonoBehaviour
 {
+	public const string steamHyperlink = "https://store.steampowered.com/app/4549920/Coastal_Cargo/";
+
+
 #if HAS_STEAM
 	public SteamManager steamManager { get; private set; }
 	public bool managerHasInitialized => SteamManager.Initialized;
@@ -34,4 +37,15 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		callbackModule.Init();
 	}
 #endif
+
+
+	public void OpenWishlist()
+	{
+#if HAS_STEAM
+		steamManager.OpenWishlistPage();
+#else
+		Debug.Log($"Opening the hyperlink: {steamHyperlink}");
+		Application.OpenURL(steamHyperlink);
+#endif
+	}
 }
