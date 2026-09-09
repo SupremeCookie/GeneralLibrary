@@ -42,10 +42,12 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	public void OpenWishlist()
 	{
 #if HAS_STEAM
-		steamManager.OpenWishlistPage();
-#else
+		bool openedOverlay = steamManager.OpenWishlistPage();
+		if (openedOverlay)
+			return;
+#endif
+
 		Debug.Log($"Opening the hyperlink: {steamHyperlink}");
 		Application.OpenURL(steamHyperlink);
-#endif
 	}
 }

@@ -207,13 +207,17 @@ public class SteamManager : MonoBehaviour
 	}
 
 
-	public void OpenWishlistPage()
+	public bool OpenWishlistPage()
 	{
+		bool ableToOpen = false;
 		if (Initialized)
 		{
 			UnityEngine.Debug.Log($"Activate Game Overlay to open store");
 			SteamFriends.ActivateGameOverlayToStore(new AppId_t(main_AppId), EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+			ableToOpen = true;
 		}
+
+		return ableToOpen;
 	}
 
 #else
