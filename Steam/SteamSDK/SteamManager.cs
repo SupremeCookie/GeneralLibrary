@@ -211,7 +211,8 @@ public class SteamManager : MonoBehaviour
 	{
 		if (Initialized)
 		{
-			SteamFriends.ActivateGameOverlayToStore(new AppId_t(needed_AppID), EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+			UnityEngine.Debug.Log($"Activate Game Overlay to open store");
+			SteamFriends.ActivateGameOverlayToStore(new AppId_t(main_AppId), EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
 		}
 	}
 
