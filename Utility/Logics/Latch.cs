@@ -48,4 +48,11 @@ public class Latch
 			hasFinished = true;
 		}
 	}
+
+	public void Restart()
+	{
+		hasJustLatched = false;
+		hasFinished = false;
+		currentLatchValue = 0f;
+	}
 }
