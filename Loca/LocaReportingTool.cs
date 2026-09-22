@@ -130,6 +130,29 @@ public class LocaReportingTool : CustomSO
 		GUILayout.Space(15);
 
 
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+
+		if (GUILayout.Button("Export to CSV"))
+		{
+			string path = EditorUtility.SaveFilePanel("Select Export Location", "", "main_english_loca_export", "csv");
+
+			var content = registeredLocterms
+				.Where(s => !string.IsNullOrEmpty(s.keyInternal) && !string.IsNullOrEmpty(s.fallbackInternal))
+				.Select(s => $"{s.keyInternal}, {s.fallbackInternal.Replace("\n", "\\\\n")}")
+				.Where(s => !string.IsNullOrEmpty(s))
+				.ToList();
+
+			System.IO.File.WriteAllLines(path, content);
+		}
+
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+
+
+		GUILayout.Space(15);
+
+
 		{
 			GUILayout.BeginHorizontal();
 
