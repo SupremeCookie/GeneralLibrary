@@ -10,7 +10,7 @@ using UnityEditor;
 
 
 [UnityEngine.Scripting.Preserve]
-[CreateAssetMenu(fileName = SO_NAME, menuName = "_scriptables/" + SO_NAME, order = 0)]
+[CreateAssetMenu(fileName = SO_NAME, menuName = "_scriptables/Loca/" + SO_NAME, order = 0)]
 public class LocaReportingTool : CustomSO
 {
 	protected static LocaReportingTool pInstance;
