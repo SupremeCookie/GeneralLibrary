@@ -11,7 +11,12 @@ public class LocTermUtility
 		Debug.Assert(!string.IsNullOrEmpty(termKey), $"An empty key has been passed on, fallback value will be returned: {(string.IsNullOrEmpty(fallback) ? "empty-string" : fallback)}");
 
 		// TODO DK: Once loca is in, make something here.
-		fallback = fallback.Replace("\\n", System.Environment.NewLine);
-		return fallback;
+		if (!LocaManager.HasInstance)
+		{
+			Debug.LogError($"No instance of LocaManager could be found, returning fallback");
+			return LocaManager.StaticCleanString(fallback);
+		}
+
+		return LocaManager.Instance.GetValueCurrentLanguage(termKey, fallback);
 	}
 }
