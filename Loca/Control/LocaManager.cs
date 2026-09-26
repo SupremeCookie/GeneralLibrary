@@ -36,7 +36,14 @@ public class LocaManager : SingletonMonoBehaviour<LocaManager>
 
 	public string GetValueCurrentLanguage(string key, string fallback)
 	{
-		return StaticCleanString(fallback);
+		var currentLanguage = debugLanguage;
+		if (!quickLookupDBs.ContainsKey(currentLanguage))
+		{
+			return StaticCleanString(fallback);
+		}
+
+		var db = quickLookupDBs[currentLanguage];
+		return StaticCleanString(db.GetValue(key, fallback));
 	}
 
 

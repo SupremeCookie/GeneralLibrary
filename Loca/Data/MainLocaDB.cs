@@ -265,7 +265,7 @@ public class MainLocaDB : CustomSO
 
 		for (int i = 0; i < dbs.Count; ++i)
 		{
-			dbs[i].locTerms = new List<LocTermModel>();
+			dbs[i].locTerms = new List<LocaDB.KeyedString>();
 		}
 
 
@@ -281,7 +281,7 @@ public class MainLocaDB : CustomSO
 				for (int k = 0; k < dbs.Count; ++k)
 				{
 					if (v.language == dbs[k].language)
-						dbs[k].locTerms.Add(new LocTermModel(entry.key, v.value));
+						dbs[k].locTerms.Add(new LocaDB.KeyedString(entry.key, v.value));
 				}
 			}
 		}
