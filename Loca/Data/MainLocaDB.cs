@@ -9,9 +9,12 @@ using UnityEditor;
 #endif
 
 
+#if UNITY_EDITOR
 [CreateAssetMenu(fileName = SO_NAME, menuName = "_scriptables/Loca/" + SO_NAME, order = 0)]
+#endif
 public class MainLocaDB : CustomSO
 {
+#if UNITY_EDITOR
 	[System.Serializable]
 	public class KeyMapModel
 	{
@@ -335,6 +338,7 @@ public class MainLocaDB : CustomSO
 		if (showTextAreaForObjectTextCSV)
 			GUILayout.TextArea(csvObject?.text);
 	}
+#endif
 #endif
 }
 
