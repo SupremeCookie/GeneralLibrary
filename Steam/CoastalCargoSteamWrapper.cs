@@ -50,4 +50,13 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		Debug.Log($"Opening the hyperlink: {steamHyperlink}");
 		Application.OpenURL(steamHyperlink);
 	}
+
+	public string GetCurrentLanguage()
+	{
+#if HAS_STEAM
+		return steamManager.GetCurrentGameLanguage();
+#else
+		return string.Empty;
+#endif
+	}
 }

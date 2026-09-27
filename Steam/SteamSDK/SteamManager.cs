@@ -220,6 +220,12 @@ public class SteamManager : MonoBehaviour
 		return ableToOpen;
 	}
 
+	public string GetCurrentGameLanguage()
+	{
+		return SteamApps.GetCurrentGameLanguage();
+	}
+
+
 #else
 	public static bool Initialized
 	{
