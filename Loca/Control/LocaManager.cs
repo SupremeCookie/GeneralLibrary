@@ -9,12 +9,9 @@ using UnityEditor;
 
 public class LocaManager : SingletonMonoBehaviour<LocaManager>
 {
-	// Add a reference to each Language DB
-	// Add a reference to game options, to get current language
-	// Have this be the throughput for language and everything
-
 	[Header("Debug")]
 	[SerializeField] private LanguageID debugLanguage = LanguageID.English;
+	[SerializeField, Readonly] private LanguageID currentLanguage = LanguageID.English;
 
 	[Header("References")]
 	public List<LocaDB> locaDBs;
@@ -36,7 +33,6 @@ public class LocaManager : SingletonMonoBehaviour<LocaManager>
 
 	public string GetValueCurrentLanguage(string key, string fallback)
 	{
-		var currentLanguage = debugLanguage;
 		if (!quickLookupDBs.ContainsKey(currentLanguage))
 		{
 			return StaticCleanString(fallback);
@@ -44,6 +40,24 @@ public class LocaManager : SingletonMonoBehaviour<LocaManager>
 
 		var db = quickLookupDBs[currentLanguage];
 		return StaticCleanString(db.GetValue(key, fallback));
+	}
+
+	public string GetValue(string key, string fallback, LanguageID language)
+	{
+		if (quickLookupDBs.ContainsKey(language))
+		{
+			return StaticCleanString(quickLookupDBs[language].GetValue(key, fallback));
+		}
+
+		return fallback;
+	}
+
+
+	public void UpdateLanguage(LanguageID language)
+	{
+		Log($"Updating to language: {language}");
+
+		currentLanguage = language;
 	}
 
 
@@ -54,8 +68,33 @@ public class LocaManager : SingletonMonoBehaviour<LocaManager>
 	}
 
 
+#if UNITY_EDITOR
+	public void DrawControls()
+	{
+		if (GUILayout.Button("Update To Debug Language"))
+		{
+			UpdateLanguage(debugLanguage);
+		}
+	}
+#endif
+
 	private void Log(string message)
 	{
 		UnityEngine.Debug.Log($"[Loca Manager] {message}");
 	}
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(LocaManager))]
+public class LocaManagerEditor : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		base.OnInspectorGUI();
+
+		GUILayout.Space(15);
+
+		(target as LocaManager).DrawControls();
+	}
+}
+#endif
