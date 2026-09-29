@@ -246,7 +246,9 @@ public class MainLocaDB : CustomSO
 
 	private string CleanString(string input)
 	{
-		return input.Replace("\\\\n", "\\n");
+		return input
+			.Replace("\\\\n", "\\n")
+			.Replace("\"", "");
 	}
 
 
