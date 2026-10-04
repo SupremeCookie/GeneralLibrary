@@ -139,7 +139,7 @@ public class LocaReportingTool : CustomSO
 
 			var content = registeredLocterms
 				.Where(s => !string.IsNullOrEmpty(s.keyInternal) && !string.IsNullOrEmpty(s.fallbackInternal))
-				.Select(s => $"{s.keyInternal}, {s.fallbackInternal.Replace("\n", "\\\\n")}")
+				.Select(s => $"{s.keyInternal}|{s.fallbackInternal.Replace("\n", "\\\\n")}")      // Note DK: pipe separator, so we can be assured mid sentence commas are properly handled.
 				.Where(s => !string.IsNullOrEmpty(s))
 				.ToList();
 
