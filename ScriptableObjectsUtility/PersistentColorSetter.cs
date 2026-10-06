@@ -11,6 +11,8 @@ public class PersistentColorSetter : MonoBehaviour
 	[Space(15)]
 	[SerializeField, Readonly] private Color resultingColor;
 
+	// Had to update to support the new shader setup
+	// Maybe update this with 2 editor buttons, 1 load from sprite rend, and 1 apply to sprite rend?
 	private void Update()
 	{
 		if (componentWithColor == null || color == null)
@@ -18,9 +20,27 @@ public class PersistentColorSetter : MonoBehaviour
 
 		if (componentWithColor is SpriteRenderer spriteRend)
 		{
-			if (spriteRend.color != color.GetValue())
+			bool hasSetColor = false;
+
+			var material = spriteRend.sharedMaterial;
+			bool weHaveACustomShader = material.HasProperty("_Tint");
+			if (weHaveACustomShader)
 			{
-				color.SetValue(spriteRend.color);
+				var chosenColor = material.GetColor("_Tint");
+				color.SetValue(chosenColor);
+				hasSetColor = true;
+			}
+			else
+			{
+				if (spriteRend.color != color.GetValue())
+				{
+					color.SetValue(spriteRend.color);
+					hasSetColor = true;
+				}
+			}
+
+			if (hasSetColor)
+			{
 				resultingColor = color.GetValue();
 
 #if UNITY_EDITOR
