@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 // More Info:
@@ -58,6 +59,139 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	//> At the start of a game session, call ISteamUserStats::RequestCurrentStats to fetch the user's stats and achievement data from the Steam back end. You will receive a ISteamUserStats::UserStatsReceived_t callback when the data is ready.
 	//This is important, but always keep highest stat
+
+	private bool succeededLocalInit;
+	private int retryLocalInit = 0;
+	private bool succeededSteamInit;
+	private int retrySteamInit = 0;
+
+	private IStatsAchievementsDataIO localData;
+
+
+	public void Init(IStatsAchievementsDataIO localData)
+	{
+		this.localData = localData;
+
+		succeededLocalInit = TryToInitLocalStats();
+		succeededSteamInit = TryToInitSteamStats();
+
+		UnityEngine.Debug.Log($"[SteamStats] -- Tried initializing local and steam data, result: [local: {succeededLocalInit}], [steam: {succeededSteamInit}]");
+
+		if (!succeededLocalInit)
+			retryLocalInit = 5;
+
+		if (!succeededSteamInit)
+			retrySteamInit = 5;
+	}
+
+	public void Update()
+	{
+		if (!succeededLocalInit)
+		{
+			if (retryLocalInit > 0)
+				retryLocalInit--;
+
+			if (retryLocalInit <= 0)
+			{
+				succeededLocalInit = TryToInitLocalStats();
+				if (!succeededLocalInit)
+					retryLocalInit = 10;
+			}
+		}
+
+		if (!succeededSteamInit)
+		{
+			if (retrySteamInit > 0)
+				retrySteamInit--;
+
+			if (retrySteamInit <= 0)
+			{
+				succeededSteamInit = TryToInitSteamStats();
+				if (!succeededSteamInit)
+					retrySteamInit = 10;
+			}
+		}
+	}
+
+	private bool TryToInitLocalStats()
+	{
+		return true;
+	}
+
+	private bool TryToInitSteamStats()
+	{
+		return true;
+	}
+
+
+
+	// Interface implementations
+
+	public void IncreaseStat(string statKey, int amount)
+	{
+		if (!succeededLocalInit)
+		{
+			Debug.LogError($"No initialization of steam and local inits have been accomplished yet, please fix");
+			return;
+		}
+
+		IncreaseStat_Locally(statKey, amount);
+
+		if (!succeededSteamInit)
+		{
+			return;
+		}
+
+		PostLocalStatToSteam(statKey);
+
+		// Grab the local stat
+		// Increase it
+		// Then send that over to Steam
+
+		// TODO DK: Figure out when we need to call the "Commit stats" thing
+		// TODO DK: Periodically store the local stats
+		// TODO DK: Always store the local stats when we call the "Commit stats" to Steam
+	}
+
+	// Note DK: These will be used to "unlock singular achievements" so everything is technically stat based
+	// singular happenings simply have a 0-1 stat increase only, and then the achievement unlocks.
+	public void CompleteStat(string statKey)
+	{
+
+	}
+
+	// A lot of stats don't automatically complete their related achievements
+	// So for those instances we do checks here, for example:
+	// - Playing all levels in the first campaign doesn't automatically unlock the 
+	public void CheckAchievementCompletion(string achievementKey)
+	{
+
+	}
+
+
+	private void IncreaseStat_Locally(string statKey, int amount)
+	{
+
+	}
+
+	private void PostLocalStatToSteam(string statKey)
+	{
+
+	}
+
+
+#if UNITY_EDITOR
+	public void DrawControls()
+	{
+		GUILayout.Space(5);
+
+		GUILayout.BeginVertical(EditorStyles.helpBox);
+
+		GUILayout.Label($"Steam Stats Debug Controls");
+
+		GUILayout.EndVertical();
+	}
+#endif
 }
 
 // - Development options include:

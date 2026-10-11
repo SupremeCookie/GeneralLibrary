@@ -19,7 +19,7 @@ public class SteamCallbacksModule : ISteamCallbacks
 	{
 		if (!SteamManager.Initialized)
 		{
-			Debug.Log("Trying to setup the SteamTestsModule, but steammanager is not initialized");
+			Debug.Log("Trying to setup the SteamCallbacksModule, but steammanager is not initialized");
 			return;
 		}
 

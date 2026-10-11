@@ -4,6 +4,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CoastalCargoSteamWrapper : MonoBehaviour
@@ -20,6 +21,13 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	public ISteamCallbacks callBacks => callbackModule;
 	public bool hasCallbackModule => callbackModule != null;
 
+	private SteamStatsAndAchievementsModule statsAndAchievementsModule;
+	public ISteamStatsAchievements statsAchievements => statsAndAchievementsModule;
+	public bool hasStatsAchievementsModule => statsAndAchievementsModule != null;
+
+	private IStatsAchievementsDataIO statsAchievementsLocalData;
+	private bool statsAchievementsLocalDataIsDirty;
+
 
 	private void Awake()
 	{
@@ -30,12 +38,43 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	private void Start()
 	{
 		//var moduleTest = new SteamTestsModule();
-
 		//moduleTest.LogDisplayName();
 
+
+		// Pre-IO init
 		callbackModule = new SteamCallbacksModule();
 		callbackModule.Init();
+
+		// Post-IO init, will instantiate, but no Init yet
+		statsAndAchievementsModule = new SteamStatsAndAchievementsModule();
 	}
+
+	private void Update()
+	{
+		if (statsAchievementsLocalDataIsDirty)
+		{
+			if (statsAndAchievementsModule != null)
+			{
+				UnityEngine.Debug.Log($"[SteamStats] -- Calling Init on the stats and achievements module");
+				statsAndAchievementsModule.Init(statsAchievementsLocalData);
+				statsAchievementsLocalDataIsDirty = false;
+			}
+		}
+
+		if (statsAndAchievementsModule != null)
+			statsAndAchievementsModule.Update();
+	}
+
+	public void SetStatsAchievementsLocalData(IStatsAchievementsDataIO data)
+	{
+		UnityEngine.Debug.Log($"[SteamStats] -- Storing the local data and dirtying the flag");
+		this.statsAchievementsLocalData = data;
+		statsAchievementsLocalDataIsDirty = true;
+	}
+#else
+	private SteamStatsAndAchievementsModuleDummy statsAndAchievementsModule = new SteamStatsAndAchievementsModuleDummy();
+	public ISteamStatsAchievements statsAchievements => statsAndAchievementsModule;
+	public bool hasStatsAchievementsModule => statsAndAchievementsModule != null;
 #endif
 
 
@@ -59,4 +98,31 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		return string.Empty;
 #endif
 	}
+
+
+
+#if UNITY_EDITOR
+	private bool shouldDrawStats = false;
+	public void DrawControls()
+	{
+		shouldDrawStats = GUILayout.Toggle(shouldDrawStats, "Should draw Stats controls");
+		if (shouldDrawStats && statsAndAchievementsModule != null)
+			statsAndAchievementsModule.DrawControls();
+	}
+#endif
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(CoastalCargoSteamWrapper))]
+public class CoastalCargoSteamWrapperEditor : Editor
+{
+	public override void OnInspectorGUI()
+	{
+		base.OnInspectorGUI();
+
+		GUILayout.Space(15);
+
+		(target as CoastalCargoSteamWrapper).DrawControls();
+	}
+}
+#endif

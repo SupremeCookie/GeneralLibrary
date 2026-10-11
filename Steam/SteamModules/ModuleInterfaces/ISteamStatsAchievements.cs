@@ -6,4 +6,5 @@ using System.Threading.Tasks;
 
 public interface ISteamStatsAchievements
 {
+	void IncreaseStat(string statKey, int amount);
 }
