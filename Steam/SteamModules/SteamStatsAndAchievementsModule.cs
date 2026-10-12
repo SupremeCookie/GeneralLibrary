@@ -60,6 +60,9 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	//> At the start of a game session, call ISteamUserStats::RequestCurrentStats to fetch the user's stats and achievement data from the Steam back end. You will receive a ISteamUserStats::UserStatsReceived_t callback when the data is ready.
 	//This is important, but always keep highest stat
 
+	public const string INVALID_STAT_KEY_NAME = "INVALID";
+
+
 	private bool succeededLocalInit;
 	private int retryLocalInit = 0;
 	private bool succeededSteamInit;
@@ -129,6 +132,14 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	public void IncreaseStat(string statKey, int amount, out int newValue)
 	{
+		UnityEngine.Debug.Log($"[SteamStats] Doing an increase for stat: {statKey}, increase: {amount}");
+
+		if (statKey.Equals(INVALID_STAT_KEY_NAME))
+		{
+			newValue = -1;
+			return;
+		}
+
 		if (!succeededLocalInit)
 		{
 			newValue = -1;
@@ -158,6 +169,9 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	// singular happenings simply have a 0-1 stat increase only, and then the achievement unlocks.
 	public void CompleteStat(string statKey)
 	{
+		if (statKey.Equals(INVALID_STAT_KEY_NAME))
+			return;
+
 		if (!succeededLocalInit)
 		{
 			Debug.LogError($"No initialization of steam and local inits have been accomplished yet, please fix");

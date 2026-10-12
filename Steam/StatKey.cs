@@ -9,6 +9,8 @@ using UnityEditor;
 
 public enum StatKey
 {
+	None = -1,
+
 	BoatsPlaced_Sloop = 0,
 	BoatsPlaced_Frigate,
 	BoatsPlaced_Caravel,
@@ -181,24 +183,26 @@ public enum StatKey
 	Amount_Events_RottenPlantations,
 	Amount_Events_Stowaway,
 	Amount_Events_Windstorm,
+	// When adding more event stats, add them to GameFlowManager's IncrementCorrectStats method
 
 	Events_PirateBoatsSank = 400,
 	Events_AdmiralBoatsSank,
-	Events_MutinesStopped,
+	Events_MutiniesStopped,
 }
 
 public static class StatKeyExtensions
 {
-	public static string ToString(this StatKey key)
+	public static string ConvertToString(this StatKey key)
 	{
 		switch (key)
 		{
+			case StatKey.None: return SteamStatsAndAchievementsModule.INVALID_STAT_KEY_NAME;
 
 
 			default:
 			{
-				Debug.LogWarning($"No stat case assigned for: [{key}], please assign one");
-				return "";
+				//Debug.LogWarning($"No stat case assigned for: [{key}], please assign one");
+				return key.ToString();
 			}
 		}
 	}
