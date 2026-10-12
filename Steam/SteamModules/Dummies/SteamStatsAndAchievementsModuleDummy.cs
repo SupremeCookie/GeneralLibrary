@@ -10,5 +10,7 @@ using UnityEditor;
 // Acts as a dummy class to allow game code to always execute without compilation guards needed
 public class SteamStatsAndAchievementsModuleDummy : ISteamStatsAchievements
 {
-	public void IncreaseStat(string statKey, int amount) { }
+	public void CompleteStat(string statKey) { }
+
+	public void IncreaseStat(string statKey, int amount, out int newValue) { newValue = -1; }
 }

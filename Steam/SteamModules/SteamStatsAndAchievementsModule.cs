@@ -68,7 +68,7 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	private IStatsAchievementsDataIO localData;
 
 
-	public void Init(IStatsAchievementsDataIO localData)
+	public void Init(IStatsAchievementsDataIO localData)// , List<string> statKeys)
 	{
 		this.localData = localData;
 
@@ -127,15 +127,16 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	// Interface implementations
 
-	public void IncreaseStat(string statKey, int amount)
+	public void IncreaseStat(string statKey, int amount, out int newValue)
 	{
 		if (!succeededLocalInit)
 		{
+			newValue = -1;
 			Debug.LogError($"No initialization of steam and local inits have been accomplished yet, please fix");
 			return;
 		}
 
-		IncreaseStat_Locally(statKey, amount);
+		IncreaseStat_Locally(statKey, amount, out newValue);
 
 		if (!succeededSteamInit)
 		{
@@ -157,7 +158,20 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	// singular happenings simply have a 0-1 stat increase only, and then the achievement unlocks.
 	public void CompleteStat(string statKey)
 	{
+		if (!succeededLocalInit)
+		{
+			Debug.LogError($"No initialization of steam and local inits have been accomplished yet, please fix");
+			return;
+		}
 
+		CompleteStat_Locally(statKey);
+
+		if (!succeededSteamInit)
+		{
+			return;
+		}
+
+		PostLocalStatToSteam(statKey);
 	}
 
 	// A lot of stats don't automatically complete their related achievements
@@ -165,22 +179,35 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	// - Playing all levels in the first campaign doesn't automatically unlock the 
 	public void CheckAchievementCompletion(string achievementKey)
 	{
-
+		// Post Demo
 	}
 
 
-	private void IncreaseStat_Locally(string statKey, int amount)
+	private void CompleteStat_Locally(string statKey)
 	{
+		localData.SetValue(statKey, 1);
+	}
 
+	private void IncreaseStat_Locally(string statKey, int amount, out int newValue)
+	{
+		var currentValue = localData.GetValue(statKey, amount);
+		currentValue += amount;
+		localData.SetValue(statKey, currentValue);
+
+		newValue = currentValue;
 	}
 
 	private void PostLocalStatToSteam(string statKey)
 	{
-
+		// TODO DK:
 	}
 
 
 #if UNITY_EDITOR
+	int testIntStat = 0;
+	string testIntStatKey = "TestingIntKey";
+
+
 	public void DrawControls()
 	{
 		GUILayout.Space(5);
@@ -188,6 +215,22 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 		GUILayout.BeginVertical(EditorStyles.helpBox);
 
 		GUILayout.Label($"Steam Stats Debug Controls");
+		GUILayout.Label($"Do we have local data: {localData != null}");
+
+		GUILayout.Space(5);
+
+		// TODO DK: Setup a bunch of buttons to handle displaying, and increasing stats
+		// Base them on the expected stats we're gonna have
+		// Don't bother about the achievements stuff yet
+		// Then once the local data stuff works well, in between runs and outside runs, setup stats in steam itself
+		// And test those out
+		// Gotta get myself a dev key maybe?
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Label($"[Int stat: {testIntStat}]");
+		if (GUILayout.Button("Load current value")) { testIntStat = localData.GetValue(testIntStatKey, 0); }
+		if (GUILayout.Button("Increase current value")) { IncreaseStat(testIntStatKey, 1, out testIntStat); }
+		GUILayout.EndHorizontal();
 
 		GUILayout.EndVertical();
 	}
