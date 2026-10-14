@@ -1,7 +1,11 @@
+#define DKG_ISENABLED
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
 
 // More Info:
 // https://partner.steamgames.com/doc/features/achievements
@@ -132,6 +136,11 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	public void IncreaseStat(string statKey, int amount, out int newValue)
 	{
+#if !DKG_ISENABLED
+		newValue = -1;
+		return;
+#endif
+
 		UnityEngine.Debug.Log($"[SteamStats] Doing an increase for stat: {statKey}, increase: {amount}");
 
 		if (statKey.Equals(INVALID_STAT_KEY_NAME))
@@ -205,6 +214,13 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	private void IncreaseStat_Locally(string statKey, int amount, out int newValue)
 	{
 		var currentValue = localData.GetValue(statKey, amount);
+
+		if (int.MaxValue - currentValue < amount)
+		{
+			newValue = int.MaxValue;
+			return;
+		}
+
 		currentValue += amount;
 		localData.SetValue(statKey, currentValue);
 
