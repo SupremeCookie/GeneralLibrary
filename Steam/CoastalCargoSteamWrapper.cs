@@ -27,6 +27,7 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 	private IStatsAchievementsDataIO statsAchievementsLocalData;
 	private bool statsAchievementsLocalDataIsDirty;
+	private bool statsAchievementsSteamDataIsDirty;
 
 
 	private void Awake()
@@ -55,9 +56,18 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		{
 			if (statsAndAchievementsModule != null)
 			{
-				UnityEngine.Debug.Log($"[SteamStats] -- Calling Init on the stats and achievements module");
-				statsAndAchievementsModule.Init(statsAchievementsLocalData);
+				UnityEngine.Debug.Log($"[SteamStats] -- Calling [Local] Init on the stats and achievements module");
+				statsAndAchievementsModule.InitLocally(statsAchievementsLocalData);
 				statsAchievementsLocalDataIsDirty = false;
+			}
+		}
+		if (statsAchievementsSteamDataIsDirty)
+		{
+			if (statsAndAchievementsModule != null)
+			{
+				UnityEngine.Debug.Log($"[SteamStats] -- Calling [Steam] Init on the stats and achievements module");
+				statsAndAchievementsModule.InitSteam();
+				statsAchievementsSteamDataIsDirty = false;
 			}
 		}
 
@@ -70,6 +80,11 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		UnityEngine.Debug.Log($"[SteamStats] -- Storing the local data and dirtying the flag");
 		this.statsAchievementsLocalData = data;
 		statsAchievementsLocalDataIsDirty = true;
+	}
+
+	public void SetStatsAchievementsSteamInitDirty()
+	{
+		statsAchievementsSteamDataIsDirty = true;
 	}
 #else
 	private SteamStatsAndAchievementsModuleDummy statsAndAchievementsModule = new SteamStatsAndAchievementsModuleDummy();

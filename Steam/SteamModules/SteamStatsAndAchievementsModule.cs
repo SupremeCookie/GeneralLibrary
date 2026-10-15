@@ -75,17 +75,22 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	private IStatsAchievementsDataIO localData;
 
 
-	public void Init(IStatsAchievementsDataIO localData)// , List<string> statKeys)
+	public void InitLocally(IStatsAchievementsDataIO localData)// , List<string> statKeys)
 	{
 		this.localData = localData;
-
 		succeededLocalInit = TryToInitLocalStats();
-		succeededSteamInit = TryToInitSteamStats();
-
-		UnityEngine.Debug.Log($"[SteamStats] -- Tried initializing local and steam data, result: [local: {succeededLocalInit}], [steam: {succeededSteamInit}]");
 
 		if (!succeededLocalInit)
 			retryLocalInit = 5;
+
+		UnityEngine.Debug.Log($"[SteamStats] -- Tried initializing localdata, result: [local: {succeededLocalInit}]");
+	}
+
+	public void InitSteam()
+	{
+		succeededSteamInit = TryToInitSteamStats();
+
+		UnityEngine.Debug.Log($"[SteamStats] -- Tried initializing steam data, result: [steam: {succeededSteamInit}]");
 
 		if (!succeededSteamInit)
 			retrySteamInit = 5;
@@ -213,6 +218,13 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	private void IncreaseStat_Locally(string statKey, int amount, out int newValue)
 	{
+		if (localData == null)
+		{
+			Debug.LogWarning($"No local data known, the initialisation failed. Likely steam is not instantiated?");
+			newValue = -1;
+			return;
+		}
+
 		var currentValue = localData.GetValue(statKey, amount);
 
 		if (int.MaxValue - currentValue < amount)

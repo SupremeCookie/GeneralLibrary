@@ -185,7 +185,7 @@ public enum StatKey
 	Amount_Events_Windstorm,
 	// When adding more event stats, add them to GameFlowManager's IncrementCorrectStats method
 
-	Events_PirateBoatsSank = 400,
+	Events_PirateBoatsSank = 500,
 	Events_AdmiralBoatsSank,
 	Events_MutiniesStopped,
 }
