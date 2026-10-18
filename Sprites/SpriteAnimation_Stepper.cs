@@ -21,6 +21,7 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 	[SerializeField] private Renderer _renderer;
 
 	[Space(10)]
+	[SerializeField] private bool runAutomatically = true;
 	[SerializeField] private bool shouldAffectColor = true;
 	[SerializeField] private bool shouldRunOnce = false;
 	[SerializeField] private bool shouldUseGlobalStepper = false;
@@ -33,6 +34,7 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 	private int currentSpriteIndex = -1;
 	private Vector3 baseScale;
 	private Stepper stepper;
+	private bool isRunning;
 
 	private SpriteRenderer spriteRenderer => _renderer as SpriteRenderer;
 
@@ -60,6 +62,9 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 
 	private void Update()
 	{
+		if (!runAutomatically && !isRunning)
+			return;
+
 		if (!shouldUseGlobalStepper)
 		{
 			stepper.Update(Time.deltaTime);
@@ -69,6 +74,12 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 		{
 			PickNewSprite();
 		}
+	}
+
+
+	public void Run()
+	{
+		isRunning = true;
 	}
 
 
@@ -83,13 +94,16 @@ public class SpriteAnimation_Stepper : MonoBehaviour
 		Debug.Assert(!animatedSprites.IsNullOrEmpty(), $"There are no sprites to pick from and animate");
 
 		currentSpriteIndex = stepper.currentStep;
-		if (currentSpriteIndex >= animatedSprites.Count)
+
+		if (currentSpriteIndex >= (animatedSprites.Count - 1))  // Index of stepper doesn't reach the end
 		{
 			doneWithLastSprite = true;
 
 			if (shouldRunOnce)
 			{
-				currentSpriteIndex = animatedSprites.Count;     // To combat the integer increase
+				isRunning = false;
+				currentSpriteIndex = animatedSprites.Count - 1;     // To combat the integer increase
+				SetSprite(animatedSprites[currentSpriteIndex].sprite);
 				return;
 			}
 
