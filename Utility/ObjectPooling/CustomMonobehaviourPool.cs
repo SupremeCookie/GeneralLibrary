@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
+using CustomMonoBehaviourPool;
 using UnityEngine;
 
-public class CustomMonobehaviourPool<T, U> where U : Component
+namespace CustomMonoBehaviourPool
 {
-	private const int BASE_SIZE = 10;
-
 	public enum GetObjectReturnValue
 	{
 		PoolDoesNotExist,
 		Success_CreatedNewItems,
 		Success,
 	}
+}
+
+public class CustomMonobehaviourPool<T, U> where U : Component
+{
+	private const int BASE_SIZE = 10;
 
 	public enum CreatePoolReturnValue
 	{
@@ -24,7 +28,7 @@ public class CustomMonobehaviourPool<T, U> where U : Component
 		public U instance;
 	}
 
-	private Transform parentObject
+	public Transform parentObject
 	{
 		get { if (_parentObject == null) { CreateParent(); } return _parentObject; }
 	}
