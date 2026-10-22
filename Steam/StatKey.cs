@@ -15,7 +15,7 @@ public enum StatKey
 	BoatsPlaced_Frigate,
 	BoatsPlaced_Caravel,
 	BoatsPlaced_Lichter,
-	BoatsPlaced_Pont,
+	BoatsPlaced_Post,
 
 	BoatsPickedUp_AfterPlacement = 20,
 
@@ -188,6 +188,7 @@ public enum StatKey
 	Events_PirateBoatsSank = 500,
 	Events_AdmiralBoatsSank,
 	Events_MutiniesStopped,
+	Events_PlantationsCured,
 }
 
 public static class StatKeyExtensions
@@ -205,5 +206,45 @@ public static class StatKeyExtensions
 				return key.ToString();
 			}
 		}
+	}
+
+	public static string ConvertToSteamString(this StatKey key)
+	{
+		switch (key)
+		{
+			case StatKey.None:
+				return SteamStatsAndAchievementsModule.INVALID_STAT_KEY_NAME;
+
+			default:
+				return key.ConvertToSteamStatKey();
+		}
+	}
+}
+
+
+public static class StatKeyUtil
+{
+	public static List<string> GetAllNames()
+	{
+		var allKeys = Enum.GetNames(typeof(StatKey));
+		if (allKeys == null || allKeys.Length == 0)
+		{
+			Debug.LogError($"[StatKey] No statkey names can be gotten from this method");
+			return null;
+		}
+
+		return new List<string>(allKeys);
+	}
+
+	public static List<StatKey> GetAllKeys()
+	{
+		var allKeys = Enum.GetValues(typeof(StatKey)) as StatKey[];
+		if (allKeys == null || allKeys.Length == 0)
+		{
+			Debug.LogError($"[StatKey] No statkey values can be gotten from this method");
+			return null;
+		}
+
+		return new List<StatKey>(allKeys);
 	}
 }

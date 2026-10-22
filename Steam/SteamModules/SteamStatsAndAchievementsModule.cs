@@ -72,7 +72,38 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	private bool succeededSteamInit;
 	private int retrySteamInit = 0;
 
+	private bool commitAllLocalStatsToSteam = false;
+
+	private List<string> allLocalStatNames = null;
+	private List<string> allSteamStatNames = null;
+
 	private IStatsAchievementsDataIO localData;
+
+
+	public void ShouldCommitAllLocalStatsToSteam()
+	{
+		commitAllLocalStatsToSteam = true;
+	}
+
+	public void SetAllStatNames(List<string> localStatNames, List<string> steamStatNames)
+	{
+		//Debug.Log($"[SteamStats] -- Local and Steam stats same length? [{localStatNames.Count}, {steamStatNames.Count}]");
+		//for (int i = 0; i < localStatNames.Count; ++i)
+		//{
+		//	Debug.Log($"    [SteamStats] -- key: [{localStatNames[i]}, {steamStatNames[i]}]");
+		//}
+
+
+		this.allLocalStatNames = localStatNames;
+		this.allSteamStatNames = steamStatNames;
+	}
+
+
+	public void CommitStatsChangesToSteam()
+	{
+		Debug.Log($"[SteamStats] -- Committing stats to steam");
+		Steamworks.SteamUserStats.StoreStats();
+	}
 
 
 	public void InitLocally(IStatsAchievementsDataIO localData)// , List<string> statKeys)
@@ -123,6 +154,12 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 					retrySteamInit = 10;
 			}
 		}
+
+
+		if (succeededLocalInit && succeededSteamInit && commitAllLocalStatsToSteam)
+		{
+			GetAndCommitAllLocalStatsToSteam();
+		}
 	}
 
 	private bool TryToInitLocalStats()
@@ -136,10 +173,30 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	}
 
 
+	private void GetAndCommitAllLocalStatsToSteam()
+	{
+		if (localData == null)
+			return;
+
+		if (allLocalStatNames == null || allLocalStatNames.Count == 0)
+			return;
+
+		if (allSteamStatNames == null || allSteamStatNames.Count == 0)
+			return;
+
+		for (int i = 0; i < allLocalStatNames.Count; ++i)
+		{
+			PostLocalStatToSteam(allLocalStatNames[i], allSteamStatNames[i]);
+		}
+
+		commitAllLocalStatsToSteam = false;
+	}
+
+
 
 	// Interface implementations
 
-	public void IncreaseStat(string statKey, int amount, out int newValue)
+	public void IncreaseStat(string statKey, string steamStatKey, int amount, out int newValue)
 	{
 #if !DKG_ISENABLED
 		newValue = -1;
@@ -168,20 +225,17 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 			return;
 		}
 
-		PostLocalStatToSteam(statKey);
+		if (steamStatKey.Equals(INVALID_STAT_KEY_NAME))
+		{
+			return;
+		}
 
-		// Grab the local stat
-		// Increase it
-		// Then send that over to Steam
-
-		// TODO DK: Figure out when we need to call the "Commit stats" thing
-		// TODO DK: Periodically store the local stats
-		// TODO DK: Always store the local stats when we call the "Commit stats" to Steam
+		PostLocalStatToSteam(statKey, steamStatKey);
 	}
 
 	// Note DK: These will be used to "unlock singular achievements" so everything is technically stat based
 	// singular happenings simply have a 0-1 stat increase only, and then the achievement unlocks.
-	public void CompleteStat(string statKey)
+	public void CompleteStat(string statKey, string steamStatKey)
 	{
 		if (statKey.Equals(INVALID_STAT_KEY_NAME))
 			return;
@@ -199,15 +253,12 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 			return;
 		}
 
-		PostLocalStatToSteam(statKey);
-	}
+		if (steamStatKey.Equals(INVALID_STAT_KEY_NAME))
+		{
+			return;
+		}
 
-	// A lot of stats don't automatically complete their related achievements
-	// So for those instances we do checks here, for example:
-	// - Playing all levels in the first campaign doesn't automatically unlock the 
-	public void CheckAchievementCompletion(string achievementKey)
-	{
-		// Post Demo
+		PostLocalStatToSteam(statKey, steamStatKey);
 	}
 
 
@@ -239,9 +290,13 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 		newValue = currentValue;
 	}
 
-	private void PostLocalStatToSteam(string statKey)
+	private void PostLocalStatToSteam(string localStatKey, string steamStatKey)
 	{
-		// TODO DK:
+		if (localData == null)
+			return;
+
+		var value = localData.GetValue(localStatKey, 0);
+		Steamworks.SteamUserStats.SetStat(steamStatKey, value);
 	}
 
 
@@ -271,7 +326,45 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 		GUILayout.BeginHorizontal();
 		GUILayout.Label($"[Int stat: {testIntStat}]");
 		if (GUILayout.Button("Load current value")) { testIntStat = localData.GetValue(testIntStatKey, 0); }
-		if (GUILayout.Button("Increase current value")) { IncreaseStat(testIntStatKey, 1, out testIntStat); }
+		if (GUILayout.Button("Increase current value")) { IncreaseStat(testIntStatKey, INVALID_STAT_KEY_NAME, 1, out testIntStat); }
+		GUILayout.EndHorizontal();
+
+
+		GUILayout.Space(15);
+
+		GUILayout.BeginHorizontal(EditorStyles.helpBox);
+		if (GUILayout.Button("Reset all steam stats and achievements"))
+		{
+			var success = Steamworks.SteamUserStats.ResetAllStats(bAchievementsToo: true);
+			Debug.Log($"Did we succeed?: {success}");
+		}
+
+		GUILayout.Space(15);
+
+		if (GUILayout.Button($"Upload Current State"))
+		{
+			GetAndCommitAllLocalStatsToSteam();
+			CommitStatsChangesToSteam();
+		}
+
+		GUILayout.Space(5);
+
+		EditorGUI.BeginDisabledGroup(allSteamStatNames == null || allSteamStatNames.Count == 0);
+		if (GUILayout.Button("Request Current Stats"))
+		{
+			Debug.Log($"[SteamStats] -------------------- ");
+			for (int i = 0; i < allSteamStatNames.Count; ++i)
+			{
+				bool success = Steamworks.SteamUserStats.GetStat(allSteamStatNames[i], out int setData);
+				if (success)
+					Debug.Log($"[SteamStats] (Get Stat) id: {allSteamStatNames[i]},  value: {setData}");
+				else
+					Debug.Log($"[SteamStats] (Failed) id: {allSteamStatNames[i]}");
+			}
+			Debug.Log($"[SteamStats] -------------------- ");
+		}
+		EditorGUI.EndDisabledGroup();
+
 		GUILayout.EndHorizontal();
 
 		GUILayout.EndVertical();

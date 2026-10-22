@@ -29,6 +29,8 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	private bool statsAchievementsLocalDataIsDirty;
 	private bool statsAchievementsSteamDataIsDirty;
 
+	private bool hasDoneAdditionalInitialization = false;
+
 
 	private void Awake()
 	{
@@ -61,6 +63,7 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 				statsAchievementsLocalDataIsDirty = false;
 			}
 		}
+
 		if (statsAchievementsSteamDataIsDirty)
 		{
 			if (statsAndAchievementsModule != null)
@@ -73,6 +76,35 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 		if (statsAndAchievementsModule != null)
 			statsAndAchievementsModule.Update();
+
+
+		if (hasDoneAdditionalInitialization)
+			return;
+
+		var localKeys = StatKeyUtil.GetAllKeys();
+		var localKeyStrings = new List<string>(localKeys.Count);
+		var steamKeys = new List<string>(localKeys.Count);
+		for (int k = localKeys.Count - 1; k >= 0; --k)
+		{
+			if (localKeys[k].ConvertToSteamStatKey() == SteamStatsAndAchievementsModule.INVALID_STAT_KEY_NAME)
+				localKeys.RemoveAt(k);
+		}
+
+		for (int k = 0; k < localKeys.Count; ++k)
+		{
+			steamKeys.Add(localKeys[k].ConvertToSteamStatKey().ToString());
+			localKeyStrings.Add(localKeys[k].ToString());
+		}
+
+
+		statsAndAchievementsModule.SetAllStatNames(localKeyStrings, steamKeys);
+
+#if !DEMO_BUILD
+		statsAndAchievementsModule.ShouldCommitAllLocalStatsToSteam();
+		UpdateStatFor_TotalBoatsPlaced();
+#endif
+
+		hasDoneAdditionalInitialization = true;
 	}
 
 	public void SetStatsAchievementsLocalData(IStatsAchievementsDataIO data)
@@ -86,12 +118,43 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	{
 		statsAchievementsSteamDataIsDirty = true;
 	}
+
+
+	public void UpdateStatFor_TotalBoatsPlaced()
+	{
+		Debug.LogWarning($"[SteamStats] -- WRITE CODE TO UPDATE STAT FOR TOTAL BOATS PLACED");
+		// Count all placed boat related stats together and put them in the all boats placed stat
+
+		//Steamworks.SteamUserStats.SetStat(steamStatKey, value);
+	}
+
+	public void UpdateStatsFor_Campaign_1()
+	{
+		Debug.LogWarning($"[SteamStats] -- WRITE CODE TO UPDATE STAT FOR LEVELS PLAYED AND LEVELS ATTAINED ON GOLD -- CAMPAIGN 1");
+
+		// Once a condition is completed, call CompleteStat on the SteamStatsAndAchievementsModule
+	}
+
+	public void UpdateStatsFor_Campaign_2()
+	{
+		Debug.LogWarning($"[SteamStats] -- WRITE CODE TO UPDATE STAT FOR LEVELS PLAYED AND LEVELS ATTAINED ON GOLD -- CAMPAIGN 2");
+
+		// Once a condition is completed, call CompleteStat on the SteamStatsAndAchievementsModule
+	}
+
 #else
 	private SteamStatsAndAchievementsModuleDummy statsAndAchievementsModule = new SteamStatsAndAchievementsModuleDummy();
 	public ISteamStatsAchievements statsAchievements => statsAndAchievementsModule;
 	public bool hasStatsAchievementsModule => statsAndAchievementsModule != null;
 #endif
 
+
+	public void StoreStats()
+	{
+#if !DEMO_BUILD
+		statsAndAchievementsModule.CommitStatsChangesToSteam();
+#endif
+	}
 
 	public void OpenWishlist()
 	{

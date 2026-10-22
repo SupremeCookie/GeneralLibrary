@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 public interface ISteamStatsAchievements
 {
-	void IncreaseStat(string statKey, int amount, out int newValue);
-	void CompleteStat(string statKey);
+	void IncreaseStat(string statKey, string steamStatKey, int amount, out int newValue);
+	void CompleteStat(string statKey, string steamStatKey);
 }
