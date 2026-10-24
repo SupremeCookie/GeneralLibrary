@@ -13,4 +13,6 @@ public class SteamStatsAndAchievementsModuleDummy : ISteamStatsAchievements
 	public void CompleteStat(string statKey, string steamStatKey) { }
 
 	public void IncreaseStat(string statKey, string steamStatKey, int amount, out int newValue) { newValue = -1; }
+
+	public void PostStatToSteam(string steamStatKey, int value) { }
 }

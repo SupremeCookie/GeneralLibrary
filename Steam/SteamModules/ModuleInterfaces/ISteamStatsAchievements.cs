@@ -8,4 +8,5 @@ public interface ISteamStatsAchievements
 {
 	void IncreaseStat(string statKey, string steamStatKey, int amount, out int newValue);
 	void CompleteStat(string statKey, string steamStatKey);
+	void PostStatToSteam(string steamStatKey, int value);
 }

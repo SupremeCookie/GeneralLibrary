@@ -300,6 +300,12 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 	}
 
 
+	public void PostStatToSteam(string steamStatKey, int value)
+	{
+		Steamworks.SteamUserStats.SetStat(steamStatKey, value);
+	}
+
+
 #if UNITY_EDITOR
 	int testIntStat = 0;
 	string testIntStatKey = "TestingIntKey";

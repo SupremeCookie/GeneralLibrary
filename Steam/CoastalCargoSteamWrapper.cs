@@ -2,6 +2,7 @@
 #define HAS_STEAM
 #endif
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -90,10 +91,22 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 				localKeys.RemoveAt(k);
 		}
 
+		// Only add localkeys converted to steamkeys to the steamkeys collections
 		for (int k = 0; k < localKeys.Count; ++k)
 		{
 			steamKeys.Add(localKeys[k].ConvertToSteamStatKey().ToString());
 			localKeyStrings.Add(localKeys[k].ToString());
+		}
+
+		// Then we add the missing steam keys so that we will have the full picture available for debug purposes
+		// BUT the indices from local to steam are still linked this way
+		var allSteamKeys = Enum.GetNames(typeof(SteamStatKeys));
+		for (int k = 0; k < allSteamKeys.Length; ++k)
+		{
+			if (steamKeys.Contains(allSteamKeys[k].ToString()))
+				continue;
+
+			steamKeys.Add(allSteamKeys[k].ToString());
 		}
 
 
@@ -122,24 +135,120 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 	public void UpdateStatFor_TotalBoatsPlaced()
 	{
-		Debug.LogWarning($"[SteamStats] -- WRITE CODE TO UPDATE STAT FOR TOTAL BOATS PLACED");
-		// Count all placed boat related stats together and put them in the all boats placed stat
+		Debug.LogWarning($"[SteamStats] -- UPDATE STAT FOR TOTAL BOATS PLACED");
+		if (statsAchievementsLocalData == null)
+			return;
 
-		//Steamworks.SteamUserStats.SetStat(steamStatKey, value);
+		// TODO DK: Add more instances when we add more boat types.
+
+		// keys
+		var key_boat_1 = StatHelperMethods.ConvertBoatType_Placement(0);
+		var key_boat_2 = StatHelperMethods.ConvertBoatType_Placement(1);
+		var key_boat_3 = StatHelperMethods.ConvertBoatType_Placement(2);
+
+		var key_boat_4 = StatHelperMethods.ConvertBoatType_Placement(11);
+		var key_boat_5 = StatHelperMethods.ConvertBoatType_Placement(12);
+
+
+		// values
+		var boat_value_1 = statsAchievementsLocalData.GetValue(key_boat_1.ConvertToString(), 0);
+		var boat_value_2 = statsAchievementsLocalData.GetValue(key_boat_2.ConvertToString(), 0);
+		var boat_value_3 = statsAchievementsLocalData.GetValue(key_boat_3.ConvertToString(), 0);
+
+		var boat_value_4 = statsAchievementsLocalData.GetValue(key_boat_4.ConvertToString(), 0);
+		var boat_value_5 = statsAchievementsLocalData.GetValue(key_boat_5.ConvertToString(), 0);
+
+
+		int totalBoatCount = boat_value_1 + boat_value_2 + boat_value_3 + boat_value_4 + boat_value_5;
+
+		statsAchievements.PostStatToSteam(SteamStatKeys.STAT_BOATS_PLACED_TOTAL.ToString(), totalBoatCount);
 	}
 
 	public void UpdateStatsFor_Campaign_1()
 	{
-		Debug.LogWarning($"[SteamStats] -- WRITE CODE TO UPDATE STAT FOR LEVELS PLAYED AND LEVELS ATTAINED ON GOLD -- CAMPAIGN 1");
+		Debug.LogWarning($"[SteamStats] -- UPDATE STAT FOR LEVELS PLAYED AND LEVELS ATTAINED ON GOLD -- CAMPAIGN 1");
 
 		// Once a condition is completed, call CompleteStat on the SteamStatsAndAchievementsModule
+
+		int totalPlayedScore = 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_1_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_2_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_3_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_4_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_5_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_6_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_7_0) > 0 ? 1 : 0;
+
+		if (totalPlayedScore >= 7)
+			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_PLAYED_1.ToString(), 1);
+
+
+		int totalGoldScored = 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_1_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_2_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_3_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_4_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_5_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_6_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_7_C) ? 1 : 0;
+
+		if (totalGoldScored >= 7)
+			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_GOLD_1.ToString(), 1);
+
+
+		Debug.Log($"[SteamStats] -- Campaign state, [played: {totalPlayedScore}],  [goldCompleted: {totalGoldScored}]");
 	}
 
 	public void UpdateStatsFor_Campaign_2()
 	{
-		Debug.LogWarning($"[SteamStats] -- WRITE CODE TO UPDATE STAT FOR LEVELS PLAYED AND LEVELS ATTAINED ON GOLD -- CAMPAIGN 2");
+		Debug.LogWarning($"[SteamStats] -- UPDATE STAT FOR LEVELS PLAYED AND LEVELS ATTAINED ON GOLD -- CAMPAIGN 2");
 
 		// Once a condition is completed, call CompleteStat on the SteamStatsAndAchievementsModule
+
+		int totalPlayedScore = 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_1_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_2_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_3_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_4_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_5_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_6_0) > 0 ? 1 : 0;
+		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_7_0) > 0 ? 1 : 0;
+
+		if (totalPlayedScore >= 7)
+			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_PLAYED_2.ToString(), 1);
+
+
+		int totalGoldScored = 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_1_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_2_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_3_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_4_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_5_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_6_C) ? 1 : 0;
+		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_7_C) ? 1 : 0;
+
+		if (totalGoldScored >= 7)
+			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_GOLD_2.ToString(), 1);
+
+
+		Debug.Log($"[SteamStats] -- Campaign state, [played: {totalPlayedScore}],  [goldCompleted: {totalGoldScored}]");
+	}
+
+
+	private int GetLevelValue(StatKey baseStatKey)
+	{
+		int totalValue = statsAchievementsLocalData?.GetValue(baseStatKey.ConvertToString(), 0) ?? 0;
+		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 1).ConvertToString(), 0) ?? 0;
+		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 1).ConvertToString(), 0) ?? 0;
+		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 1).ConvertToString(), 0) ?? 0;
+
+		return totalValue;
+	}
+
+	private bool HasCompletedGoldLevel(StatKey levelKey)
+	{
+		var value = statsAchievementsLocalData?.GetValue(levelKey.ConvertToString(), 0) ?? 0;
+		return value > 0;
 	}
 
 #else
