@@ -332,7 +332,8 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 			Debug.Log($"[SteamStats] -- Commit booleans: got data: {gotAchData},  is achievend: {isAchieved}");
 			Steamworks.SteamUserStats.SetAchievement(achievementKey);
 
-			if (!gotAchData || !isAchieved)
+			bool shouldCommit = Mathf.Abs(steamValue - threshold) < 5;      // If the difference is too big, we just let the general "Commit" flow handle committing, this to prevent rate throttling.
+			if (shouldCommit)
 				CommitStatsChangesToSteam();
 		}
 	}
