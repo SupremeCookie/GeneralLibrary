@@ -14,7 +14,7 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 
 #if HAS_STEAM
-	public SteamManager steamManager { get; private set; }
+	public static SteamManager steamManager { get; private set; }
 	public bool managerHasInitialized => SteamManager.Initialized;
 
 
@@ -32,11 +32,14 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 	private bool hasDoneAdditionalInitialization = false;
 
+	private static CoastalCargoSteamWrapper instance;
+
 
 	private void Awake()
 	{
 		var childObj = new GameObject("SteamManager");
 		steamManager = childObj.AddComponent<SteamManager>();
+		instance = this;
 	}
 
 	private void Start()
@@ -72,6 +75,10 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 				UnityEngine.Debug.Log($"[SteamStats] -- Calling [Steam] Init on the stats and achievements module");
 				statsAndAchievementsModule.InitSteam();
 				statsAchievementsSteamDataIsDirty = false;
+
+#if !DEMO_BUILD
+				UpdateStatFor_TotalBoatsPlaced();
+#endif
 			}
 		}
 
@@ -114,7 +121,6 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 #if !DEMO_BUILD
 		statsAndAchievementsModule.ShouldCommitAllLocalStatsToSteam();
-		UpdateStatFor_TotalBoatsPlaced();
 #endif
 
 		hasDoneAdditionalInitialization = true;
@@ -162,6 +168,10 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		int totalBoatCount = boat_value_1 + boat_value_2 + boat_value_3 + boat_value_4 + boat_value_5;
 
 		statsAchievements.PostStatToSteam(SteamStatKeys.STAT_BOATS_PLACED_TOTAL.ToString(), totalBoatCount);
+
+		CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.BoatsPlaced_1, SteamStatKeys.STAT_BOATS_PLACED_TOTAL);
+		CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.BoatsPlaced_2, SteamStatKeys.STAT_BOATS_PLACED_TOTAL);
+		CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.BoatsPlaced_3, SteamStatKeys.STAT_BOATS_PLACED_TOTAL);
 	}
 
 	public void UpdateStatsFor_Campaign_1()
@@ -180,7 +190,11 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C1_7_0) > 0 ? 1 : 0;
 
 		if (totalPlayedScore >= 7)
+		{
 			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_PLAYED_1.ToString(), 1);
+
+			CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.CampaignsPlayed_1, SteamStatKeys.STAT_CAMPAIGNS_PLAYED_1);
+		}
 
 
 		int totalGoldScored = 0;
@@ -193,10 +207,21 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C1_7_C) ? 1 : 0;
 
 		if (totalGoldScored >= 7)
+		{
 			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_GOLD_1.ToString(), 1);
 
+			CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.CampaignsGold_1, SteamStatKeys.STAT_CAMPAIGNS_GOLD_1);
+		}
 
-		Debug.Log($"[SteamStats] -- Campaign state, [played: {totalPlayedScore}],  [goldCompleted: {totalGoldScored}]");
+
+		Debug.Log($"[SteamStats] -- Campaign state (1), [played: {totalPlayedScore}],  [goldCompleted: {totalGoldScored}]");
+	}
+
+	public static void EvaluateAchievement(AchievementKeys achievementKey, SteamStatKeys relatedStatKey)
+	{
+		string achKeyString = AchievementKeysConfig.GetAchievementSteamKey(achievementKey);
+		int achThreshold = AchievementKeysConfig.GetAchievementThreshold(achievementKey);
+		instance.statsAchievements.EvaluateAchievementUnlock(achKeyString, relatedStatKey.ToString(), achThreshold);
 	}
 
 	public void UpdateStatsFor_Campaign_2()
@@ -215,7 +240,11 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		totalPlayedScore += GetLevelValue(StatKey.Level_Ended_C2_7_0) > 0 ? 1 : 0;
 
 		if (totalPlayedScore >= 7)
+		{
 			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_PLAYED_2.ToString(), 1);
+
+			CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.CampaignsPlayed_2, SteamStatKeys.STAT_CAMPAIGNS_PLAYED_2);
+		}
 
 
 		int totalGoldScored = 0;
@@ -228,10 +257,14 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		totalGoldScored += HasCompletedGoldLevel(StatKey.Level_Ended_C2_7_C) ? 1 : 0;
 
 		if (totalGoldScored >= 7)
+		{
 			statsAchievements.PostStatToSteam(SteamStatKeys.STAT_CAMPAIGNS_GOLD_2.ToString(), 1);
 
+			CoastalCargoSteamWrapper.EvaluateAchievement(AchievementKeys.CampaignsGold_2, SteamStatKeys.STAT_CAMPAIGNS_GOLD_2);
+		}
 
-		Debug.Log($"[SteamStats] -- Campaign state, [played: {totalPlayedScore}],  [goldCompleted: {totalGoldScored}]");
+
+		Debug.Log($"[SteamStats] -- Campaign state (2), [played: {totalPlayedScore}],  [goldCompleted: {totalGoldScored}]");
 	}
 
 
@@ -255,6 +288,8 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	private SteamStatsAndAchievementsModuleDummy statsAndAchievementsModule = new SteamStatsAndAchievementsModuleDummy();
 	public ISteamStatsAchievements statsAchievements => statsAndAchievementsModule;
 	public bool hasStatsAchievementsModule => statsAndAchievementsModule != null;
+
+	public static void EvaluateAchievement(AchievementKeys achievementKey, SteamStatKeys relatedStatKey){}
 #endif
 
 

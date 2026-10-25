@@ -7,6 +7,10 @@ using UnityEditor;
 #endif
 
 
+// Note DK: Not happy this is where it is, in the dkatgames steam assembly
+// But I don't have a good way of taking a more general approach
+// A good solution could be to have a Dumb-Data-Assembly, where we would put these common StatKeys
+// Even though they're game dependent, maybe make it a Dumb-Data-GameName-Assembly
 public enum StatKey
 {
 	None = -1,

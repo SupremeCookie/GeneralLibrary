@@ -101,6 +101,9 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	public void CommitStatsChangesToSteam()
 	{
+		if (!SteamManager.Initialized)
+			return;
+
 		Debug.Log($"[SteamStats] -- Committing stats to steam");
 		Steamworks.SteamUserStats.StoreStats();
 	}
@@ -292,6 +295,9 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	private void PostLocalStatToSteam(string localStatKey, string steamStatKey)
 	{
+		if (!SteamManager.Initialized)
+			return;
+
 		if (localData == null)
 			return;
 
@@ -302,7 +308,33 @@ public class SteamStatsAndAchievementsModule : ISteamStatsAchievements
 
 	public void PostStatToSteam(string steamStatKey, int value)
 	{
+		if (!SteamManager.Initialized)
+			return;
+
 		Steamworks.SteamUserStats.SetStat(steamStatKey, value);
+	}
+
+
+	public void EvaluateAchievementUnlock(string achievementKey, string steamStatKey, int threshold)
+	{
+		if (!SteamManager.Initialized)
+			return;
+
+		var gotValue = Steamworks.SteamUserStats.GetStat(steamStatKey, out int steamValue);
+		if (!gotValue)
+			return;
+
+		if (steamValue >= threshold)
+		{
+			var gotAchData = Steamworks.SteamUserStats.GetAchievement(achievementKey, out bool isAchieved);
+
+			Debug.Log($"[SteamStats] -- Acomplished achievement: {achievementKey},  [currentVal: {steamValue}]  [threshold: {threshold}]");
+			Debug.Log($"[SteamStats] -- Commit booleans: got data: {gotAchData},  is achievend: {isAchieved}");
+			Steamworks.SteamUserStats.SetAchievement(achievementKey);
+
+			if (!gotAchData || !isAchieved)
+				CommitStatsChangesToSteam();
+		}
 	}
 
 
