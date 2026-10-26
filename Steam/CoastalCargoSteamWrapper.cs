@@ -26,6 +26,10 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	public ISteamStatsAchievements statsAchievements => statsAndAchievementsModule;
 	public bool hasStatsAchievementsModule => statsAndAchievementsModule != null;
 
+	private SteamLeaderboardsModule leaderboardsModule;
+	public ISteamLeaderboards leaderBoards => leaderboardsModule;
+	public bool hasLeaderboardsModule => leaderboardsModule != null;
+
 	private IStatsAchievementsDataIO statsAchievementsLocalData;
 	private bool statsAchievementsLocalDataIsDirty;
 	private bool statsAchievementsSteamDataIsDirty;
@@ -51,6 +55,9 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		// Pre-IO init
 		callbackModule = new SteamCallbacksModule();
 		callbackModule.Init();
+
+		leaderboardsModule = new SteamLeaderboardsModule();
+		leaderboardsModule.Init();
 
 		// Post-IO init, will instantiate, but no Init yet
 		statsAndAchievementsModule = new SteamStatsAndAchievementsModule();
@@ -324,12 +331,17 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 
 #if UNITY_EDITOR
-	private bool shouldDrawStats = false;
+	[HideInInspector, SerializeField] private bool shouldDrawStats = false;
+	[HideInInspector, SerializeField] private bool shouldDrawLeaderboards = false;
 	public void DrawControls()
 	{
 		shouldDrawStats = GUILayout.Toggle(shouldDrawStats, "Should draw Stats controls");
-		if (shouldDrawStats && statsAndAchievementsModule != null)
+		if (shouldDrawStats && statsAndAchievementsModule != null && Application.isPlaying)
 			statsAndAchievementsModule.DrawControls();
+
+		shouldDrawLeaderboards = GUILayout.Toggle(shouldDrawLeaderboards, "Should draw Leaderboards controls");
+		if (shouldDrawLeaderboards && leaderboardsModule != null && Application.isPlaying)
+			leaderboardsModule.DrawControls();
 	}
 #endif
 }
