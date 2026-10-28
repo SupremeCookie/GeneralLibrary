@@ -13,7 +13,7 @@ public class LocTermUtility
 		// TODO DK: Once loca is in, make something here.
 		if (!LocaManager.HasInstance)
 		{
-			Debug.LogError($"No instance of LocaManager could be found, returning fallback");
+			Debug.LogWarning($"No instance of LocaManager could be found, returning fallback");
 			return LocaManager.StaticCleanString(fallback);
 		}
 
