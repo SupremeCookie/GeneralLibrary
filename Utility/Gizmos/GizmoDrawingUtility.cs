@@ -9,6 +9,11 @@ public partial class GizmoUtility
 {
 	public static void DrawCircle(Vector3 position, float radius, int resolution = 16, int thickness = 1)
 	{
+		DrawCircle(position, radius, Quaternion.identity, resolution, thickness);
+	}
+
+	public static void DrawCircle(Vector3 position, float radius, Quaternion rotation, int resolution = 16, int thickness = 1)
+	{
 		var oldMatrix = Gizmos.matrix;
 
 		const int outlineResolution = 16;
@@ -22,7 +27,7 @@ public partial class GizmoUtility
 			circleOutlinePoints[i] = new Vector3(Mathf.Cos(perPointAngle * i), 0, Mathf.Sin(perPointAngle * i)) * radius;
 		}
 
-		var tsrMatrix = Matrix4x4.TRS(position, Quaternion.identity, Vector3.one);
+		var tsrMatrix = Matrix4x4.TRS(position, rotation, Vector3.one);
 		Gizmos.matrix = tsrMatrix;
 
 		for (int i = 0; i < outlineResolution; ++i)
