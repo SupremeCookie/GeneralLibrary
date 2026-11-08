@@ -11,6 +11,7 @@ using UnityEngine;
 public class CoastalCargoSteamWrapper : MonoBehaviour
 {
 	public const string steamHyperlink = "https://store.steampowered.com/app/4549920/Coastal_Cargo/";
+	public const string DKATGAMES_URL = "https://www.dkatgames.com/";
 
 
 #if HAS_STEAM
@@ -317,6 +318,18 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 
 		Debug.Log($"Opening the hyperlink: {steamHyperlink}");
 		Application.OpenURL(steamHyperlink);
+	}
+
+	public void OpenDKatGamesPage()
+	{
+#if HAS_STEAM
+		bool openedOverlay = steamManager.OpenDKatGamesPage(DKATGAMES_URL);
+		if (openedOverlay)
+			return;
+#endif
+
+		Debug.Log($"Opening the hyperlink: {DKATGAMES_URL}");
+		Application.OpenURL(DKATGAMES_URL);
 	}
 
 	public string GetCurrentLanguage()

@@ -220,6 +220,20 @@ public class SteamManager : MonoBehaviour
 		return ableToOpen;
 	}
 
+	public bool OpenDKatGamesPage(string url)
+	{
+		bool ableToOpen = false;
+		if (Initialized)
+		{
+			UnityEngine.Debug.Log($"Activate Game Overlay to open store");
+			SteamFriends.ActivateGameOverlayToWebPage(url);
+			ableToOpen = true;
+		}
+
+		return ableToOpen;
+	}
+
+
 	public string GetCurrentGameLanguage()
 	{
 		return SteamApps.GetCurrentGameLanguage();
