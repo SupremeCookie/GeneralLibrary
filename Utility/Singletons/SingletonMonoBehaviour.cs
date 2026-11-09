@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBehaviour<T>
 {
+	[SerializeField, Readonly] private string stackTrace;
+
+	[Space(15)]
 	[SerializeField] private bool shouldNotDestroyOnLoad = true;
 
 	protected bool pDestroyedObject = false;
@@ -19,6 +23,7 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBe
 				string instanceName = typeof(T) + "_instanced";
 				GameObject newInstance = new GameObject(instanceName);
 				newInstance.AddComponent<T>();
+				newInstance.GetComponent<T>()?.OnGotCreated();
 
 				Debug.LogFormat("<b><color=#25a0ff>SingletonMonoBehaviour</color></b> -- Created an instance of <b>{0}</b> its gameObject is called {1}", typeof(T), instanceName);
 			}
@@ -53,5 +58,12 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : SingletonMonoBe
 			pDestroyedObject = true;
 			Destroy(gameObject);
 		}
+	}
+
+	protected virtual void OnGotCreated()
+	{
+#if UNITY_EDITOR
+		stackTrace = Environment.StackTrace;
+#endif
 	}
 }
