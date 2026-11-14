@@ -225,7 +225,20 @@ public class SteamManager : MonoBehaviour
 		bool ableToOpen = false;
 		if (Initialized)
 		{
-			UnityEngine.Debug.Log($"Activate Game Overlay to open store");
+			UnityEngine.Debug.Log($"Activate Game Overlay to open overlay on DKat");
+			SteamFriends.ActivateGameOverlayToWebPage(url);
+			ableToOpen = true;
+		}
+
+		return ableToOpen;
+	}
+
+	public bool OpenDiscordPage(string url)
+	{
+		bool ableToOpen = false;
+		if (Initialized)
+		{
+			UnityEngine.Debug.Log($"Activate Game Overlay to open overlay on Discord");
 			SteamFriends.ActivateGameOverlayToWebPage(url);
 			ableToOpen = true;
 		}

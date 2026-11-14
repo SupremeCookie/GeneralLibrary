@@ -12,6 +12,7 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 {
 	public const string steamHyperlink = "https://store.steampowered.com/app/4549920/Coastal_Cargo/";
 	public const string DKATGAMES_URL = "https://www.dkatgames.com/";
+	public const string DISCORD_URL = "https://discord.gg/bGKaKjn8Dt";
 
 
 #if HAS_STEAM
@@ -331,6 +332,19 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 		Debug.Log($"Opening the hyperlink: {DKATGAMES_URL}");
 		Application.OpenURL(DKATGAMES_URL);
 	}
+
+	public void OpenDiscordPage()
+	{
+#if HAS_STEAM
+		bool openedOverlay = steamManager.OpenDiscordPage(DISCORD_URL);
+		if (openedOverlay)
+			return;
+#endif
+
+		Debug.Log($"Opening the hyperlink: {DISCORD_URL}");
+		Application.OpenURL(DISCORD_URL);
+	}
+
 
 	public string GetCurrentLanguage()
 	{
