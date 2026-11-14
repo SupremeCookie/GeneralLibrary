@@ -281,8 +281,8 @@ public class CoastalCargoSteamWrapper : MonoBehaviour
 	{
 		int totalValue = statsAchievementsLocalData?.GetValue(baseStatKey.ConvertToString(), 0) ?? 0;
 		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 1).ConvertToString(), 0) ?? 0;
-		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 1).ConvertToString(), 0) ?? 0;
-		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 1).ConvertToString(), 0) ?? 0;
+		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 2).ConvertToString(), 0) ?? 0;
+		totalValue += statsAchievementsLocalData?.GetValue(((StatKey)(int)(baseStatKey) + 3).ConvertToString(), 0) ?? 0;
 
 		return totalValue;
 	}
