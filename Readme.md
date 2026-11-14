@@ -22,6 +22,9 @@ Wishlist for changes to the general library:
 -- Application Manager
 -- Gameplay Manager
 -- Take a look at other handy classes
+-- LocaManager
+-- GameplayManager's structure
+-- Make sure to take a look at the camera controller we've put in Coastal, but don't necessarily take it to the general lib. Maybe just as an example implementation?
 
 - Rebuild build window
 -- UIElements (uitoolkit) instead of ongui
